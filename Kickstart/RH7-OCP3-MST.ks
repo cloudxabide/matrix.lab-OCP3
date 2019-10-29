@@ -51,11 +51,10 @@ git
 ntp
 perl
 tuned
-wget
 %end
 
 %post --log=/root/ks-post.log
-wget http://10.10.10.10/post_install.sh -O /root/post_install.sh
+wget http://10.10.10.10/Scripts/post_install.sh -O /root/post_install.sh
 echo -e "# BIND Mount CCE-14584-7"
 echo -e "/tmp\t\t/var/tmp\t\t\tnone\tdefaults,bind,nodev,noexec,nosuid\t0 0" >> /etc/fstab
 # CCE-14054-1 

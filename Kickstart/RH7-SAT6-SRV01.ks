@@ -64,9 +64,8 @@ reboot
 @core
 yum-plugin-downloadonly
 tuned
-wget
 %end
 
 %post --log=/root/ks-post.log
-wget http://10.10.10.10/post_install.sh -O /root/post_install.sh
+wget http://10.10.10.10/Scripts/post_install.sh -O /root/post_install.sh
 %end
