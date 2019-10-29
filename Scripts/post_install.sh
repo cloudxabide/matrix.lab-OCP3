@@ -20,7 +20,7 @@ export rhnpass=$(curl -s ${WEBSERVER}/OS/.rhninfo | grep rhnpass | cut -f2 -d\=)
 #[ ! -f ./rhninfo ] && { echo "grabbing RHN config"; wget ${WEBSERVER}/OS/.rhninfo || { echo "ERROR: could not retrieve RHN config"; exit 9;} }
 #. ./.rhninfo || exit 9
 
-subscription-manager status || subscription-manager register --auto-attach --force --username=${rhnuser} --password=${rhnpass}
+subscription-manager status || subscription-manager register --auto-attach --force --username="${rhnuser}" --password="${rhnpass}"
 
 # Repo/Channel Management
 # subscription-manager facts --list  | grep distribution.version: | awk '{ print $2 }' <<== Alternate to gather "version"
@@ -52,6 +52,6 @@ sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sud
 # Manage Cockpit
 yum -y install cockpit
 systemctl enable --now cockpit.socket
-firewall-cmd --permanent --zone=$(firewall-cmd --get-default-zone) --add-service=cockpit --now
+firewall-cmd --permanent --zone=$(firewall-cmd --get-default-zone) --add-service=cockpit 
 firewall-cmd --complete-reload
 
