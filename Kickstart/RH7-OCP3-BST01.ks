@@ -12,7 +12,7 @@ keyboard --vckeymap=us --xlayouts='us'
 lang en_US.UTF-8
 
 # Network information
-network --bootproto=static --device=eth0 --ip=10.10.10.189 --netmask=255.255.255.0 --gateway=10.10.10.1 --activate --nameserver=10.10.10.121,10.10.10.122,8.8.8.8 --hostname=rh7-ocp3-mst.matrix.lab 
+network --bootproto=static --device=eth0 --ip=10.10.10.189 --netmask=255.255.255.0 --gateway=10.10.10.1 --activate --nameserver=10.10.10.121,10.10.10.122,8.8.8.8 --hostname=rh7-ocp3-bst01.matrix.lab 
 
 # Root password
 rootpw --iscrypted $6$03gqrB.BA2aR.mkG$gSzJgslhseoNAe1GojYe8uQG1/mavSGIVf62BDA9MtQkRr06Ua9AXYspTOsdJ61d1QUmEhojWQ7RG.oZeWyu9/
@@ -34,12 +34,12 @@ clearpart --all --initlabel --drives=vda
 part /boot --fstype="xfs" --ondisk=vda --size=500
 part pv.03 --fstype="lvmpv" --ondisk=vda --size=10240 --grow
 #
-volgroup vg_rhel75 pv.03
+volgroup vg_rhel7 pv.03
 #
-logvol /    --fstype=xfs --vgname=vg_rhel75 --name=lv_root --label="root" --size=8192
-logvol swap --fstype=swap --vgname=vg_rhel75 --name=lv_swap --label="swap" --size=2048
-logvol /home --fstype=xfs --vgname=vg_rhel75 --name=lv_home --label="home" --size=1024
-logvol /tmp --fstype=xfs --vgname=vg_rhel75 --name=lv_tmp --label="temp" --size=2048
+logvol /    --fstype=xfs --vgname=vg_rhel7 --name=lv_root --label="root" --size=8192
+logvol swap --fstype=swap --vgname=vg_rhel7 --name=lv_swap --label="swap" --size=2048
+logvol /home --fstype=xfs --vgname=vg_rhel7 --name=lv_home --label="home" --size=1024
+logvol /tmp --fstype=xfs --vgname=vg_rhel7 --name=lv_tmp --label="temp" --size=2048
 
 eula --agreed
 reboot
