@@ -1,0 +1,25 @@
+# THESE VALUES ARE READ IN BY:  
+#   build_kvm.sh
+#   post_install.sh
+# 
+#NAME:RELEASE:NUMCPU:MEM:HDD0:HDD1:HDD2:releasetype:releasever:BIOS-UEFI:Satellite:DISCONNECTED:PURPOSE:INSTALL
+#   1:      2:     3:  4:   5:   6:  7:           8:         9:       10:       11:          12:     13:     14
+# PURPOSE:  RHV|RHHI|RHC
+# INSTALL:  RHEL|RHVH|RHELH
+# ===========================================================================================
+RH7-SAT6-SRV01:EL7:4:12288:50:200:0:server:7.6:BIOS:0:0:x:x
+RH7-UTIL-SRV01:EL8:4:1024:50:0:0:server:8.0:BIOS:0:0:x:x
+RH7-IDM-SRV01:EL7:2:1536:50:0:0:server:7.6:BIOS:0:0:x:x
+RH7-IDM-SRV02:EL7:2:1536:50:0:0:server:7.6:BIOS:0:0:x:x
+RH7-RHV4-MGR01:EL7:2:2048:20:0:0:server:7.6:BIOS:0:0:x:x
+RH7-OCP3-MST:EL7:2:1536:20:0:0:server:7.6:BIOS:0:0:x:x
+RH7-OCP3-MST01:EL7:2:1536:20:50:0:server:7.6:BIOS:0:0:x:x
+RH7-OCP3-MST02:EL7:2:1536:20:50:0:server:7.6:BIOS:0:0:x:x
+RH7-OCP3-MST03:EL7:2:1536:20:50:0:server:7.6:BIOS:0:0:x:x
+RH7-OCP3-INF01:EL7:2:1536:20:50:0:server:7.6:BIOS:0:0:x:x
+RH7-OCP3-INF02:EL7:2:1536:20:50:0:server:7.6:BIOS:0:0:x:x
+RH7-OCP3-INF03:EL7:2:1536:20:50:0:server:7.6:BIOS:0:0:x:x
+RH7-OCP3-APP01:EL7:2:2048:20:50:0:server:7.6:BIOS:0:0:x:x
+RH7-OCP3-APP02:EL7:2:2048:20:50:0:server:7.6:BIOS:0:0:x:x
+RH7-OCP3-APP03:EL7:2:2048:20:50:0:server:7.6:BIOS:0:0:x:x
+
