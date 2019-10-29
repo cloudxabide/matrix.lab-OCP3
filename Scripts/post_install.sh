@@ -35,6 +35,12 @@ case `cut -f5 -d\: /etc/system-release-cpe` in
   ;;
 esac
 
+#########################
+## USER MANAGEMENT
+#########################
+# Create an SSH key/pair if one does not exist (which should be the case for a new system)
+[ ! -f /root/.ssh/id_rsa ] && echo | ssh-keygen -trsa -b2048 -N ''
+
 # Add local group/user for Ansible and allow sudo NOPASSWD: ALL
 id -u mansible &>/dev/null || useradd -u1001 -c "My Ansible" -p '$6$MIxbq9WNh2oCmaqT$10PxCiJVStBELFM.AKTV3RqRUmqGryrpIStH5wl6YNpAtaQw.Nc/lkk0FT9RdnKlEJEuB81af6GWoBnPFKqIh.' mansible 
 
