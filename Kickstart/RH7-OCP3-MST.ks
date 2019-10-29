@@ -34,12 +34,12 @@ clearpart --all --initlabel --drives=vda
 part /boot --fstype="xfs" --ondisk=vda --size=500
 part pv.03 --fstype="lvmpv" --ondisk=vda --size=10240 --grow
 #
-volgroup vg_rhel75 pv.03
+volgroup vg_rhel7 pv.03
 #
-logvol /    --fstype=xfs --vgname=vg_rhel75 --name=lv_root --label="root" --size=8192
-logvol swap --fstype=swap --vgname=vg_rhel75 --name=lv_swap --label="swap" --size=2048
-logvol /home --fstype=xfs --vgname=vg_rhel75 --name=lv_home --label="home" --size=1024
-logvol /tmp --fstype=xfs --vgname=vg_rhel75 --name=lv_tmp --label="temp" --size=2048
+logvol /    --fstype=xfs --vgname=vg_rhel7 --name=lv_root --label="root" --size=8192
+logvol swap --fstype=swap --vgname=vg_rhel7 --name=lv_swap --label="swap" --size=2048
+logvol /home --fstype=xfs --vgname=vg_rhel7 --name=lv_home --label="home" --size=1024
+logvol /tmp --fstype=xfs --vgname=vg_rhel7 --name=lv_tmp --label="temp" --size=2048
 
 eula --agreed
 reboot
