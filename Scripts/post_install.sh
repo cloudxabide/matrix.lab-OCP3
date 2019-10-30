@@ -13,6 +13,11 @@ then
   exit 9
 fi
 
+# Display warning (in case this is run interactively
+echo "NOTE: This script will update host and REBOOT host"
+echo "  Press CTRL-C to quit (you have 5 seconds)"
+sleep 5
+
 # Register the system if not already (exit if the config file is not present) - I need to get an activation key and use vault for this 
 export rhnuser=$(curl -s ${WEBSERVER}/OS/.rhninfo | grep rhnuser | cut -f2 -d\=)
 export rhnpass=$(curl -s ${WEBSERVER}/OS/.rhninfo | grep rhnpass | cut -f2 -d\=)
@@ -61,3 +66,5 @@ systemctl enable --now cockpit.socket
 firewall-cmd --permanent --zone=$(firewall-cmd --get-default-zone) --add-service=cockpit 
 firewall-cmd --complete-reload
 
+#  Update Host and reboot
+yum -y update && shutdown now -r

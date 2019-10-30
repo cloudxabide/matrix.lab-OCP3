@@ -192,7 +192,7 @@ ipa dnsrecord-add 10.10.10.in-addr.arpa 243     --ptr-rec vpn-guest-03.matrix.la
 ####################
 ipa dnsrecord-add matrix.lab rh7-ocp3-mst    --a-rec 10.10.10.170
 ipa dnsrecord-add matrix.lab openshift       --cname-rec='rh7-ocp3-mst.matrix.lab.'
-ipa dnsrecord-add matrix.lab ocp             --cname-rec='rh7-ocp3-mst.matrix.lab.'
+ipa dnsrecord-add matrix.lab ocp3            --cname-rec='rh7-ocp3-mst.matrix.lab.'
 ipa dnsrecord-add matrix.lab api             --cname-rec='rh7-ocp3-mst.matrix.lab.'
 ipa dnsrecord-add matrix.lab rh7-ocp3-mst01  --a-rec 10.10.10.171
 ipa dnsrecord-add matrix.lab rh7-ocp3-mst02  --a-rec 10.10.10.172
