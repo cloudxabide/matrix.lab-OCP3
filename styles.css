@@ -1,0 +1,137 @@
+<style>
+<!--
+BODY {
+	margin: 0;
+	scrollbar-face-color:#aaaacc;
+	scrollbar-shadow-color:#000000;
+	scrollbar-highlight-color:#003399;
+	scrollbar-darkshadow-color:#003399;
+	scrollbar-track-color:#4F86F5;
+	scrollbar-arrow-color:#4F86F5; }
+
+H1              {
+                BACKGROUND:     white;
+                COLOR:          #333355;
+                FONT-WEIGHT:    bold;
+                TEXT-ALIGN:     center }
+H2	{
+                BACKGROUND:     white;
+                COLOR:          #333355; }
+
+H3      {
+                BACKGROUND:     white;
+                COLOR:          #333355; }
+
+
+TH              {
+                BACKGROUND:     #cdcdcd;
+                COLOR:          #ed3434;
+                FONT-WEIGHT:    bold;
+                TEXT-ALIGN:     center; }
+
+
+A:link      {color: 	#0000F7;
+		TEXT-DECORATION: 	none}
+A:visited   {color:  		#3F3EC8;
+		TEXT-DECORATION: 	none}
+A:hover	{color:		orange;
+		TEXT-DECORATION: 	none}
+A:active    {color:  #red}
+
+    .container {
+          width:            960px;
+          margin-left:      10px auto; 
+          margin-right:     10px auto; }
+
+    .code {
+          box-shadow: 5px 5px 3px #d3d3d3;
+          background-color: #efefef; 
+          display:          block;
+          width:            800px;
+          white-space:      pre;
+          font-family:      Verdana, Geneva, Arial;
+          font-size:        10pt;
+          font-style:       Normal;
+          text-decoration:  none;
+          text-indent:      10px;
+          line-height:      12pt; }
+
+    .boldPara {
+          font-family:      Verdana, Geneva, Arial;
+          font-size:        10pt;
+          font-weight:      600;
+          font-style:       Normal;
+          text-decoration:  none;
+          color:            #333355;
+          text-indent:      0px;
+          line-height:      12pt; }
+
+    .regPara {
+          width:            800px;
+          font-family:      Verdana,Geneva;
+          font-size:        9pt;
+          font-weight:      normal;
+          font-style:       Normal;
+          text-decoration:  none;
+;          color:            #ff3355;
+          color:            #333355;
+          text-indent:      0px;
+          padding-bottom:   6pt;  }
+
+    .accent {
+          font-family:      Verdana, Geneva;
+          font-size:        11pt;
+          font-weight:      bold;
+          font-style:       Normal;
+          text-decoration:  underline;
+	  color:            #553355;
+          text-indent:      0px;
+          line-height:      12pt;
+	  text-align:	    left; }
+
+    .linkTo {
+          font-family:      Arial, Geneva;
+          font-size:        12pt;
+          font-weight:      600;
+          font-style:       Normal;
+          text-decoration:  none;
+          color:            #FFFFCC;
+          text-indent:      0px;
+          padding-bottom:   8pt;     }
+
+    .descrip {
+          font-family:      Arial, Geneva;
+          font-size:        9pt;
+          font-weight:      500;
+          font-style:       Normal;
+          text-decoration:  none;
+          color:            #333355;
+          text-indent:      0px;
+          margin-left:      0px; }
+
+    .bolder {
+          font-family:      Arial, Geneva;
+          font-size:        9pt;
+          font-weight:      600;
+          font-style:       Normal;
+          text-decoration:  none;
+          color:            #333355;
+          text-indent:      0px;
+          margin-left:      0px; }
+
+H1		{	
+		BACKGROUND:		white;
+		COLOR: 		#333355;
+    		FONT-WEIGHT: bold;
+    		TEXT-ALIGN: center
+		}
+
+TH		{
+		BACKGROUND:		#cdcdcd;
+		COLOR:		#ed3434;
+		FONT-WEIGHT:	bold;	
+		TEXT-ALIGN:		center;
+		}
+-->
+</STYLE>
+
