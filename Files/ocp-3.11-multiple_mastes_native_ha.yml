@@ -13,7 +13,13 @@ lb
 ansible_ssh_user=mansible
 ansible_become=true
 openshift_deployment_type=openshift-enterprise
-os_firewall_use_firewalld=True # default is iptables
+# If you select "openshift-enterprise" you need to included the oreg_auth stuff below
+oreg_url=registry.redhat.io/openshift3/ose-${component}:${version}
+oreg_auth_user="Red Hat Login"
+oreg_auth_password="Red Hat Password"
+
+# Enable Firewalld -- default is iptables
+os_firewall_use_firewalld=True 
 
 # uncomment the following to enable htpasswd authentication; defaults to DenyAllPasswordIdentityProvider
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
@@ -27,6 +33,17 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 openshift_master_cluster_method=native
 openshift_master_cluster_hostname=ocp3.matrix.lab
 openshift_master_cluster_public_hostname=ocp3.matrix.lab
+openshift_master_default_subdomain=ocp3-mwn.matrix.lab
+
+openshift_disable_check=memory_availability,disk_availability
+
+# Configure (external) NFS for Registry
+openshift_hosted_registry_storage_kind=nfs
+openshift_hosted_registry_storage_access_modes=['ReadWriteMany']
+openshift_hosted_registry_storage_host=rh7-ocp3-bst01.matrix.lab
+openshift_hosted_registry_storage_nfs_directory=/exports/nfs/ocp3.matrix.lab/registry
+openshift_hosted_registry_storage_volume_name=registry
+openshift_hosted_registry_storage_volume_size=10Gi
 
 # host group for masters
 [masters]
