@@ -1,0 +1,2 @@
+VG=docker-vg
+DEVS=/dev/vdb
