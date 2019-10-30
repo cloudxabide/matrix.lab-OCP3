@@ -13,6 +13,7 @@ lb
 ansible_ssh_user=mansible
 ansible_become-true
 openshift_deployment_type=openshift-enterprise
+os_firewall_use_firewalld=True # default is iptables
 
 # uncomment the following to enable htpasswd authentication; defaults to DenyAllPasswordIdentityProvider
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
