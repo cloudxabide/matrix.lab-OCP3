@@ -218,11 +218,11 @@ ipa dnsrecord-add 10.10.10.in-addr.arpa 183  --ptr-rec rh7-ocp3-app03.matrix.lab
 ipa dnsrecord-add 10.10.10.in-addr.arpa 189  --ptr-rec rh7-ocp3-bst01.matrix.lab.
 
 # OCP tertiary domain (point at the Infra Nodes - routers) 
-# Openshift Container Platform 3 - MidWest North
+# DomainName: Openshift Container Platform 3 - MidWest North (ocp3-mwn)
 ipa dnszone-add ocp3-mwn.matrix.lab --admin-email=root@matrix.lab --minimum=3000 --dynamic-update=true
-ipa dnsrecord-add ocp3-homelab.matrix.lab '*' --a-rec 10.10.10.175 
-ipa dnsrecord-add ocp3-homelab.matrix.lab '*' --a-rec 10.10.10.176 
-ipa dnsrecord-add ocp3-homelab.matrix.lab '*' --a-rec 10.10.10.177 
+ipa dnsrecord-add ocp3-mwn.matrix.lab '*' --a-rec 10.10.10.175 
+ipa dnsrecord-add ocp3-mwn.matrix.lab '*' --a-rec 10.10.10.176 
+ipa dnsrecord-add ocp3-mwn.matrix.lab '*' --a-rec 10.10.10.177 
   ;;
 esac
 
