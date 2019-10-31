@@ -69,19 +69,23 @@ parted -s /dev/vdc mklabel gpt mkpart pri ext4 2048s 100% set 1 lvm on
 pvcreate /dev/vdc1
 vgcreate vg_exports /dev/vdc1
 lvcreate -nlv_registry -L+10g vg_exports
-mkfs.xfs /dev/mapper/vg_exports-lv_registry 
+lvcreate -nlv_metrics -L+10g vg_exports
+mkfs.xfs /dev/mapper/vg_exports-lv_{registry,metrics}
 
 # semanage fcontext --list
 yum -y install nfs-utils
 
-mkdir -p /exports/nfs/ocp3.matrix.lab/registry
-chmod 000 /exports/nfs/ocp3.matrix.lab/registry/
+mkdir -p /exports/nfs/ocp3.matrix.lab/{registry,metrics}
+chmod 000 /exports/nfs/ocp3.matrix.lab/{registry,metrics}/
 echo "/dev/mapper/vg_exports-lv_registry /exports/nfs/ocp3.matrix.lab/registry xfs defaults 0 0" >> /etc/fstab
+echo "/dev/mapper/vg_exports-lv_metrics /exports/nfs/ocp3.matrix.lab/metrics xfs defaults 0 0" >> /etc/fstab
 mount -a 
-chmod 2770 /exports/nfs/ocp3.matrix.lab/registry
-chown nfsnobody:nfsnobody /exports/nfs/ocp3.matrix.lab/registry
+chmod 2770 /exports/nfs/ocp3.matrix.lab/{registry,metrics}
+chown nfsnobody:nfsnobody /exports/nfs/ocp3.matrix.lab/{registry,metrics}
+ls -laZ /exports/nfs/ocp3.matrix.lab/* -d
 
 echo "/exports/nfs/ocp3.matrix.lab/registry 10.10.10.0/24(rw,sync,no_root_squash)" >> /etc/exports
+echo "/exports/nfs/ocp3.matrix.lab/metrics 10.10.10.0/24(rw,sync,no_root_squash)" >> /etc/exports
 exportfs -a
 
 firewall-cmd --permanent --zone=$(firewall-cmd --get-default-zone) --add-service={nfs,mountd,rpc-bind}
@@ -89,7 +93,7 @@ firewall-cmd --reload
 systemctl enable nfs-server.service  --now
 
 cp ../Files/ocp-3.11-multiple_mastes_native_ha.yml ~/
-ansible all --list-hosts -i ~/ocp-3.11-multiple_mastes_native_ha.yml 
 cd /usr/share/ansible/openshift-ansible
+ansible all --list-hosts -i ~/ocp-3.11-multiple_mastes_native_ha.yml 
 ansible-playbook -i ~/ocp-3.11-multiple_mastes_native_ha.yml playbooks/prerequisites.yml
 
