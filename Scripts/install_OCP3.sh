@@ -46,6 +46,8 @@ Host *.matrix.lab
 EOF
 chmod 0600 ~/.ssh/config
 
+# Now, distribute the keys to the mansible user
+for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do ssh-copy-id $HOST; echo; done
 # Test the connection (and sudo - which should have been done in a previous script)
 for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo grep mansible /etc/shadow"; echo ; done
 
@@ -67,12 +69,15 @@ done
 # Install supporting pakcages on Bastion
 yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
 
-# Install openshift-ansible on Bastion
-yum -y install openshift-ansible
-yum -y install docker
+# Install openshift-ansible and docker on Bastion
+yum -y install openshift-ansible docker
 cat << EOF > /etc/sysconfig/docker-storage-setup
+STORAGE_DRIVER=overlay2
 VG=docker-vg
 DEVS=/dev/vdb
+CONTAINER_ROOT_LV_NAME="docker-root-lv"
+CONTAINER_ROOT_LV_SIZE="100%FREE"
+CONTAINER_ROOT_LV_MOUNT_PATH="/var/lib/docker"
 EOF
 docker-storage-setup
 systemctl enable docker --now
@@ -83,7 +88,8 @@ pvcreate /dev/vdc1
 vgcreate vg_exports /dev/vdc1
 lvcreate -nlv_registry -L+10g vg_exports
 lvcreate -nlv_metrics -L+10g vg_exports
-mkfs.xfs /dev/mapper/vg_exports-lv_{registry,metrics}
+mkfs.xfs /dev/mapper/vg_exports-lv_registry
+mkfs.xfs /dev/mapper/vg_exports-lv_metrics
 
 # semanage fcontext --list
 yum -y install nfs-utils
@@ -99,11 +105,22 @@ ls -laZ /exports/nfs/ocp3.matrix.lab/* -d
 
 echo "/exports/nfs/ocp3.matrix.lab/registry 10.10.10.0/24(rw,sync,no_root_squash)" >> /etc/exports
 echo "/exports/nfs/ocp3.matrix.lab/metrics 10.10.10.0/24(rw,sync,no_root_squash)" >> /etc/exports
-exportfs -a
+exportfs -a; exportfs
 
 firewall-cmd --permanent --zone=$(firewall-cmd --get-default-zone) --add-service={nfs,mountd,rpc-bind}
 firewall-cmd --reload
 systemctl enable nfs-server.service  --now
+
+# Setup Docker on the Nodes
+for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
+do
+  ssh -t $HOST << EOF
+    uname -n
+    wget http://10.10.10.10/Scripts/docker_setup.sh
+    sh ./docker_setup.sh
+EOF
+  echo
+done
 
 cp ../Files/ocp-3.11-multiple_mastes_native_ha.yml ~/
 cd /usr/share/ansible/openshift-ansible

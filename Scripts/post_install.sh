@@ -1,9 +1,8 @@
 #!/bin/bash
 
+exec > (tee "$HOME/post_install.sh.log") 2>&1
+
 WEBSERVER="10.10.10.10"
-
-wget http://${WEBSERVER}/Scripts/finish_$(hostname -s | tr [a-z] [A-Z]).sh 
-
 
 PWD=`pwd`
 DATE=`date +%Y%m%d`
@@ -15,6 +14,8 @@ then
   echo "ERROR:  You should be root to run this..."
   exit 9
 fi
+
+wget http://${WEBSERVER}/Scripts/finish_$(hostname -s | tr [a-z] [A-Z]).sh 
 
 # Display warning (in case this is run interactively
 echo "NOTE: This script will update host and REBOOT host"
@@ -51,6 +52,7 @@ esac
 
 # Add local group/user for Ansible and allow sudo NOPASSWD: ALL
 id -u mansible &>/dev/null || useradd -u1001 -c "My Ansible" -p '$6$MIxbq9WNh2oCmaqT$10PxCiJVStBELFM.AKTV3RqRUmqGryrpIStH5wl6YNpAtaQw.Nc/lkk0FT9RdnKlEJEuB81af6GWoBnPFKqIh.' mansible 
+su - mansible -c "echo | ssh-keygen -trsa -b2048 -N ''"
 
 cat << EOF > /etc/sudoers.d/01-myansble
 
