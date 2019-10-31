@@ -19,7 +19,7 @@
 10.10.10.121 rh7-ipa-srv01.matrix.lab rh7-ipa-srv01
 10.10.10.122 rh7-ipa-srv02.matrix.lab rh7-ipa-srv02
 # OCP3 Guests
-#10.10.10.170 rh7-ocp3-mst.matrix.lab rh7-ocp3-mst
+10.10.10.170 rh7-ocp3-mst.matrix.lab rh7-ocp3-mst
 10.10.10.171 rh7-ocp3-mst01.matrix.lab rh7-ocp3-mst01
 10.10.10.172 rh7-ocp3-mst02.matrix.lab rh7-ocp3-mst02
 10.10.10.173 rh7-ocp3-mst03.matrix.lab rh7-ocp3-mst03
