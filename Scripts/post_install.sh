@@ -2,6 +2,9 @@
 
 WEBSERVER="10.10.10.10"
 
+wget http://${WEBSERVER}/Scripts/finish_$(hostname -s | tr [a-z] [A-Z]).sh 
+
+
 PWD=`pwd`
 DATE=`date +%Y%m%d`
 ARCH=`uname -p`
@@ -32,11 +35,11 @@ subscription-manager status || subscription-manager register --auto-attach --for
 case `cut -f5 -d\: /etc/system-release-cpe` in
   7.*)
     echo "NOTE:  detected EL7"
-    #subscription-manager repos --disable="*" --enable rhel-7-server-rpms
+    subscription-manager repos --disable="*" --enable rhel-7-server-rpms
   ;;
   8.*)
     echo "NOTE:  detected EL8"
-    #subscription-manager repos --disable="*" --enable=rhel-8-for-x86_64-baseos-rpms 
+    subscription-manager repos --disable="*" --enable=rhel-8-for-x86_64-baseos-rpms 
   ;;
 esac
 
