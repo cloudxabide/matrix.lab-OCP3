@@ -20,18 +20,31 @@
 #   to an OCP3 Cluster (and, in my case, should not already have any customizations done)
 cat << EOF > ~/.ssh/config
 Host *.matrix.lab
-  User mansible
   StrictHostKeyChecking no
 EOF
 chmod 0600 ~/.ssh/config
 
-# Establish connectivity and sync ssh-keys to hosts
+# Establish connectivity and sync ssh-keys to hosts (as root) 
+# Need to figure out a IaC way of doing this
 for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do 
-  echo ssh-copy-id $HOST
+  echo -e "Passw0rd\n" | ssh-copy-id $HOST
 done
 # Remove the StrickHostKey line
 sed -i -e '/StrictHostKeyChecking/d' ~/.ssh/config
+
+# Run the "post_install.sh" script on all the hosts
+for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
+do 
+  ssh -t $HOST "sh ./post_install.sh" 
+done
+
+# Update Bastion so that it now connects using "mansible"
+cat << EOF > ~/.ssh/config
+Host *.matrix.lab
+  User mansible
+EOF
+chmod 0600 ~/.ssh/config
 
 # Test the connection (and sudo - which should have been done in a previous script)
 for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo grep mansible /etc/shadow"; echo ; done
@@ -46,7 +59,7 @@ for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do 
   ssh -t $HOST << EOF
     uname -n
-    sudo subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-3.11-rpms" --enable="rhel-7-server-ansible-2.6-rpms"
+    sudo subscription-manager repos --disable="*" --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-3.11-rpms" --enable="rhel-7-server-ansible-2.6-rpms"
 EOF
   echo
 done
