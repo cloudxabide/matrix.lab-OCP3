@@ -45,6 +45,18 @@ openshift_hosted_registry_storage_nfs_directory=/exports/nfs/ocp3.matrix.lab/reg
 openshift_hosted_registry_storage_volume_name=registry
 openshift_hosted_registry_storage_volume_size=10Gi
 
+# Metrics (default is no)
+openshift_metrics_install_metrics=true
+# https://hawkular-metrics.{{openshift_master_default_subdomain}}/hawkular/metrics
+
+openshift_metrics_storage_kind=nfs
+openshift_metrics_storage_access_modes=['ReadWriteOnce']
+openshift_metrics_storage_host=rh7-ocp3-bst01.matrix.lab
+openshift_metrics_storage_nfs_directory=/exports/nfs/ocp3.matrix.lab/metrics
+openshift_metrics_storage_volume_name=metrics
+openshift_metrics_storage_volume_size=10Gi
+
+
 # host group for masters
 [masters]
 rh7-ocp3-mst01.matrix.lab
