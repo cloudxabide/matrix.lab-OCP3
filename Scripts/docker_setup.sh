@@ -10,3 +10,4 @@ CONTAINER_ROOT_LV_SIZE="100%FREE"
 CONTAINER_ROOT_LV_MOUNT_PATH="/var/lib/docker"
 EOF
 docker-storage-setup
+systemctl enable docker --now
