@@ -3,6 +3,7 @@
 yum -y install docker
 
 cat << EOF > /etc/sysconfig/docker-storage-setup
+STORAGE_DRIVER=overlay2
 VG=docker-vg
 DEVS=/dev/vdb
 CONTAINER_ROOT_LV_NAME="docker-root-lv"
