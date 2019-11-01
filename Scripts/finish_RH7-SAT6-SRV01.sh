@@ -93,7 +93,6 @@ hammer product list --organization="${ORGANIZATION}" > ~/hammer_product_list.out
 PRODUCT='Red Hat Enterprise Linux Server'
 hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
 
-
 ######################
 PRODUCT='Red Hat Enterprise Linux Server'
 hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
@@ -126,6 +125,17 @@ do
   hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever='7Server' --product="${PRODUCT}" --id="${REPO}"
 done
 
+######################
+PRODUCT='Red Hat OpenShift Container Platform'
+hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
+#REPOS="5251"  # 3.3
+REPOS="7414 6888"  # 3.11 3.9
+for REPO in $REPOS
+do
+  echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
+  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --product="${PRODUCT}" --id="${REPO}"
+done
+
 #################
 ## EPEL Stuff - Pay attention to the output of this section.  It's not tested/validated
 #    If it doesn't work, update the GPG-KEY via the WebUI
@@ -136,24 +146,23 @@ PRODUCT='Extra Packages for Enterprise Linux'
 hammer product create --name="${PRODUCT}" --organization="${ORGANIZATION}"
 hammer repository create --name='EPEL 7 - x86_64' --organization="${ORGANIZATION}" --product="${PRODUCT}" --content-type='yum' --publish-via-http=true --url=http://dl.fedoraproject.org/pub/epel/7/x86_64/ --gpg-key-id="${GPGKEYID}" --gpg-key="${GPG-EPEL-7}"
 
-
 #################
 ## SYNC EVERYTHING (Manually)
 #for i in $(hammer --csv repository list --organization="${ORGANIZATION}" | awk -F, {'print $1'} | grep -vi '^ID'); do echo "hammer repository synchronize --id ${i} --organization=\"${ORGANIZATION}\" --async"; done
-for i in $(hammer --csv repository list --organization="${ORGANIZATION}" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization="${ORGANIZATION}" --async; done
-
-#################
-## LIFECYCLE ENVIRONMENT
-hammer lifecycle-environment create --name='DEV' --prior='Library' --organization="${ORGANIZATION}"
-hammer lifecycle-environment create --name='TEST' --prior='DEV' --organization="${ORGANIZATION}"
-hammer lifecycle-environment create --name='PROD' --prior='TEST' --organization="${ORGANIZATION}"
+for i in $(hammer --csv repository list --organization="${ORGANIZATION}" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization="${ORGANIZATION}" --async; sleep 1; done
 
 ################
 # SYNC PLANS - I believe these are working now.
 #   I may... want to separate all the major products out to their own Sync Plan though.
 hammer sync-plan create --enabled true --interval=daily --name='Daily sync - Red Hat' --description="Daily Sync Plan for Red Hat Products" --sync-date='2015-11-22 02:00:00' --organization="${ORGANIZATION}"
 hammer product set-sync-plan --sync-plan='Daily sync - Red Hat' --organization="${ORGANIZATION}" --name='Red Hat Enterprise Linux Server'
-hammer product set-sync-plan --sync-plan='Daily sync - Red Hat' --organization="${ORGANIZATION}" --name='Red Hat OpenShift Enterprise'
+hammer product set-sync-plan --sync-plan='Daily sync - Red Hat' --organization="${ORGANIZATION}" --name='Red Hat OpenShift Container Platform'
+hammer product set-sync-plan --sync-plan='Daily sync - Red Hat' --organization="${ORGANIZATION}" --name='Red Hat Software Collections for RHEL Server'
 hammer sync-plan create --enabled true --interval=daily --name='Daily sync - EPEL' --description="Daily Sync Plan for EPEL" --sync-date='2015-11-22 03:00:00' --organization="${ORGANIZATION}"
 hammer product set-sync-plan --sync-plan='Daily sync - EPEL' --organization="${ORGANIZATION}" --name='Extra Packages for Enterprise Linux'
 
+#################
+## LIFECYCLE ENVIRONMENT
+hammer lifecycle-environment create --name='DEV' --prior='Library' --organization="${ORGANIZATION}"
+hammer lifecycle-environment create --name='TEST' --prior='DEV' --organization="${ORGANIZATION}"
+hammer lifecycle-environment create --name='PROD' --prior='TEST' --organization="${ORGANIZATION}"
