@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # git clone https://github.com/cloudxabide/matrix.lab
 # cd matrix.lab/Scripts
 # ./
@@ -10,7 +9,9 @@
 #  SSH ControlSockets is likely the better/best way to actually be doing this work - but, this is just a lab and NOT 
 #    how OCP should be installed anyhow.
 
-# How to subscribe
+OCP_VERSION=3.9
+
+# How to manually subscribe 
 #  subscription-manager register
 #  subscription-manager refresh
 #  POOLID=`subscription-manager list --available --matches 'Red Hat OpenShift Container Platform' | grep "Pool ID:" | awk '{ print $3 }' | tail -1`
@@ -56,21 +57,45 @@ for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do
 ## NOTE - if the previous command failed to display the mansible information - you need to fix sudo (see: post_install.sh)
 ## NOTE: 
 ######################################################################3
-# Update the Repos on the hosts
+# Update the Repos on the hosts dependent on which version of OCP
+case $OCP_VERSION in
+  3.11)
+    OCP_REPOS_MGMT='subscription-manager repos --disable="*" --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-3.11-rpms" --enable="rhel-7-server-ansible-2.6-rpms"'
+  ;;
+  3.9)
+    OCP_REPOS_MGMT='subscription-manager repos --disable="*" --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-3.9-rpms" --enable="rhel-7-fast-datapath-rpms"  --enable="rhel-7-server-ansible-2.4-rpms"'
+  ;;
+esac
+
 for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
-do 
+do
   ssh -t $HOST << EOF
     uname -n
-    sudo subscription-manager repos --disable="*" --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-3.11-rpms" --enable="rhel-7-server-ansible-2.6-rpms"
+    sudo $OCP_REPOS_MGMT
+    echo
 EOF
-  echo
 done
+
 
 # Install supporting pakcages on Bastion
 yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
 
+# Set Docker version depending on OCP version
+case $OCP_VERSION in
+  3.9)
+    DOCKER_VERSION="docker-1.13.1"
+    OPENSHIFT_UTILS="atomic-openshift-utils"
+  ;;
+  *)
+    DOCKER_VERSION="docker"
+    OPENSHIFT_UTILS="openshift-ansible"
+  ;;
+esac 
+
 # Install openshift-ansible and docker on Bastion
-yum -y install openshift-ansible docker
+yum -y install openshift-ansible $DOCKER_VERSION 
+
+# Configure Docker Storage (this section *may* be version specific also)
 cat << EOF > /etc/sysconfig/docker-storage-setup
 STORAGE_DRIVER=overlay2
 VG=docker-vg
@@ -79,6 +104,7 @@ CONTAINER_ROOT_LV_NAME="docker-root-lv"
 CONTAINER_ROOT_LV_SIZE="100%FREE"
 CONTAINER_ROOT_LV_MOUNT_PATH="/var/lib/docker"
 EOF
+
 docker-storage-setup
 systemctl enable docker --now
 
