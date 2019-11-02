@@ -17,6 +17,9 @@ OCP_VERSION=3.9
 #  POOLID=`subscription-manager list --available --matches 'Red Hat OpenShift Container Platform' | grep "Pool ID:" | awk '{ print $3 }' | tail -1`
 #  subscription-manager attach --pool=$POOLID
 
+# Make sure you're on the right host, else leave a message and exit 
+[ `hostname -s` != "rh7-ocp3-bst01" ] && { echo "You are on the wrong host"; exit 9; }
+
 # Alright - this next step is a bit "rammy".  HOWEVER... this host should only be used as the Bastion 
 #   to an OCP3 Cluster (and, in my case, should not already have any customizations done)
 cat << EOF > ~/.ssh/config
