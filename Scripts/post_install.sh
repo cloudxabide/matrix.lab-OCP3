@@ -1,7 +1,11 @@
 #!/bin/bash
 
-set -o errexit
+#set -o errexit
+
 readonly LOG_FILE="/root/post_install.sh.log"
+echo "Output being redirected to log file - to see output:"
+echo "tail -f $LOG_FILE"
+
 touch $LOG_FILE
 exec 1>$LOG_FILE 
 exec 2>&1
