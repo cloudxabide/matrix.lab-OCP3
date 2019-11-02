@@ -1,6 +1,10 @@
 #!/bin/bash
 
-exec > (tee "$HOME/post_install.sh.log") 2>&1
+set -o errexit
+readonly LOG_FILE="/root/post_install.sh.log"
+touch $LOG_FILE
+exec 1>$LOG_FILE 
+exec 2>&1
 
 WEBSERVER="10.10.10.10"
 
