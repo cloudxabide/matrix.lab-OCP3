@@ -1,5 +1,15 @@
 #!/bin/bash
 
+#set -o errexit
+
+readonly LOG_FILE="/root/install_OCP3.sh.log"
+echo "Output being redirected to log file - to see output:"
+echo "tail -f $LOG_FILE"
+
+touch $LOG_FILE
+exec 1>$LOG_FILE 
+exec 2>&1
+
 # git clone https://github.com/cloudxabide/matrix.lab
 # cd matrix.lab/Scripts
 # ./
@@ -20,6 +30,9 @@ OCP_VERSION=3.9
 # Make sure you're on the right host, else leave a message and exit 
 [ `hostname -s` != "rh7-ocp3-bst01" ] && { echo "You are on the wrong host"; exit 9; }
 
+# See if there is an ssh key, and create it if not
+[ ! -f ~/.ssh/id_rsa ] && { echo | ssh-keygen -trsa -b2048 -N ''; }
+
 # Alright - this next step is a bit "rammy".  HOWEVER... this host should only be used as the Bastion 
 #   to an OCP3 Cluster (and, in my case, should not already have any customizations done)
 cat << EOF > ~/.ssh/config
@@ -32,7 +45,7 @@ chmod 0600 ~/.ssh/config
 # Need to figure out a IaC way of doing this
 for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do 
-  echo -e "Passw0rd\n" | ssh-copy-id $HOST
+  ssh-copy-id $HOST
 done
 # Remove the StrickHostKey line
 sed -i -e '/StrictHostKeyChecking/d' ~/.ssh/config
