@@ -83,16 +83,14 @@ case $OCP_VERSION in
   ;;
 esac
 
-# THIS... DOES NOT WORK
 for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do
   ssh -t $HOST << EOF
     uname -n
-    sudo $OCP_REPOS_MGMT
+    sudo  $OCP_REPOS_MGMT
     echo
 EOF
 done
-
 
 # Install supporting pakcages on Bastion
 yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
@@ -159,6 +157,8 @@ do
   ssh -t $HOST << EOF
     uname -n
     wget http://10.10.10.10/Scripts/docker_setup.sh
+    echo "yum -y install openshift-ansible $DOCKER_VERSION"
+    yum -y install openshift-ansible $DOCKER_VERSION
     sh ./docker_setup.sh
 EOF
   echo

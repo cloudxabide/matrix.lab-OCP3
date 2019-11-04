@@ -98,27 +98,27 @@ then
   echo "mkdir /var/lib/libvirt/images/${GUESTNAME}"
   mkdir /var/lib/libvirt/images/${GUESTNAME}
 fi
-if [ ! -f /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.img  ]
+if [ ! -f /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.qcow2 ]
 then
-  echo "qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.img ${HDDA}G "
-  qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.img ${HDDA}G 
+  echo "qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.qcow2 ${HDDA}G "
+  qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.qcow2 ${HDDA}G 
 fi 
 if [ $HDDB != 0 ]
 then
   NUMDISK=2
-  if [ ! -f /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-1.img  ]
+  if [ ! -f /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-1.qcow2  ]
   then
-    echo "qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-1.img ${HDDB}G "
-    qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-1.img ${HDDB}G 
+    echo "qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-1.qcow2 ${HDDB}G "
+    qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-1.qcow2 ${HDDB}G 
   fi 
 fi
 if [ $HDDC != 0 ]
 then
   NUMDISK=3
-  if [ ! -f /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.img  ]
+  if [ ! -f /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.qcow2  ]
   then
-    echo "qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.img ${HDDC}G "
-    qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.img ${HDDC}
+    echo "qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.qcow2 ${HDDC}G "
+    qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.qcow2 ${HDDC}
   fi
 fi
 find /var/lib/libvirt/images/${GUESTNAME} -type d -exec chmod 770 {} \;
@@ -134,9 +134,9 @@ case $NUMDISK in
 virt-install --noautoconsole --name ${GUESTNAME} --hvm --connect qemu:///system \
   --description "${GUESTNAME}" --virt-type=kvm \
   --network=bridge:${BRIDGE} --vcpus=${NUMCPUS} --ram=${MEM} \
-  --disk /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.img,device=disk,bus=virtio,format=qcow2 \
-  --disk /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-1.img,device=disk,bus=virtio,format=qcow2 \
-  --disk /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.img,device=disk,bus=virtio,format=qcow2 \
+  --disk /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.qcow2,device=disk,bus=virtio,format=qcow2 \
+  --disk /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-1.qcow2,device=disk,bus=virtio,format=qcow2 \
+  --disk /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.qcow2,device=disk,bus=virtio,format=qcow2 \
   --os-type=linux --os-variant=${OSVARIANT} ${BOOTOPTIONS} \
   --location="http://${WEBSERVER}/OS/${OSDIR}" \
   -x "ks=http://${WEBSERVER}/Kickstart/${GUESTNAME}.ks"
@@ -147,8 +147,8 @@ virt-install --noautoconsole --name ${GUESTNAME} --hvm --connect qemu:///system 
 virt-install --noautoconsole --name ${GUESTNAME} --hvm --connect qemu:///system \
   --description "${GUESTNAME}" --virt-type=kvm \
   --network=bridge:${BRIDGE} --vcpus=${NUMCPUS} --ram=${MEM} \
-  --disk /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.img,device=disk,bus=virtio,format=qcow2 \
-  --disk /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-1.img,device=disk,bus=virtio,format=qcow2 \
+  --disk /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.qcow2,device=disk,bus=virtio,format=qcow2 \
+  --disk /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-1.qcow2,device=disk,bus=virtio,format=qcow2 \
   --os-type=linux --os-variant=${OSVARIANT} ${BOOTOPTIONS} \
   --location="http://${WEBSERVER}/OS/${OSDIR}" \
   -x "ks=http://${WEBSERVER}/Kickstart/${GUESTNAME}.ks"
@@ -159,7 +159,7 @@ virt-install --noautoconsole --name ${GUESTNAME} --hvm --connect qemu:///system 
 virt-install --noautoconsole --name ${GUESTNAME} --hvm --connect qemu:///system \
   --description "${GUESTNAME}" --virt-type=kvm \
   --network=bridge:${BRIDGE} --vcpus=${NUMCPUS} --ram=${MEM} \
-  --disk /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.img,device=disk,bus=virtio,format=qcow2 \
+  --disk /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.qcow2,device=disk,bus=virtio,format=qcow2 \
   --os-type=linux --os-variant=${OSVARIANT} ${BOOTOPTIONS} \
   --location="http://${WEBSERVER}/OS/${OSDIR}" \
   -x "ks=http://${WEBSERVER}/Kickstart/${GUESTNAME}.ks"
