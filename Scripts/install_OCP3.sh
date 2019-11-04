@@ -83,6 +83,7 @@ case $OCP_VERSION in
   ;;
 esac
 
+# THIS... DOES NOT WORK
 for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do
   ssh -t $HOST << EOF
@@ -126,8 +127,7 @@ systemctl enable docker --now
 
 # Create an NFS share for the registry on Bastion (VDC in this case)
 parted -s /dev/vdc mklabel gpt mkpart pri ext4 2048s 100% set 1 lvm on
-pvcreate /dev/vdc1
-vgcreate vg_exports /dev/vdc1
+pvcreate /dev/vdc1 vgcreate vg_exports /dev/vdc1
 lvcreate -nlv_registry -L+10g vg_exports
 lvcreate -nlv_metrics -L+10g vg_exports
 mkfs.xfs /dev/mapper/vg_exports-lv_registry
@@ -164,8 +164,8 @@ EOF
   echo
 done
 
-cp ../Files/ocp-3.11-multiple_mastes_native_ha.yml ~/
+cp ../Files/ocp-${OCP_VERSION}-multiple_mastes_native_ha.yml ~/
 cd /usr/share/ansible/openshift-ansible
-ansible all --list-hosts -i ~/ocp-3.11-multiple_mastes_native_ha.yml 
-ansible-playbook -i ~/ocp-3.11-multiple_mastes_native_ha.yml playbooks/prerequisites.yml
+ansible all --list-hosts -i ~/ocp-${OCP_VERSION}-multiple_mastes_native_ha.yml 
+ansible-playbook -i ~/ocp-${OCP_VERSION}-multiple_mastes_native_ha.yml playbooks/prerequisites.yml
 
