@@ -74,6 +74,7 @@ rh7-ocp3-mst03.matrix.lab
 [lb]
 rh7-ocp3-mst.matrix.lab
 
+# GlusterFS nodes (should actually be separate on Production)
 [glusterfs]
 rh7-ocp3-app01.matrix.lab glusterfs_devices='[ "/dev/vdc" ]'
 rh7-ocp3-app02.matrix.lab glusterfs_devices='[ "/dev/vdc" ]'
