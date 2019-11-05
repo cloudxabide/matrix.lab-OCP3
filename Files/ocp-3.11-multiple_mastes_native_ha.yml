@@ -7,6 +7,7 @@ masters
 nodes
 etcd
 lb
+glusterfs
 
 # Set variables common for all OSEv3 hosts
 [OSEv3:vars]
@@ -37,24 +38,24 @@ openshift_master_default_subdomain=ocp3-mwn.matrix.lab
 
 openshift_disable_check=memory_availability,disk_availability
 
-# Configure (external) NFS for Registry
-openshift_hosted_registry_storage_kind=nfs
-openshift_hosted_registry_storage_access_modes=['ReadWriteMany']
-openshift_hosted_registry_storage_host=rh7-ocp3-bst01.matrix.lab
-openshift_hosted_registry_storage_nfs_directory=/exports/nfs/ocp3.matrix.lab/registry
-openshift_hosted_registry_storage_volume_name=registry
-openshift_hosted_registry_storage_volume_size=10Gi
+openshift_hosted_registry_storage_kind=glusterfs 
+openshift_hosted_registry_storage_volume_size=5Gi
+openshift_hosted_registry_selector='node-role.kubernetes.io/infra=true'
 
+#############################
+## STORAGE
+#############################
 # Metrics (default is no)
 openshift_metrics_install_metrics=true
 # https://hawkular-metrics.{{openshift_master_default_subdomain}}/hawkular/metrics
 
-openshift_metrics_storage_kind=nfs
-openshift_metrics_storage_access_modes=['ReadWriteOnce']
-openshift_metrics_storage_host=rh7-ocp3-bst01.matrix.lab
-openshift_metrics_storage_nfs_directory=/exports/nfs/ocp3.matrix.lab/metrics
-openshift_metrics_storage_volume_name=metrics
-openshift_metrics_storage_volume_size=10Gi
+openshift_storage_glusterfs_namespace=app-storage
+openshift_storage_glusterfs_storageclass=true
+openshift_storage_glusterfs_storageclass_default=false
+openshift_storage_glusterfs_block_deploy=true
+openshift_storage_glusterfs_block_host_vol_size=50
+openshift_storage_glusterfs_block_storageclass=true
+openshift_storage_glusterfs_block_storageclass_default=false
 
 
 # host group for masters
@@ -72,6 +73,16 @@ rh7-ocp3-mst03.matrix.lab
 # Specify load balancer host
 [lb]
 rh7-ocp3-mst.matrix.lab
+
+[glusterfs]
+rh7-ocp3-app01.matrix.lab glusterfs_devices='[ "/dev/vdc" ]'
+rh7-ocp3-app02.matrix.lab glusterfs_devices='[ "/dev/vdc" ]'
+rh7-ocp3-app03.matrix.lab glusterfs_devices='[ "/dev/vdc" ]'
+
+[glusterfs_registry]
+rh7-ocp3-inf01.matrix.lab glusterfs_devices='[ "/dev/vdc" ]'
+rh7-ocp3-inf02.matrix.lab glusterfs_devices='[ "/dev/vdc" ]'
+rh7-ocp3-inf03.matrix.lab glusterfs_devices='[ "/dev/vdc" ]'
 
 # host group for nodes, includes region info
 [nodes]
