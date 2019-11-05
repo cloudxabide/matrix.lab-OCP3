@@ -125,7 +125,8 @@ systemctl enable docker --now
 
 # Create an NFS share for the registry on Bastion (VDC in this case)
 parted -s /dev/vdc mklabel gpt mkpart pri ext4 2048s 100% set 1 lvm on
-pvcreate /dev/vdc1 vgcreate vg_exports /dev/vdc1
+pvcreate /dev/vdc1 
+vgcreate vg_exports /dev/vdc1
 lvcreate -nlv_registry -L+10g vg_exports
 lvcreate -nlv_metrics -L+10g vg_exports
 mkfs.xfs /dev/mapper/vg_exports-lv_registry
@@ -157,15 +158,15 @@ do
   ssh -t $HOST << EOF
     uname -n
     wget http://10.10.10.10/Scripts/docker_setup.sh
-    echo "yum -y install openshift-ansible $DOCKER_VERSION"
-    yum -y install openshift-ansible $DOCKER_VERSION
+    echo "yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION"
+    yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION
     sh ./docker_setup.sh
 EOF
   echo
 done
 
-cp ../Files/ocp-${OCP_VERSION}-multiple_mastes_native_ha.yml ~/
+cp ../Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml ~/
 cd /usr/share/ansible/openshift-ansible
-ansible all --list-hosts -i ~/ocp-${OCP_VERSION}-multiple_mastes_native_ha.yml 
-ansible-playbook -i ~/ocp-${OCP_VERSION}-multiple_mastes_native_ha.yml playbooks/prerequisites.yml
+ansible all --list-hosts -i ~/ocp-${OCP_VERSION}-multiple_master_native_ha.yml 
+ansible-playbook -i ~/ocp-${OCP_VERSION}-multiple_master_native_ha.yml playbooks/prerequisites.yml
 
