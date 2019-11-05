@@ -23,13 +23,13 @@ rh7-ocp3-inf01.matrix.lab openshift_public_hostname=rh7-ocp3-inf01.matrix.lab op
 rh7-ocp3-inf02.matrix.lab openshift_public_hostname=rh7-ocp3-inf02.matrix.lab openshift_node_group_name='node-config-infra'
 rh7-ocp3-inf03.matrix.lab openshift_public_hostname=rh7-ocp3-inf03.matrix.lab openshift_node_group_name='node-config-infra'
 rh7-ocp3-app01.matrix.lab openshift_public_hostname=rh7-ocp3-app01.matrix.lab openshift_node_group_name='node-config-compute'
-rh7-ocp3-app01.matrix.lab openshift_public_hostname=rh7-ocp3-app01.matrix.lab openshift_node_group_name='node-config-compute'
-rh7-ocp3-app01.matrix.lab openshift_public_hostname=rh7-ocp3-app01.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-app02.matrix.lab openshift_public_hostname=rh7-ocp3-app02.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-app03.matrix.lab openshift_public_hostname=rh7-ocp3-app03.matrix.lab openshift_node_group_name='node-config-compute'
 
 [glusterfs]
 rh7-ocp3-app01.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
-rh7-ocp3-app01.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'
-rh7-ocp3-app01.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
+rh7-ocp3-app02.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'
+rh7-ocp3-app03.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
 
 [glusterfs_registry]
 rh7-ocp3-inf01.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
@@ -44,8 +44,8 @@ openshift_release=v3.11
 openshift_deployment_type=openshift-enterprise
 
 oreg_url=registry.redhat.io/openshift3/ose-${component}:${version}
-oreg_auth_user=rhn-gps-jradtke
-oreg_auth_password=bobsyouruncle
+oreg_auth_user="Red Hat User" 
+oreg_auth_password="Red Hat Network Password"
 
 openshift_master_cluster_method=native
 openshift_master_cluster_hostname=rh7-ocp-mst.matrix.lab
@@ -108,7 +108,6 @@ openshift_storage_glusterfs_registry_block_host_vol_create=true
 openshift_storage_glusterfs_registry_block_host_vol_size=86
 openshift_storage_glusterfs_registry_block_storageclass=true
 openshift_storage_glusterfs_registry_block_storageclass_default=false
-
 
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
 openshift_master_htpasswd_users={'ocpadmin': 'Passw0rd'}
