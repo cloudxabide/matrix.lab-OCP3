@@ -108,7 +108,7 @@ case $OCP_VERSION in
 esac 
 
 # Install openshift-ansible and docker on Bastion
-yum -y install openshift-ansible $DOCKER_VERSION 
+yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION 
 
 # Configure Docker Storage (this section *may* be version specific also)
 cat << EOF > /etc/sysconfig/docker-storage-setup
