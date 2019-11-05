@@ -131,6 +131,7 @@ echo "Kickstart File: ks=http://${WEBSERVER}/Kickstart/${GUESTNAME}.ks"
 # Need to create a way to deal with more than one "build-time" disk
 case $NUMDISK in
   3)
+    echo "Started: `date`"
 virt-install --noautoconsole --name ${GUESTNAME} --hvm --connect qemu:///system \
   --description "${GUESTNAME}" --virt-type=kvm \
   --network=bridge:${BRIDGE} --vcpus=${NUMCPUS} --ram=${MEM} \
@@ -140,7 +141,7 @@ virt-install --noautoconsole --name ${GUESTNAME} --hvm --connect qemu:///system 
   --os-type=linux --os-variant=${OSVARIANT} ${BOOTOPTIONS} \
   --location="http://${WEBSERVER}/OS/${OSDIR}" \
   -x "ks=http://${WEBSERVER}/Kickstart/${GUESTNAME}.ks"
-  echo "Completed: `date`"
+    echo "Completed: `date`"
   ;;
   2)
     echo "Started: `date`"
@@ -152,7 +153,7 @@ virt-install --noautoconsole --name ${GUESTNAME} --hvm --connect qemu:///system 
   --os-type=linux --os-variant=${OSVARIANT} ${BOOTOPTIONS} \
   --location="http://${WEBSERVER}/OS/${OSDIR}" \
   -x "ks=http://${WEBSERVER}/Kickstart/${GUESTNAME}.ks"
-  echo "Completed: `date`"
+    echo "Completed: `date`"
   ;;
   *)
     echo "Started: `date`"
@@ -163,7 +164,7 @@ virt-install --noautoconsole --name ${GUESTNAME} --hvm --connect qemu:///system 
   --os-type=linux --os-variant=${OSVARIANT} ${BOOTOPTIONS} \
   --location="http://${WEBSERVER}/OS/${OSDIR}" \
   -x "ks=http://${WEBSERVER}/Kickstart/${GUESTNAME}.ks"
-  echo "Completed: `date`"
+    echo "Completed: `date`"
   ;;
 esac
 done
