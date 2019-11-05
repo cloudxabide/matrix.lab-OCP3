@@ -19,7 +19,7 @@ exec 2>&1
 #  SSH ControlSockets is likely the better/best way to actually be doing this work - but, this is just a lab and NOT 
 #    how OCP should be installed anyhow.
 
-OCP_VERSION=3.9
+OCP_VERSION=3.11
 
 # How to manually subscribe 
 #  subscription-manager register
@@ -40,6 +40,7 @@ Host *.matrix.lab
   StrictHostKeyChecking no
 EOF
 chmod 0600 ~/.ssh/config
+Passw0rd
 
 # Establish connectivity and sync ssh-keys to hosts (as root) 
 # Need to figure out a IaC way of doing this
@@ -50,13 +51,12 @@ done
 # Remove the StrickHostKey line
 sed -i -e '/StrictHostKeyChecking/d' ~/.ssh/config
 
-# Run the "post_install.sh" script on all the hosts
-for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
+# Run the "post_install.sh" script on all the hosts (which adds user:mansible)
+for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
 do 
   ssh -t $HOST "sh ./post_install.sh" 
 done
-
-# Update Bastion so that it now connects using "mansible"
+ 
 cat << EOF > ~/.ssh/config
 Host *.matrix.lab
   User mansible
