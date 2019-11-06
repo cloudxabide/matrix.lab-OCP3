@@ -168,6 +168,7 @@ cp ../Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml ~/
 cd /usr/share/ansible/openshift-ansible
 ansible all --list-hosts -i ~/ocp-${OCP_VERSION}-multiple_master_native_ha.yml 
 ansible-playbook -i ~/ocp-${OCP_VERSION}-multiple_master_native_ha.yml playbooks/prerequisites.yml
+ansible-playbook -i ~/ocp-${OCP_VERSION}-multiple_master_native_ha.yml playbooks/deploy_cluster.yml
 
 exit 0
 Passw0rd
