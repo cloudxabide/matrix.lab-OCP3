@@ -114,3 +114,7 @@ openshift_master_htpasswd_users={'ocpadmin': 'Passw0rd'}
 
 openshift_install_examples=true
 openshift_master_default_subdomain=ocp3-mwn.matrix.lab
+
+openshift_disable_check=memory_availability,disk_availability
+os_firewall_use_firewalld=True 
+
