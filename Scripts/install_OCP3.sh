@@ -40,7 +40,6 @@ Host *.matrix.lab
   StrictHostKeyChecking no
 EOF
 chmod 0600 ~/.ssh/config
-Passw0rd
 
 # Establish connectivity and sync ssh-keys to hosts (as root) 
 # Need to figure out a IaC way of doing this
@@ -169,4 +168,7 @@ cp ../Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml ~/
 cd /usr/share/ansible/openshift-ansible
 ansible all --list-hosts -i ~/ocp-${OCP_VERSION}-multiple_master_native_ha.yml 
 ansible-playbook -i ~/ocp-${OCP_VERSION}-multiple_master_native_ha.yml playbooks/prerequisites.yml
+
+exit 0
+Passw0rd
 

@@ -100,7 +100,7 @@ then
 fi
 if [ ! -f /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.qcow2 ]
 then
-  echo "qqemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/imagesemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.qcow2 ${HDDA}G "
+  echo "qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/imagesemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.qcow2 ${HDDA}G "
   qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.qcow2 ${HDDA}G 
 fi 
 if [ $HDDB != 0 ]
@@ -115,7 +115,6 @@ fi
 if [ $HDDC != 0 ]
 then
   NUMDISK=3
-  # virsh attach-disk RH7-OCP3-INF03 --source /var/lib/libvirt/images/RH7-OCP3-INF03/RH7-OCP3-INF03.qcow2 --target vdc --persistent
   if [ ! -f /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.qcow2  ] 
   then
     echo "qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.qcow2 ${HDDC}G "
