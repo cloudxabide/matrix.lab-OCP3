@@ -10,9 +10,9 @@ touch $LOG_FILE
 exec 1>$LOG_FILE 
 exec 2>&1
 
-# git clone https://github.com/cloudxabide/matrix.lab
-# cd matrix.lab/Scripts
-# ./
+ git clone https://github.com/cloudxabide/matrix.lab
+ cd matrix.lab/Scripts
+
 # Passw0rd
 #  This entire script is intended to be run from the bastion host to all the nodes (the bastion included).
 #  Therefore, notice that commands are prefaced by "sudo" and the ssh command includes a '-t'
@@ -47,15 +47,15 @@ for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do 
   ssh-copy-id $HOST
 done
-# Remove the StrickHostKey line
-sed -i -e '/StrictHostKeyChecking/d' ~/.ssh/config
+rm ~/.ssh/config
 
 # Run the "post_install.sh" script on all the hosts (which adds user:mansible)
 for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
 do 
-  ssh -t $HOST "sh ./post_install.sh" 
+  ssh -t $HOST "uname -n; sh ./post_install.sh" 
 done
- 
+
+# Switch the connections to the mansible user 
 cat << EOF > ~/.ssh/config
 Host *.matrix.lab
   User mansible
