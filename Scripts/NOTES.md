@@ -1,4 +1,4 @@
-# NOTES.md
+# NOTE.md
 
 
 ```

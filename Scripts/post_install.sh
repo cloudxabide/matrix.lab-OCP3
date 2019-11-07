@@ -23,9 +23,13 @@ then
   exit 9
 fi
 
+# Simple checker to see if the script has already been run (or may be still running)
+[ -f $LOG_FILE ] && { echo "Log File exists.  Remove log if you *really* want to run this script"; exit 9; }
+
+# Grab the finish_script (if available)
 wget http://${WEBSERVER}/Scripts/finish_$(hostname -s | tr [a-z] [A-Z]).sh 
 
-# Display warning (in case this is run interactively
+# Display warning (in case this script was run interactively)
 echo "NOTE: This script will update host and REBOOT host"
 echo "  Press CTRL-C to quit (you have 5 seconds)"
 sleep 5

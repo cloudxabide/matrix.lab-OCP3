@@ -63,6 +63,7 @@ EOF
 chmod 0600 ~/.ssh/config
 
 # Now, distribute the keys to the mansible user
+# Passw0rd
 for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do ssh-copy-id $HOST; echo; done
 # Test the connection (and sudo - which should have been done in a previous script)
 for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo grep mansible /etc/shadow"; echo ; done
@@ -82,6 +83,7 @@ case $OCP_VERSION in
   ;;
 esac
 
+# Go update all the hosts with the correct/appropriate Repos
 for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do
   ssh -t $HOST << EOF
@@ -97,12 +99,12 @@ yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash
 # Set Docker version depending on OCP version
 case $OCP_VERSION in
   3.9)
-    DOCKER_VERSION="docker-1.13.1"
-    OPENSHIFT_UTILS="atomic-openshift-utils"
+    DOCKER_VERSION="docker-1.13.1 "
+    OPENSHIFT_UTILS="atomic-openshift-utils "
   ;;
   *)
-    DOCKER_VERSION="docker"
-    OPENSHIFT_UTILS="openshift-ansible"
+    DOCKER_VERSION="docker "
+    OPENSHIFT_UTILS="openshift-ansible "
   ;;
 esac 
 
@@ -152,14 +154,15 @@ firewall-cmd --reload
 systemctl enable nfs-server.service  --now
 
 # Setup Docker on the Nodes
+#  CLEAN THIS SUDO STUFF UP, IF NEEDED
 for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
 do
   ssh -t $HOST << EOF
     uname -n
-    wget http://10.10.10.10/Scripts/docker_setup.sh
-    echo "yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION"
-    yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION
-    sh ./docker_setup.sh
+    sudo wget http://10.10.10.10/Scripts/docker_setup.sh
+    echo "sudo yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION"
+    sudo yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION
+    sudo sh ./docker_setup.sh
 EOF
   echo
 done
