@@ -71,7 +71,7 @@ cat << EOF > /etc/sudoers.d/01-myansble
 
 # Allow the group 'mansible' to run sudo (ALL) with NOPASSWD
 %mansible 	ALL=(ALL)	NOPASSWD: ALL
-EOF 
+EOF
 
 # Setup wheel group for NOPASSWD: (only for a non-production ENV)
 sed -i -e 's/^%wheel/#%wheel/g' /etc/sudoers
