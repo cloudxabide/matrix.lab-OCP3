@@ -56,6 +56,8 @@ case `cut -f5 -d\: /etc/system-release-cpe` in
   ;;
 esac
 
+yum -y install deltarpms
+
 #########################
 ## USER MANAGEMENT
 #########################
