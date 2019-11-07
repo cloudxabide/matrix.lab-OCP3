@@ -24,7 +24,7 @@ then
 fi
 
 # Simple checker to see if the script has already been run (or may be still running)
-ps -ef | grep post_instaill.sh | grep -v grep && { echo "ERROR: script is already running; exit 9; }
+ps -ef | grep post_instaill.sh | grep -v grep && { echo "ERROR: script is already running"; exit 9; }
 
 # Grab the finish_script (if available)
 wget http://${WEBSERVER}/Scripts/finish_$(hostname -s | tr [a-z] [A-Z]).sh 
