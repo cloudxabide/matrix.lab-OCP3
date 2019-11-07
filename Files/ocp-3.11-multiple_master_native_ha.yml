@@ -2,6 +2,7 @@
 masters
 nodes
 etcd
+lb
 glusterfs
 glusterfs_registry
 
@@ -52,7 +53,7 @@ oreg_auth_password="Red Hat Network Password"
 
 openshift_master_cluster_method=native
 openshift_master_cluster_hostname=rh7-ocp3-mst.matrix.lab
-openshift_master_cluster_public_hostname=ocp3.matrix.lab
+openshift_master_cluster_public_hostname=rh7-ocp3-mst.matrix.lab
 
 # registry
 openshift_hosted_registry_storage_kind=glusterfs
@@ -116,7 +117,7 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 openshift_master_htpasswd_users={'ocpadmin': 'Passw0rd'}
 
 openshift_install_examples=true
-openshift_master_default_subdomain=ocp3-mwn.matrix.lab
+openshift_master_default_subdomain=ocp3-mwn.linuxrevolution.com
 
 openshift_disable_check=memory_availability,disk_availability
 os_firewall_use_firewalld=True 

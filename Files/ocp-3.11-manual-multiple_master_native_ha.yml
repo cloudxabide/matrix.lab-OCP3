@@ -8,6 +8,7 @@ nodes
 etcd
 lb
 glusterfs
+glusterfs_registry
 
 # Set variables common for all OSEv3 hosts
 [OSEv3:vars]
@@ -32,8 +33,8 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 # or to one or all of the masters defined in the inventory if no load
 # balancer is present.
 openshift_master_cluster_method=native
-openshift_master_cluster_hostname=ocp3.matrix.lab
-openshift_master_cluster_public_hostname=ocp3.matrix.lab
+openshift_master_cluster_hostname=rh7-ocp3-mst.matrix.lab
+openshift_master_cluster_public_hostname=rh7-ocp3-mst.matrix.lab
 openshift_master_default_subdomain=ocp3-mwn.matrix.lab
 
 openshift_disable_check=memory_availability,disk_availability
