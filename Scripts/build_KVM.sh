@@ -119,6 +119,7 @@ then
   then
     echo "qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.qcow2 ${HDDC}G "
     qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.qcow2 ${HDDC}
+    sleep 5
   fi
 fi
 find /var/lib/libvirt/images/${GUESTNAME} -type d -exec chmod 770 {} \;

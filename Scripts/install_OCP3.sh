@@ -1,5 +1,14 @@
 #!/bin/bash
 
+#
+# @(#)$Id$
+#
+# Purpose:  Script to roll-out an OCP3 cluster
+#  Author:  jradtke@redhat.com
+#    Date:  2019-10-31
+#   Notes:  This is NOT IaC yet.  :-(
+#    TODO:  Need to figure out a better way for sending the password to ssh-copy-id
+
 #set -o errexit
 
 readonly LOG_FILE="/root/install_OCP3.sh.log"
@@ -13,13 +22,14 @@ exec 2>&1
  git clone https://github.com/cloudxabide/matrix.lab
  cd matrix.lab/Scripts
 
-# Passw0rd
 #  This entire script is intended to be run from the bastion host to all the nodes (the bastion included).
 #  Therefore, notice that commands are prefaced by "sudo" and the ssh command includes a '-t'
 #  SSH ControlSockets is likely the better/best way to actually be doing this work - but, this is just a lab and NOT 
 #    how OCP should be installed anyhow.
 
-OCP_VERSION=3.11
+# I may remove this later, as it might actually goof something up
+echo -e "OCP_VERSION=3.11\nexport OCP_VERSION" >> ~/.bash_profile
+. ~/.bash_profile
 
 # How to manually subscribe 
 #  subscription-manager register
@@ -43,10 +53,12 @@ chmod 0600 ~/.ssh/config
 
 # Establish connectivity and sync ssh-keys to hosts (as root) 
 # Need to figure out a IaC way of doing this
+# Passw0rd
 for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do 
   ssh-copy-id $HOST
 done
+unalias rm
 rm ~/.ssh/config
 
 # Run the "post_install.sh" script on all the hosts (which adds user:mansible)
@@ -70,7 +82,8 @@ for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do
 
 ######################################################################3
 ## NOTE: 
-## NOTE - if the previous command failed to display the mansible information - you need to fix sudo (see: post_install.sh)
+## NOTE - if the previous command failed to display the mansible information, 
+##          then you need to fix sudo (see: post_install.sh)
 ## NOTE: 
 ######################################################################3
 # Update the Repos on the hosts dependent on which version of OCP
@@ -124,6 +137,8 @@ EOF
 docker-storage-setup
 systemctl enable docker --now
 
+# I made the NFS portion a "routine" as I don't think I'll end up using it (but wanted to retain it)
+create_nfs_shares() {
 # Create an NFS share for the registry on Bastion (VDC in this case)
 parted -s /dev/vdc mklabel gpt mkpart pri ext4 2048s 100% set 1 lvm on
 pvcreate /dev/vdc1 
@@ -152,6 +167,8 @@ exportfs -a; exportfs
 firewall-cmd --permanent --zone=$(firewall-cmd --get-default-zone) --add-service={nfs,mountd,rpc-bind}
 firewall-cmd --reload
 systemctl enable nfs-server.service  --now
+}
+
 
 # Setup Docker on the Nodes
 #  CLEAN THIS SUDO STUFF UP, IF NEEDED
@@ -166,8 +183,14 @@ do
 EOF
   echo
 done
+# Make sure docker-storage-setup ran correctly
+for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
+do
+  ssh $HOST "sudo df -h /var/lib/docker"
+done
 
 cp ../Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml ~/
+# Update reg_auth_{user,password} manually
 cd /usr/share/ansible/openshift-ansible
 ansible all --list-hosts -i ~/ocp-${OCP_VERSION}-multiple_master_native_ha.yml 
 ansible-playbook -i ~/ocp-${OCP_VERSION}-multiple_master_native_ha.yml playbooks/prerequisites.yml
