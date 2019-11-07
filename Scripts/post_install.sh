@@ -1,10 +1,13 @@
 #!/bin/bash
 
 #set -o errexit
-
 readonly LOG_FILE="/root/post_install.sh.log"
 echo "Output being redirected to log file - to see output:"
 echo "tail -f $LOG_FILE"
+
+# Simple test/check to see if script is still running, or has been run already
+ps -ef | grep post_instaill.sh | grep -v grep && { echo "ERROR: script is already running"; exit 9; }
+[ -f $LOG_FILE ] && { echo "Log File exists.  Remove log if you *really* want to run this script"; exit 9; }
 
 touch $LOG_FILE
 exec 1>$LOG_FILE 
@@ -22,10 +25,6 @@ then
   echo "ERROR:  You should be root to run this..."
   exit 9
 fi
-
-# Simple test/check to see if script is still running, or has been run already
-ps -ef | grep post_instaill.sh | grep -v grep && { echo "ERROR: script is already running"; exit 9; }
-[ -f $LOG_FILE ] && { echo "Log File exists.  Remove log if you *really* want to run this script"; exit 9; }
 
 # Grab the finish_script (if available)
 wget http://${WEBSERVER}/Scripts/finish_$(hostname -s | tr [a-z] [A-Z]).sh 
@@ -57,7 +56,8 @@ case `cut -f5 -d\: /etc/system-release-cpe` in
   ;;
 esac
 
-yum -y install deltarpms
+# Install deltarpm to (hopefully) minimize the bandwith
+yum -y install deltarpm
 
 #########################
 ## USER MANAGEMENT
