@@ -114,10 +114,11 @@ openshift_storage_glusterfs_registry_block_storageclass=true
 openshift_storage_glusterfs_registry_block_storageclass_default=false
 
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
-openshift_master_htpasswd_users={'ocpadmin': 'Passw0rd'}
+# Use a hashed/crypted password in the next field
+openshift_master_htpasswd_users={'ocpadmin': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauvNj0'}
 
 openshift_install_examples=true
-openshift_master_default_subdomain=ocp3-mwn.linuxrevolution.com
+openshift_master_default_subdomain=cloudapps.matrix.lab
 
 openshift_disable_check=memory_availability,disk_availability
 os_firewall_use_firewalld=True 
