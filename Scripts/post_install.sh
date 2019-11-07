@@ -23,8 +23,9 @@ then
   exit 9
 fi
 
-# Simple checker to see if the script has already been run (or may be still running)
+# Simple test/check to see if script is still running, or has been run already
 ps -ef | grep post_instaill.sh | grep -v grep && { echo "ERROR: script is already running"; exit 9; }
+[ -f $LOG_FILE ] && { echo "Log File exists.  Remove log if you *really* want to run this script"; exit 9; }
 
 # Grab the finish_script (if available)
 wget http://${WEBSERVER}/Scripts/finish_$(hostname -s | tr [a-z] [A-Z]).sh 
@@ -85,4 +86,5 @@ firewall-cmd --permanent --zone=$(firewall-cmd --get-default-zone) --add-service
 firewall-cmd --complete-reload
 
 #  Update Host and reboot
+echo "NOTE:  update and reboot"
 yum -y update && shutdown now -r
