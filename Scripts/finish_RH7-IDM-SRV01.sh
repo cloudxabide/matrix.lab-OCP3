@@ -225,7 +225,11 @@ ipa dnsrecord-add ocp3-mwn.matrix.lab '*' --a-rec 10.10.10.176
 ipa dnsrecord-add ocp3-mwn.matrix.lab '*' --a-rec 10.10.10.177 
 
 # Add an internal reference that refers to the external zone
+### LINUXREVOLUTION.com
 ipa dnszone-add linuxrevolution.com --admin-email=root@matrix.lab --minimum=3000 --dynamic-update=true --skip-overlap-check
+ipa dnsrecord-add linuxrevolution.com 'ocp3-console' --a-rec 10.10.10.170
+
+### OCP-MWN.LINUXREVOLUTION.com
 ipa dnszone-add ocp3-mwn.linuxrevolution.com --admin-email=root@matrix.lab --minimum=3000 --dynamic-update=true
 ipa dnsrecord-add ocp3-mwn.linuxrevolution.com '*' --a-rec 10.10.10.175
 ipa dnsrecord-add ocp3-mwn.linuxrevolution.com '*' --a-rec 10.10.10.176
