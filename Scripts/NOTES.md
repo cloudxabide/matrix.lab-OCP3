@@ -35,4 +35,12 @@ ssh rh7-ocp3-bst01.matrix.lab "sh /root/post_install.sh"
 
 ### Update Login Password
 Discovered this as I had put the plain-text password in my inventory.. Ugh.
+```
 for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print $3 }'`; do ssh $HOST  "sudo htpasswd -b /etc/origin/master/htpasswd ocpadmin Passw0rd"; done
+```
+
+### Update Memory settings on the VMs
+```
+for HOST in `virsh list --all | grep OCP | egrep -v 'BST|MST' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 4G --config; done
+for HOST in `virsh list --all | grep OCP | egrep -v 'BST|MST' | awk '{ print $2 }'`; do virsh setmem $HOST --size 4G --config; done
+```

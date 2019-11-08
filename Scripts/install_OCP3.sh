@@ -10,7 +10,6 @@
 #    TODO:  Need to figure out a better way for sending the password to ssh-copy-id
 
 #set -o errexit
-
 readonly LOG_FILE="/root/install_OCP3.sh.log"
 echo "Output being redirected to log file - to see output:"
 echo "tail -f $LOG_FILE"
@@ -19,8 +18,11 @@ touch $LOG_FILE
 exec 1>$LOG_FILE 
 exec 2>&1
 
- git clone https://github.com/cloudxabide/matrix.lab
- cd matrix.lab/Scripts
+# Make sure you're on the right host, else leave a message and exit 
+[ `hostname -s` != "rh7-ocp3-bst01" ] && { echo "You are on the wrong host"; exit 9; }
+
+git clone https://github.com/cloudxabide/matrix.lab
+cd matrix.lab/Scripts
 
 #  This entire script is intended to be run from the bastion host to all the nodes (the bastion included).
 #  Therefore, notice that commands are prefaced by "sudo" and the ssh command includes a '-t'
@@ -37,8 +39,6 @@ echo -e "OCP_VERSION=3.11\nexport OCP_VERSION" >> ~/.bash_profile
 #  POOLID=`subscription-manager list --available --matches 'Red Hat OpenShift Container Platform' | grep "Pool ID:" | awk '{ print $3 }' | tail -1`
 #  subscription-manager attach --pool=$POOLID
 
-# Make sure you're on the right host, else leave a message and exit 
-[ `hostname -s` != "rh7-ocp3-bst01" ] && { echo "You are on the wrong host"; exit 9; }
 
 # See if there is an ssh key, and create it if not
 [ ! -f ~/.ssh/id_rsa ] && { echo | ssh-keygen -trsa -b2048 -N ''; }
@@ -186,10 +186,11 @@ done
 # Make sure docker-storage-setup ran correctly
 for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
 do
-  ssh $HOST "sudo df -h /var/lib/docker"
+  ssh $HOST "uname -n; sudo df -h /var/lib/docker"
+  echo
 done
 
-cp ../Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml ~/
+cp ~/matrix.lab/Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml ~/
 # Update reg_auth_{user,password} manually
 cd /usr/share/ansible/openshift-ansible
 ansible all --list-hosts -i ~/ocp-${OCP_VERSION}-multiple_master_native_ha.yml 
