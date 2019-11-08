@@ -88,7 +88,7 @@ firewall-cmd --complete-reload
 yum -y install  net-snmp net-snmp-utils
 mv /etc/snmp/snmpd.conf //etc/snmp/snmpd.conf-`date +%F`
 curl http://${WEBSERVER}/Files/etc_snmp_snmpd.conf > /etc/snmp/snmpd.conf
-restoreconf -Fvv /etc/snmp/snmpd.conf
+restorecon -Fvv /etc/snmp/snmpd.conf
 systemctl enable snmpd --now
 
 #  Update Host and reboot
