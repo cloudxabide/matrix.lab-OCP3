@@ -52,7 +52,7 @@ case `cut -f5 -d\: /etc/system-release-cpe` in
   ;;
   8.*)
     echo "NOTE:  detected EL8"
-    subscription-manager repos --disable="*" --enable=rhel-8-for-x86_64-baseos-rpms 
+    subscription-manager repos --disable="*" --enable=rhel-8-for-x86_64-baseos-rpms  
   ;;
 esac
 
@@ -85,11 +85,22 @@ systemctl enable --now cockpit.socket
 firewall-cmd --permanent --zone=$(firewall-cmd --get-default-zone) --add-service=cockpit 
 firewall-cmd --complete-reload
 
+# Enable Repo for SNMP pkgs (might move this higher up in the script
+case `cut -f5 -d\: /etc/system-release-cpe` in
+  8.*)
+    echo "NOTE:  detected EL8"
+    subscription-manager repos --enable=rhel-8-for-x86_64-appstream-rpms
+    yum -y install  net-snmp-libs
+  ;;
+esac
+
 yum -y install  net-snmp net-snmp-utils
 mv /etc/snmp/snmpd.conf //etc/snmp/snmpd.conf-`date +%F`
 curl http://${WEBSERVER}/Files/etc_snmp_snmpd.conf > /etc/snmp/snmpd.conf
 restorecon -Fvv /etc/snmp/snmpd.conf
 systemctl enable snmpd --now
+firewall-cmd --permanent --add-service=snmp
+firewall-cmd --reload
 
 #  Update Host and reboot
 echo "NOTE:  update and reboot"
