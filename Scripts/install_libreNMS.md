@@ -65,7 +65,7 @@ semanage fcontext -a -t httpd_sys_content_t '/opt/librenms/logs(/.*)?'
 semanage fcontext -a -t httpd_sys_rw_content_t '/opt/librenms/logs(/.*)?'
 restorecon -RFvv /opt/librenms/logs/
 semanage fcontext -a -t httpd_sys_content_t '/opt/librenms/rrd(/.*)?'
-semanage fcontext 
+semanage fcontext -a -t httpd_sys_rw_content_t '/opt/librenms/rrd(/.*)?'
 restorecon -RFvv /opt/librenms/rrd/
 semanage fcontext -a -t httpd_sys_content_t '/opt/librenms/storage(/.*)?'
 semanage fcontext -a -t httpd_sys_rw_content_t '/opt/librenms/storage(/.*)?'
@@ -73,6 +73,9 @@ restorecon -RFvv /opt/librenms/storage/
 semanage fcontext -a -t httpd_sys_content_t '/opt/librenms/bootstrap/cache(/.*)?'
 semanage fcontext -a -t httpd_sys_rw_content_t '/opt/librenms/bootstrap/cache(/.*)?'
 restorecon -RFvv /opt/librenms/bootstrap/cache/
+semanage fcontext -a -t httpd_sys_content_t '/opt/librenms/cache(/.*)?'
+semanage fcontext -a -t httpd_sys_rw_content_t '/opt/librenms/cache(/.*)?'
+restorecon -RFvv /var/www/opt/librenms/cache/
 setsebool -P httpd_can_sendmail=1
 
 cat << EOF > http_fping.tt
@@ -120,12 +123,20 @@ cp /opt/librenms/librenms.nonroot.cron /etc/cron.d/librenms
 cp /opt/librenms/misc/librenms.logrotate /etc/logrotate.d/librenms
 
 chown -R librenms:librenms /opt/librenms
-setfacl -d -m g::rwx /opt/librenms/rrd /opt/librenms/logs /opt/librenms/bootstrap/cache/ /opt/librenms/storage/
-setfacl -R -m g::rwx /opt/librenms/rrd /opt/librenms/logs /opt/librenms/bootstrap/cache/ /opt/librenms/storage/
+chmod 770 /opt/librenms
+setfacl -d -m g::rwx /opt/librenms/rrd /opt/librenms/logs /opt/librenms/bootstrap/cache/ /opt/librenms/storage/ /opt/librenms/cache
+setfacl -R -m g::rwx /opt/librenms/rrd /opt/librenms/logs /opt/librenms/bootstrap/cache/ /opt/librenms/storage/ /opt/librenms/cache
+
 firewall-cmd --permanent --add-service={http,https}
 firewall-cmd --reload
+
+su - librenms
+./scripts/composer_wrapper.php install --no-dev
+exit
+
 touch /opt/librenms/config.php
 chown librenms:librenms /opt/librenms/config.php
+
 ```
 
 ## Testing

@@ -157,7 +157,7 @@ ipa dnsrecord-add 10.16.172.in-addr.arpa 19     --ptr-rec seraph-storage.matrix.
 # Utility Hosts 
 ###############
 ipa dnsrecord-add matrix.lab websrv             --a-rec 10.10.10.20
-ipa dnsrecord-add matrix.lab rh7-util-srv01     --a-rec 10.10.10.100
+ipa dnsrecord-add matrix.lab rh8-util-srv01     --a-rec 10.10.10.100
 ipa dnsrecord-add matrix.lab rh7-sat6-srv01     --a-rec 10.10.10.102
 ipa dnsrecord-add matrix.lab rh7-sat6-cap01     --a-rec 10.10.10.103
 ipa dnsrecord-add matrix.lab rh7-rhv4-mgr01     --a-rec 10.10.10.104

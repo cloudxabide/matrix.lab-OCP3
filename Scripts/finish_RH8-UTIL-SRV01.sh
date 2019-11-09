@@ -50,4 +50,13 @@ systemctl enable --now fail2ban
 
 # Install/configure AIDE
 
+# Install/configure Apache/Php
+yum -y install httpd php
+systemctl enable httpd --now
+firewall-cmd --permanent --add-service=httpd
+firewall-cmd --reload
+
+# Install/configure/manage Public Cert infrastructure (Let's Encrypt)
+
+
 
