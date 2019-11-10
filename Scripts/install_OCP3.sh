@@ -197,6 +197,8 @@ ansible all --list-hosts -i ~/ocp-${OCP_VERSION}-multiple_master_native_ha.yml
 ansible-playbook -i ~/ocp-${OCP_VERSION}-multiple_master_native_ha.yml playbooks/prerequisites.yml
 ansible-playbook -i ~/ocp-${OCP_VERSION}-multiple_master_native_ha.yml playbooks/deploy_cluster.yml
 
+for HOST in `grep mst0 ~/matrix.lab/Files/etc_hosts | awk '{ print $2 }'`; do ssh -t $HOST "sudo  htpasswd -b /etc/origin/master/htpasswd morpheus Passw0rd "; done
+
 exit 0
 Passw0rd
 

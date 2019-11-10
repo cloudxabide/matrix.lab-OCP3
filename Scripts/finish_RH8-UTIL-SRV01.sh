@@ -57,6 +57,6 @@ firewall-cmd --permanent --add-service=httpd
 firewall-cmd --reload
 
 # Install/configure/manage Public Cert infrastructure (Let's Encrypt)
-
+yum -y install certbot python2-certbot-apache
 
 
