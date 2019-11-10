@@ -26,27 +26,8 @@ id -u jradtke &>/dev/null || useradd -u2025 -G10 -c "James Radtke" -p '$6$MIxbq9
 chage -l jradtke
 
 # Install/configure Fail2Ban
-dnf -y install fail2ban
-cp /etc/fail2ban/fail2ban.conf /etc/fail2ban/fail2ban.local
-
-cat << EOF > /etc/fail2ban/jail.local
-[DEFAULT]
-ignoreip = 192.168.0.0/24
-bantime  = 21600
-findtime  = 300
-maxretry = 3
-banaction = iptables-multiport
-backend = systemd
-
-[sshd]
-port    = ssh
-logpath = %(sshd_log)s
-backend = %(sshd_backend)s
-enabled = true
-EOF
-
-systemctl enable --now fail2ban
-
+# Created a separate Installation file, as this will likely be used on several machines
+./install_fail2ban.sh
 
 # Install/configure AIDE
 
@@ -55,6 +36,20 @@ yum -y install httpd php
 systemctl enable httpd --now
 firewall-cmd --permanent --add-service=httpd
 firewall-cmd --reload
+cat << EOF >  /var/www/html/index.html 
+<HTML>
+<HEAD>
+<TITLE>You don't belong here | LinuxRevolution &#169</TITLE>
+<META http-equiv="refresh" content="2;URL='https://www.youtube.com/watch?v=dQw4w9WgXcQ'">
+<BODY>
+You deserve this...
+</BODY>
+</HTML>
+EOF
+echo "Disallow: /*?*" > /var/www/html/robots.txt
+restorecon -RFvv /var/www/html/
+chmod 0644 /var/www/html/*
+
 
 # Install/configure/manage Public Cert infrastructure (Let's Encrypt)
 yum -y install certbot python2-certbot-apache

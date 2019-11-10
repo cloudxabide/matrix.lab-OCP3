@@ -1,4 +1,5 @@
 
+# HexGL is a HTML5 video game resembling WipeOut from back in the day (Hack the Planet!)
 MYPROJ="hexgl"
 oc new-project $MYPROJ
 oc new-app php:5.6~https://github.com/cloudxabide/HexGL.git
