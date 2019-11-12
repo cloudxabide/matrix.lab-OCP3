@@ -108,6 +108,7 @@ firewall-cmd --reload
 
 # Install Sysstat (SAR) and PCP
 yum -y install sysstat pcp
+systemctl enable sysstate --now
 
 #  Update Host and reboot
 echo "NOTE:  update and reboot"
