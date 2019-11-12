@@ -78,6 +78,9 @@ EOF
 sed -i -e 's/^%wheel/#%wheel/g' /etc/sudoers
 sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
 
+#########################
+## MONITORING AND SYSTEM MANAGEMENT
+#########################
 # Enable Cockpit (AFAIK this will be universally applied)
 # Manage Cockpit
 yum -y install cockpit
@@ -94,6 +97,7 @@ case `cut -f5 -d\: /etc/system-release-cpe` in
   ;;
 esac
 
+# Enable SNMP (for LibreNMS)
 yum -y install  net-snmp net-snmp-utils
 mv /etc/snmp/snmpd.conf //etc/snmp/snmpd.conf-`date +%F`
 curl http://${WEBSERVER}/Files/etc_snmp_snmpd.conf > /etc/snmp/snmpd.conf
@@ -101,6 +105,9 @@ restorecon -Fvv /etc/snmp/snmpd.conf
 systemctl enable snmpd --now
 firewall-cmd --permanent --add-service=snmp
 firewall-cmd --reload
+
+# Install Sysstat (SAR) and PCP
+yum -y install sysstat pcp
 
 #  Update Host and reboot
 echo "NOTE:  update and reboot"
