@@ -12,8 +12,9 @@
 10.10.10.22 trinity-ilom.matrix.lab trinity-ilom
 10.10.10.23 morpheus-ilom.matrix.lab morpheus-ilom
 # Matrix.lab Guests
-10.10.10.100 rh7-util-srv01.matrix.lab rh7-util-srv01
+10.10.10.100 rh8-util-srv01.matrix.lab rh8-util-srv01
 10.10.10.102 rh7-sat6-srv01.matrix.lab rh7-sat6-srv01
+10.10.10.103 rh7-sat6-cap01.matrix.lab rh7-sat6-cap01
 10.10.10.110 rh7-lms-srv01.matrix.lab rh7-lms-srv01
 10.10.10.120 rh7-sat6-srv01.matrix.lab rh7-sat6-srv01
 10.10.10.121 rh7-ipa-srv01.matrix.lab rh7-ipa-srv01
