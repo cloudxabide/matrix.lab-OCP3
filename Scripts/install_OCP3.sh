@@ -8,6 +8,8 @@
 #    Date:  2019-10-31
 #   Notes:  This is NOT IaC yet.  :-(
 #    TODO:  Need to figure out a better way for sending the password to ssh-copy-id
+#           This a "non Production" build approach.  
+#           I have the bastion setup to do NFS to the cluster (if/when Gluster is not being used)
 
 #set -o errexit
 readonly LOG_FILE="/root/install_OCP3.sh.log"
