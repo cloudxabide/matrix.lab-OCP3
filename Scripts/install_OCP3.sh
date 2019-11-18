@@ -204,3 +204,12 @@ for HOST in `grep mst0 ~/matrix.lab/Files/etc_hosts | awk '{ print $2 }'`; do ss
 exit 0
 Passw0rd
 
+### OCP Foo
+# From the bastion
+ansible-playbook -i ~/ocp-${OCP_VERSION}-multiple_master_native_ha.yml playbooks/openshift-checks/health.yml
+
+# once the master is up-and-running, ssh to it
+oadm policy add-cluster-role-to-user cluster-admin ocadmin
+oc get all --all-namespaces
+ for PROJ in `oc get projects | grep -v "NAME" | awk '{ print $1 }'`; do echo -e "#################\n$PROJ"; oc get pods -n $PROJ; done
+
