@@ -58,8 +58,9 @@ oreg_auth_password="Red Hat Network Password"
 
 # https://docs.openshift.com/container-platform/3.11/install_config/certificate_customization.html
 openshift_master_cluster_method=native
-#openshift_master_cluster_hostname=rh7-ocp3-mst.matrix.lab
-openshift_master_cluster_hostname=ocp3-console.linuxrevolution.com
+# The Internal Hostname (node to master communication)
+openshift_master_cluster_hostname=rh7-ocp3-mst.matrix.lab
+# The External Hostname (webUI)
 openshift_master_cluster_public_hostname=ocp3-console.linuxrevolution.com
 
 # registry
