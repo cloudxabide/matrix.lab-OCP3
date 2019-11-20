@@ -15,8 +15,8 @@ Fix this (output from build_KVM.sh):
 ssh apoc.matrix.lab
 
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -rf /var/lib/libvirt/images/$HOST; done
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
 
 # Base OS Install (VM provision)
 cd ~/matrix.lab/Scripts/
@@ -35,7 +35,7 @@ for HOST in `virsh list --all | grep -i ocp | awk '{ print $2 }'`; do virsh star
 ```
 
 ```
-rm /home/jradtke/.ssh/known_hosts.matrix.lab
+sed -i -e '/ocp3/d' /home/jradtke/.ssh/known_hosts
 ssh-copy-id rh7-ocp3-bst01.matrix.lab 
 ssh rh7-ocp3-bst01.matrix.lab "sh /root/post_install.sh"
 # proceed to install_OCP3.sh script
