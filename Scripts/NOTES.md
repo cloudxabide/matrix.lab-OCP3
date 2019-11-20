@@ -9,8 +9,8 @@
 ssh apoc.matrix.lab
 
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -rf /var/lib/libvirt/images/$HOST; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -rf /var/lib/libvirt/images/$HOST; done
 
 # Base OS Install (VM provision)
 cd ~/matrix.lab/Scripts/
@@ -22,7 +22,7 @@ for HOST in `egrep 'inf|app' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' |
 qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/RH7-OCP3-BST01/RH7-OCP3-BST01-2.qcow2 50g
 restorecon -RFvv /var/lib/libvirt/images/RH7-OCP3-{BST,INF,APP}*/RH7-OCP3-*2.qcow2
 
-for HOST in `egrep 'bst|inf|app' ../Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do virsh attach-disk $HOST --source /var/lib/libvirt/images/${HOST}/${HOST}-2.qcow2 --target='vdc' --persistent;  done
+for HOST in `egrep 'bst|inf|app' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do virsh attach-disk $HOST --source /var/lib/libvirt/images/${HOST}/${HOST}-2.qcow2 --target='vdc' --persistent;  done
 
 for HOST in `virsh list --all | grep -i ocp | awk '{ print $2 }'`; do virsh start $HOST; sleep 2; done
 ```
@@ -42,8 +42,10 @@ for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print
 
 ## Update Memory settings on the VMs
 ```
-for HOST in `virsh list --all | grep OCP | egrep -v 'BST|MST' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 4G --config; done
-for HOST in `virsh list --all | grep OCP | egrep -v 'BST|MST' | awk '{ print $2 }'`; do virsh setmem $HOST --size 4G --config; done
+for HOST in `virsh list --all | grep OCP | egrep -v 'BST|MST' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 6G --config; done
+for HOST in `virsh list --all | grep OCP | egrep -v 'BST|MST' | awk '{ print $2 }'`; do virsh setmem $HOST --size 6G --config; done
+for HOST in `virsh list --all | grep OCP | egrep 'MST' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 4G --config; done
+for HOST in `virsh list --all | grep OCP | egrep 'MST' | awk '{ print $2 }'`; do virsh setmem $HOST --size 4G --config; done
 ```
 
 ## Issues
