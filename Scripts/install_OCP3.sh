@@ -56,7 +56,7 @@ chmod 0600 ~/.ssh/config
 # Establish connectivity and sync ssh-keys to hosts (as root) 
 # Need to figure out a IaC way of doing this
 # Passw0rd
-for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do 
   ssh-copy-id $HOST
 done
@@ -64,7 +64,7 @@ unalias rm
 rm ~/.ssh/config
 
 # Run the "post_install.sh" script on all the hosts (which adds user:mansible)
-for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
 do 
   ssh -t $HOST "uname -n; sh ./post_install.sh" 
 done
@@ -99,7 +99,7 @@ case $OCP_VERSION in
 esac
 
 # Go update all the hosts with the correct/appropriate Repos
-for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do
   ssh -t $HOST << EOF
     uname -n
@@ -171,10 +171,9 @@ firewall-cmd --reload
 systemctl enable nfs-server.service  --now
 }
 
-
 # Setup Docker on the Nodes
 #  CLEAN THIS SUDO STUFF UP, IF NEEDED
-for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
 do
   ssh -t $HOST << EOF
     uname -n
@@ -186,7 +185,7 @@ EOF
   echo
 done
 # Make sure docker-storage-setup ran correctly
-for HOST in `grep ocp3 ../Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
 do
   ssh $HOST "uname -n; sudo df -h /var/lib/docker"
   echo
