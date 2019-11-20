@@ -77,6 +77,9 @@ authconfig --enablemkhomedir --update
 echo "$ADMINPASSWD" | kinit
 # THIS IS SPECIFIC TO MY HOME - it allows zone-transfer and "host -l matrix.lab" to run
 ipa dnszone-mod --allow-transfer='192.168.0.0/24;10.10.10.0/24;127.0.0.1' matrix.lab
+ipa dnszone-mod --allow-transfer='192.168.0.0/24;10.10.10.0/24;127.0.0.1' ocp3-mwn.matrix.lab
+ipa dnszone-mod --allow-transfer='192.168.0.0/24;10.10.10.0/24;127.0.0.1' linuxrevolution.com
+ipa dnszone-mod --allow-transfer='192.168.0.0/24;10.10.10.0/24;127.0.0.1' ocp3-mwn.linuxrevolution.com
 
 ###############
 # User/Group Management
@@ -202,6 +205,10 @@ ipa dnsrecord-add matrix.lab rh7-ocp3-app01  --a-rec 10.10.10.181
 ipa dnsrecord-add matrix.lab rh7-ocp3-app02  --a-rec 10.10.10.182
 ipa dnsrecord-add matrix.lab rh7-ocp3-app03  --a-rec 10.10.10.183
 ipa dnsrecord-add matrix.lab rh7-ocp3-bst01  --a-rec 10.10.10.189
+ipa dnsrecord-add matrix.lab rh7-ocp3-ocs01  --a-rec 10.10.10.191
+ipa dnsrecord-add matrix.lab rh7-ocp3-ocs02  --a-rec 10.10.10.192
+ipa dnsrecord-add matrix.lab rh7-ocp3-ocs03  --a-rec 10.10.10.193
+ipa dnsrecord-add matrix.lab rh7-ocp3-ocs04  --a-rec 10.10.10.194
 # OCP Hosts (Reverse)
 ipa dnsrecord-add 10.10.10.in-addr.arpa 170  --ptr-rec rh7-ocp3-mst.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 171  --ptr-rec rh7-ocp3-mst01.matrix.lab.
@@ -214,6 +221,10 @@ ipa dnsrecord-add 10.10.10.in-addr.arpa 181  --ptr-rec rh7-ocp3-app01.matrix.lab
 ipa dnsrecord-add 10.10.10.in-addr.arpa 182  --ptr-rec rh7-ocp3-app02.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 183  --ptr-rec rh7-ocp3-app03.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 189  --ptr-rec rh7-ocp3-bst01.matrix.lab.
+ipa dnsrecord-add 10.10.10.in-addr.arpa 191  --ptr-rec rh7-ocp3-ocs01.matrix.lab.
+ipa dnsrecord-add 10.10.10.in-addr.arpa 192  --ptr-rec rh7-ocp3-ocs02.matrix.lab.
+ipa dnsrecord-add 10.10.10.in-addr.arpa 193  --ptr-rec rh7-ocp3-ocs03.matrix.lab.
+ipa dnsrecord-add 10.10.10.in-addr.arpa 194  --ptr-rec rh7-ocp3-ocs04.matrix.lab.
 
 # OCP tertiary domain (point at the Infra Nodes - routers) 
 # DomainName: Openshift Container Platform 3 - MidWest North (ocp3-mwn)
@@ -221,6 +232,7 @@ ipa dnszone-add ocp3-mwn.matrix.lab --admin-email=root@matrix.lab --minimum=3000
 ipa dnsrecord-add ocp3-mwn.matrix.lab '*' --a-rec 10.10.10.175 
 ipa dnsrecord-add ocp3-mwn.matrix.lab '*' --a-rec 10.10.10.176 
 ipa dnsrecord-add ocp3-mwn.matrix.lab '*' --a-rec 10.10.10.177 
+ipa dnsrecord-add ocp3-mwn.matrix.lab console --a-rec 10.10.10.170 
 
 # Add an internal reference that refers to the external zone
 ### LINUXREVOLUTION.com
@@ -232,6 +244,7 @@ ipa dnszone-add ocp3-mwn.linuxrevolution.com --admin-email=root@matrix.lab --min
 ipa dnsrecord-add ocp3-mwn.linuxrevolution.com '*' --a-rec 10.10.10.175
 ipa dnsrecord-add ocp3-mwn.linuxrevolution.com '*' --a-rec 10.10.10.176
 ipa dnsrecord-add ocp3-mwn.linuxrevolution.com '*' --a-rec 10.10.10.177
+ipa dnsrecord-add ocp3-mwn.linuxrevolution.com console --a-rec 10.10.10.170
 
   ;;
 esac
