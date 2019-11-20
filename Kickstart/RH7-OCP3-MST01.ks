@@ -3,7 +3,7 @@
 auth --enableshadow --passalgo=sha512
 cmdline
 # Use network installation
-url --url="http://10.10.10.10/OS/rhel-server-7.6-x86_64/"
+url --url="http://10.10.10.10/OS/rhel-server-7.7-x86_64/"
 # Run the Setup Agent on first boot
 #firstboot --enable
 # Keyboard layouts
@@ -19,7 +19,7 @@ rootpw --iscrypted $6$03gqrB.BA2aR.mkG$gSzJgslhseoNAe1GojYe8uQG1/mavSGIVf62BDA9M
 user --groups=wheel --name=morpheus --password=$6$03gqrB.BA2aR.mkG$gSzJgslhseoNAe1GojYe8uQG1/mavSGIVf62BDA9MtQkRr06Ua9AXYspTOsdJ61d1QUmEhojWQ7RG.oZeWyu9/ --iscrypted --gecos="Morpheus"
 
 # System timezone
-timezone America/Chicago --isUtc --ntpservers=rh7-idm-srv01.matrix.lab,rh7-idm-srv02.matrix.lab,rh7-sat6-srv01.matrix.lab
+timezone America/Chicago --isUtc --ntpservers=0.rhel.pool.ntp.org,1.rhel.pool.ntp.org,2.rhel.pool.ntp.org,3.rhel.pool.ntp.org
 
 #########################################################################
 ### DISK ###
