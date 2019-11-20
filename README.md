@@ -138,16 +138,16 @@ To begin building the environment, I utilize:
 | RH7-OCP3-MST01    | Red Hat OCPv3                   | Master Node         | 2, 3072m       | RHV        |
 | RH7-OCP3-MST02    | Red Hat OCPv3                   | Master Node         | 2, 3072m       | RHV        |
 | RH7-OCP3-MST03    | Red Hat OCPv3                   | Master Node         | 2, 3072m       | RHV        |
-| RH7-OCP3-INF01    | Red Hat OCPv3                   | Infrastructure Node | 2, 3072m       | RHV        |
-| RH7-OCP3-INF02    | Red Hat OCPv3    		      | Infrastructure Node | 2, 3072m       | RHV        |
-| RH7-OCP3-INF03    | Red Hat OCPv3    	              | Infrastructure Node | 2, 3072m       | RHV        |
+| RH7-OCP3-INF01    | Red Hat OCPv3 (w/OCS)           | Infrastructure Node | 2, 3072m       | RHV        |
+| RH7-OCP3-INF02    | Red Hat OCPv3 (w/OCS)   	      | Infrastructure Node | 2, 3072m       | RHV        |
+| RH7-OCP3-INF03    | Red Hat OCPv3 (w/OCS)   	      | Infrastructure Node | 2, 3072m       | RHV        |
 | RH7-OCP3-APP01    | Red Hat OCPv3   	              | Application Node    | 2, 4096m       | RHV        |
 | RH7-OCP3-APP02    | Red Hat OCPv3                   | Application Node    | 2, 4096m       | RHV        |
 | RH7-OCP3-APP03    | Red Hat OCPv3                   | Application Node    | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS01    | Red Hat OCPv3 Container Storage | Storage Node (apps) | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS02    | Red Hat OCPv3 Container Storage | Storage Node (apps) | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS03    | Red Hat OCPv3 Container Storage | Storage Node (apps) | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS04    | Red Hat OCPv3 Container Storage | Storage Node (apps) | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS01    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps) | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS02    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps) | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS03    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps) | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS04    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps) | 2, 4096m       | RHV        |
        
 | Node Type       | Description     |
 | :-------------- |:---------------:|
