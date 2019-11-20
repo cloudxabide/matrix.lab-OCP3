@@ -73,6 +73,10 @@ do
   echo "Install Source: --location=\"http://${WEBSERVER}/OS/${OSDIR}\" "
   echo "NOTE: pause for 5 seconds to review parameters above"
   sleep 5
+# Temp fix
+case $OSVARIANT in
+  rhel7.7)  OSVARIANT=rhel7.6;;
+esac 
 
 # DISPLAY SOME HELPFUL INFO
   echo $GUESTNAME $RELEASE $NUMCPUS $MEM $HDDA $HDDB $RELEASETYPE $RELEASEVER $BIOSTYPE $USE_SATELLITE $PURPOSE
