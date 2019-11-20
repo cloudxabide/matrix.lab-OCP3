@@ -120,37 +120,43 @@ To begin building the environment, I utilize:
 # chmod u+x finish_`hostname -f`.sh
 # ./finish_`hostname -f`.sh
 ```
-I need to figure out how to automate the CloudForms implementation.  Manual for now :-(
 
 ## IaaS/PaaS layout 
 
-| Hostname          |            Product          |  Purpose            | Proc, Mem Size | Hypervisor |
-| :---------------- |:---------------------------:|:-------------------:| --------------:|:----------:|
-| websrv            | CentOS 6                    | Web Server          | 1, 1024m       | zion       |
-| RH7-IDM-SRV01     | Red Hat Identity Management | IdM and DNS         | 2, 1024m       | zion       |
-| ----------------- | --------------------------- | ------------------- | -------------- | ---------- | 
-| RH7-SAT6-SRV01    | Red Hat Satellite 6         | Host Management     | 2, 4096m       | apoc       |
-| RH7-LNMS-SRV01    | libreNMS                    | Monitoring          | 2, 1024m       | apoc       |
-| RH7-IDM-SRV02     | Red Hat Identity Management | IdM and DNS         | 2, 1024m       | apoc       |
-| ----------------- | --------------------------- | ------------------- | -------------- | ---------- | 
-| RH7-RHV4-MGR01    | Red Hat Virtualization Mgr  | RHV Manager         | 2, 1024m       | RHV-SHE    |
-| RH7-OCP3-MST      | Red Hat OCPv3               | Master HAproxy      | 1, 1024m       | RHV        |
-| RH7-OCP3-MST01    | Red Hat OCPv3               | Master Node         | 2, 2048m       | RHV        |
-| RH7-OCP3-MST02    | Red Hat OCPv3               | Master Node         | 2, 2048m       | RHV        |
-| RH7-OCP3-MST03    | Red Hat OCPv3               | Master Node         | 2, 2048m       | RHV        |
-| RH7-OCP3-INF01    | Red Hat OCPv3               | Infrastructure Node | 2, 1536m       | RHV        |
-| RH7-OCP3-INF02    | Red Hat OCPv3               | Infrastructure Node | 2, 1536m       | RHV        |
-| RH7-OCP3-INF03    | Red Hat OCPv3               | Infrastructure Node | 2, 1536m       | RHV        |
-| RH7-OCP3-APP01    | Red Hat OCPv3               | Application Node    | 2, 2048m       | RHV        |
-| RH7-OCP3-APP02    | Red Hat OCPv3               | Application Node    | 2, 2048m       | RHV        |
-| RH7-OCP3-APP03    | Red Hat OCPv3               | Application Node    | 2, 2048m       | RHV        |
+| Hostname          |            Product              |  Purpose            | Proc, Mem Size | Hypervisor |
+| :---------------- |:-------------------------------:|:-------------------:| --------------:|:----------:|
+| websrv            | CentOS 6                        | Web Server          | 1, 1024m       | zion       |
+| RH7-IDM-SRV01     | Red Hat Identity Management     | IdM and DNS         | 2, 1024m       | zion       |
+| ----------------- | ------------------------------- | ------------------- | -------------- | ---------- | 
+| RH7-SAT6-SRV01    | Red Hat Satellite 6             | Host Management     | 2, 4096m       | apoc       |
+| RH7-LNMS-SRV01    | libreNMS                        | Monitoring          | 2, 1024m       | apoc       |
+| RH7-IDM-SRV02     | Red Hat Identity Management     | IdM and DNS         | 2, 1024m       | apoc       |
+| ----------------- | ------------------------------- | ------------------- | -------------- | ---------- | 
+| RH7-RHV4-MGR01    | Red Hat Virtualization          | RHV Manager         | 2, 1024m       | RHV-SHE    |
+| RH7-OCP3-BST      | Red Hat Enteprise Linux         | Ansible Bastion     | 1, 1536m       | RHV        |
+| RH7-OCP3-MST      | Red Hat OCPv3                   | Master HAproxy      | 1, 1536m       | RHV        |
+| RH7-OCP3-MST01    | Red Hat OCPv3                   | Master Node         | 2, 3072m       | RHV        |
+| RH7-OCP3-MST02    | Red Hat OCPv3                   | Master Node         | 2, 3072m       | RHV        |
+| RH7-OCP3-MST03    | Red Hat OCPv3                   | Master Node         | 2, 3072m       | RHV        |
+| RH7-OCP3-INF01    | Red Hat OCPv3                   | Infrastructure Node | 2, 3072m       | RHV        |
+| RH7-OCP3-INF02    | Red Hat OCPv3    		      | Infrastructure Node | 2, 3072m       | RHV        |
+| RH7-OCP3-INF03    | Red Hat OCPv3    	              | Infrastructure Node | 2, 3072m       | RHV        |
+| RH7-OCP3-APP01    | Red Hat OCPv3   	              | Application Node    | 2, 4096m       | RHV        |
+| RH7-OCP3-APP02    | Red Hat OCPv3                   | Application Node    | 2, 4096m       | RHV        |
+| RH7-OCP3-APP03    | Red Hat OCPv3                   | Application Node    | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS01    | Red Hat OCPv3 Container Storage | Storage Node (apps) | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS02    | Red Hat OCPv3 Container Storage | Storage Node (apps) | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS03    | Red Hat OCPv3 Container Storage | Storage Node (apps) | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS04    | Red Hat OCPv3 Container Storage | Storage Node (apps) | 2, 4096m       | RHV        |
        
-| Node Type      | Description     |
-| :------------- |:---------------:|
-| Master         | Manages OCP Cluster, Hosts API, endpoint for Nodes to "check-in" for work
-| ETCD           | (Now on Master) ETCD Nodes provide the clustered OCP object key-pair store
-| Infrastructure | Nodes which will host container such as the registry and routers
-| Application    | Application nodes will provide Docker for hosting containers
+| Node Type       | Description     |
+| :-------------- |:---------------:|
+| Master          | Manages OCP Cluster, Hosts API, endpoint for Nodes to "check-in" for work
+| ETCD            | (Now on Master) ETCD Nodes provide the clustered OCP object key-pair store
+| Infrastructure  | Nodes which will host container such as the registry and routers
+| Application     | Application nodes will provide Docker for hosting containers
+| Storage (apps)  | Hosting either Application or 
+| Storage (infra) | Infrastrcture (metrics, logging, registry) data
 
 ## External Repos
 
