@@ -47,6 +47,7 @@ reboot
 %packages
 @base
 @core
+expect
 git
 ntp
 perl
