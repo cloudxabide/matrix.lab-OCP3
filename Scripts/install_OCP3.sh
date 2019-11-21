@@ -7,9 +7,13 @@
 #  Author:  jradtke@redhat.com
 #    Date:  2019-10-31
 #   Notes:  This is NOT IaC yet.  :-(
-#    TODO:  Need to figure out a better way for sending the password to ssh-copy-id
 #           This a "non Production" build approach.  
 #           I have the bastion setup to do NFS to the cluster (if/when Gluster is not being used)
+#    TODO:  Need to figure out a better way for sending the password to ssh-copy-id
+#           use getops to either get the password as an ARGV, or set it to a default
+#
+
+PASSWORD="Passw0rd"
 
 #set -o errexit
 readonly LOG_FILE="/root/install_OCP3.sh.log"
@@ -41,12 +45,12 @@ echo -e "OCP_VERSION=3.11\nexport OCP_VERSION" >> ~/.bash_profile
 #  POOLID=`subscription-manager list --available --matches 'Red Hat OpenShift Container Platform' | grep "Pool ID:" | awk '{ print $3 }' | tail -1`
 #  subscription-manager attach --pool=$POOLID
 
-
 # See if there is an ssh key, and create it if not
 [ ! -f ~/.ssh/id_rsa ] && { echo | ssh-keygen -trsa -b2048 -N ''; }
 
 # Alright - this next step is a bit "rammy".  HOWEVER... this host should only be used as the Bastion 
 #   to an OCP3 Cluster (and, in my case, should not already have any customizations done)
+
 cat << EOF > ~/.ssh/config
 Host *.matrix.lab
   StrictHostKeyChecking no
@@ -58,11 +62,13 @@ chmod 0600 ~/.ssh/config
 # Passw0rd
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do 
-  ssh-copy-id $HOST
+  ./copy_SSHKEY.exp $HOST $PASSWORD
+  #ssh-copy-id $HOST
 done
 unalias rm
 rm ~/.ssh/config
 
+ 
 # Run the "post_install.sh" script on all the hosts (which adds user:mansible)
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
 do 
@@ -82,7 +88,7 @@ for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print 
 # Test the connection (and sudo - which should have been done in a previous script)
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo grep mansible /etc/shadow"; echo ; done
 
-######################################################################3
+######################################################################
 ## NOTE: 
 ## NOTE - if the previous command failed to display the mansible information, 
 ##          then you need to fix sudo (see: post_install.sh)
@@ -136,7 +142,7 @@ CONTAINER_ROOT_LV_SIZE="100%FREE"
 CONTAINER_ROOT_LV_MOUNT_PATH="/var/lib/docker"
 EOF
 
-docker-storage-setup
+[ -f /etc/sysconfig/docker-storage-setup ] && docker-storage-setup
 systemctl enable docker --now
 
 # I made the NFS portion a "routine" as I don't think I'll end up using it (but wanted to retain it)

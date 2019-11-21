@@ -27,7 +27,7 @@ for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | awk '{ print
 for HOST in `egrep 'inf|ocs' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 100g; done
 # Uncomment this if you would like to use /dev/vdc for NFS
 #qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/RH7-OCP3-BST01/RH7-OCP3-BST01-2.qcow2 50g
-restorecon -RFvv /var/lib/libvirt/images/RH7-OCP3-{APP,BST,INF,OCS}*/RH7-OCP3-*2.qcow2
+restorecon -RFvv /var/lib/libvirt/images/RH7-OCP3-{APP,BST,INF,MST,OCS}*/RH7-OCP3-*2.qcow2
 
 for HOST in `egrep 'inf|ocs' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do virsh attach-disk $HOST --source /var/lib/libvirt/images/${HOST}/${HOST}-2.qcow2 --target='vdc' --persistent;  done
 
@@ -36,6 +36,7 @@ for HOST in `virsh list --all | grep -i ocp | awk '{ print $2 }'`; do virsh star
 
 ```
 sed -i -e '/ocp3/d' /home/jradtke/.ssh/known_hosts
+echo "# Go Cleanup Subscriptions on the portal"
 ssh-copy-id rh7-ocp3-bst01.matrix.lab 
 ssh rh7-ocp3-bst01.matrix.lab "sh /root/post_install.sh"
 # proceed to install_OCP3.sh script
@@ -43,8 +44,9 @@ ssh rh7-ocp3-bst01.matrix.lab "sh /root/post_install.sh"
 
 ## Update Login Password for OCP console
 Discovered this as I had put the plain-text password in my inventory.. Ugh.
+This is how you update the htpasswd on the masters
 ```
-for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print $3 }'`; do ssh $HOST  "sudo htpasswd -b /etc/origin/master/htpasswd ocpadmin Passw0rd"; done
+# for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print $3 }'`; do ssh $HOST  "sudo htpasswd -b /etc/origin/master/htpasswd ocpadmin Passw0rd"; done
 ```
 
 ## Update Memory settings on the VMs
