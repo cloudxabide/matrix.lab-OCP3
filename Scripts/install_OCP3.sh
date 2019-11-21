@@ -50,7 +50,6 @@ echo -e "OCP_VERSION=3.11\nexport OCP_VERSION" >> ~/.bash_profile
 
 # Alright - this next step is a bit "rammy".  HOWEVER... this host should only be used as the Bastion 
 #   to an OCP3 Cluster (and, in my case, should not already have any customizations done)
-
 cat << EOF > ~/.ssh/config
 Host *.matrix.lab
   StrictHostKeyChecking no
