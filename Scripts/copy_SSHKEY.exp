@@ -1,5 +1,7 @@
 #!/usr/bin/expect -f
 
+# TODO:  This needs to be updated to check whether it is asking "yes" or no
+
 set force_conservative 0  ;# set to 1 to force conservative mode even if
                           ;# script wasn't run conservatively originally
 if {$force_conservative} {
@@ -19,8 +21,6 @@ set PASSWORD [lindex $argv 1]
 
 expect "]#" 
 send "ssh-copy-id ${HOSTNAME}\r"
-expect "yes/no"
-send "yes\r"
 expect "assword:"
 send "${PASSWORD}\r"
 expect "added"
