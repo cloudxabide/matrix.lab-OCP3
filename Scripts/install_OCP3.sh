@@ -45,6 +45,9 @@ echo -e "OCP_VERSION=3.11\nexport OCP_VERSION" >> ~/.bash_profile
 #  POOLID=`subscription-manager list --available --matches 'Red Hat OpenShift Container Platform' | grep "Pool ID:" | awk '{ print $3 }' | tail -1`
 #  subscription-manager attach --pool=$POOLID
 
+# Install "expect" if it is missing
+(which expect) || yum -y install expect
+
 # See if there is an ssh key, and create it if not
 [ ! -f ~/.ssh/id_rsa ] && { echo | ssh-keygen -trsa -b2048 -N ''; }
 
