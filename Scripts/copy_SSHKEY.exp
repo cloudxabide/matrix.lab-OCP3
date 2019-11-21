@@ -1,0 +1,30 @@
+#!/usr/bin/expect -f
+
+set force_conservative 0  ;# set to 1 to force conservative mode even if
+                          ;# script wasn't run conservatively originally
+if {$force_conservative} {
+        set send_slow {1 .1}
+        proc send {ignore arg} {
+                sleep .1
+                exp_send -s -- $arg
+        }
+}
+
+set timeout -1
+spawn $env(SHELL)
+match_max 100000
+
+set HOSTNAME [lindex $argv 0]
+set PASSWORD [lindex $argv 1]
+
+expect "]#" 
+send "ssh-copy-id ${HOSTNAME}\r"
+expect "yes/no"
+send "yes\r"
+expect "assword:"
+send "${PASSWORD}\r"
+expect "added"
+send "exit\r" 
+
+expect eof
+
