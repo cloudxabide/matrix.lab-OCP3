@@ -13,6 +13,11 @@
 #           use getops to either get the password as an ARGV, or set it to a default
 #
 
+#  Prep-work
+# git clone https://github.com/cloudxabide/matrix.lab
+# cd matrix.lab/Scripts
+# ./
+
 PASSWORD="Passw0rd"
 
 #set -o errexit
@@ -27,8 +32,6 @@ exec 2>&1
 # Make sure you're on the right host, else leave a message and exit 
 [ `hostname -s` != "rh7-ocp3-bst01" ] && { echo "You are on the wrong host"; exit 9; }
 
-git clone https://github.com/cloudxabide/matrix.lab
-cd matrix.lab/Scripts
 
 #  This entire script is intended to be run from the bastion host to all the nodes (the bastion included).
 #  Therefore, notice that commands are prefaced by "sudo" and the ssh command includes a '-t'
