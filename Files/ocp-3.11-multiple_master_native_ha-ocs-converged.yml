@@ -72,7 +72,8 @@ openshift_master_cluster_hostname=rh7-ocp3-mst.matrix.lab
 # The External Hostname (webUI)
 openshift_master_cluster_public_hostname=ocp3-console.linuxrevolution.com
 # The default subdomain *.cloudapps.domain.com
-openshift_master_default_subdomain=ocp3-mwn.linuxrevolution.com
+#openshift_master_default_subdomain=ocp3-mwn.linuxrevolution.com
+openshift_master_default_subdomain=ocp3-mwn.matrix.lab
 
 ##################################################################################33
 ## Storage (general) - BEGIN
