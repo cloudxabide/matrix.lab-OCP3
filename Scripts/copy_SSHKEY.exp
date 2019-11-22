@@ -12,7 +12,7 @@ if {$force_conservative} {
         }
 }
 
-set timeout -1
+set timeout 3 
 spawn $env(SHELL)
 match_max 100000
 
