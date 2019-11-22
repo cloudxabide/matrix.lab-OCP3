@@ -53,8 +53,7 @@ oreg_auth_password="Red Hat Network Password"
 
 # https://docs.openshift.com/container-platform/3.11/install_config/certificate_customization.html
 openshift_master_cluster_method=native
-#openshift_master_cluster_hostname=rh7-ocp3-mst.matrix.lab
-openshift_master_cluster_hostname=ocp3-console.linuxrevolution.com
+openshift_master_cluster_hostname=rh7-ocp3-mst.matrix.lab
 openshift_master_cluster_public_hostname=ocp3-console.linuxrevolution.com
 
 # registry
@@ -121,7 +120,7 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 openshift_master_htpasswd_users={'ocpadmin': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauvNj0'}
 
 openshift_install_examples=true
-openshift_master_default_subdomain=cloudapps.matrix.lab
+openshift_master_default_subdomain=ocp3-mwn.matrix.lab
 
 openshift_disable_check=memory_availability,disk_availability
 os_firewall_use_firewalld=True 
