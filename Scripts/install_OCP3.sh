@@ -76,6 +76,7 @@ rm ~/.ssh/config
 # Run the "post_install.sh" script on all the hosts (which adds user:mansible)
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
 do 
+  echo "Connecting to remote host:"
   ssh -t $HOST "uname -n; sh ./post_install.sh" 
 done
 
