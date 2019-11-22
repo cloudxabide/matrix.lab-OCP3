@@ -61,7 +61,7 @@ chmod 0600 ~/.ssh/config
 
 # Establish connectivity and sync ssh-keys to hosts (as root) 
 # Need to figure out a IaC way of doing this
-# Passw0rd
+# PASSWORD="Passw0rd"
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do 
   ./copy_SSHKEY.exp $HOST $PASSWORD
@@ -69,7 +69,6 @@ do
 done
 unalias rm
 rm ~/.ssh/config
-
  
 # Run the "post_install.sh" script on all the hosts (which adds user:mansible)
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
@@ -86,7 +85,11 @@ chmod 0600 ~/.ssh/config
 
 # Now, distribute the keys to the mansible user
 # Passw0rd
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do ssh-copy-id $HOST; echo; done
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
+do
+  ./copy_SSHKEY.exp $HOST $PASSWORD
+  #ssh-copy-id $HOST
+done
 # Test the connection (and sudo - which should have been done in a previous script)
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo grep mansible /etc/shadow"; echo ; done
 
@@ -199,6 +202,9 @@ do
   echo
 done
 
+exit 0
+
+### THE FOLLOWING WILL NEED TO BE DONE MANUALLY (AND PROBABLY SHOULD ANYHOW)
 cp ~/matrix.lab/Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml ~/
 # Update reg_auth_{user,password} manually
 cd /usr/share/ansible/openshift-ansible
@@ -206,18 +212,4 @@ cd /usr/share/ansible/openshift-ansible
 ansible all --list-hosts -i ~/ocp-${OCP_VERSION}*.yml 
 ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml
 ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml
-
-for HOST in `grep mst0 ~/matrix.lab/Files/etc_hosts | awk '{ print $2 }'`; do ssh -t $HOST "sudo  htpasswd -b /etc/origin/master/htpasswd morpheus Passw0rd "; done
-
-exit 0
-Passw0rd
-
-### OCP Foo
-# From the bastion
-ansible-playbook -i ~/ocp-${OCP_VERSION}-multiple_master_native_ha.yml playbooks/openshift-checks/health.yml
-
-# once the master is up-and-running, ssh to it
-oadm policy add-cluster-role-to-user cluster-admin ocadmin
-oc get all --all-namespaces
- for PROJ in `oc get projects | grep -v "NAME" | awk '{ print $1 }'`; do echo -e "#################\n$PROJ"; oc get pods -n $PROJ; done
 

@@ -45,6 +45,5 @@ rh7-ocp3-app02  | -            | 10.10.10.182 | Virtual Machine | OCP Applicatio
 rh7-ocp3-app03  | -            | 10.10.10.183 | Virtual Machine | OCP Application Node    | Kube 
 rh7-ocp3-bst01  | -            | 10.10.10.189 | Virtual Machine | OCP Bastion/Manager     | SSH, Ansible 
 
-
 NOTES:  
 Satellite 6 currently (Oct 2019) can only be installed on RHEL 7
