@@ -10,6 +10,15 @@ ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/openshift-glusterfs/conf
 ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml
 ```
 
+```
+for HOSTNAME in `egrep 'openshift_m.*hostname' ~/ocp-3.11-multiple_master_native_ha.yml | awk -F\= '{ print $2 }'`; do nslookup $HOSTNAME; done
+
+for HOST in mst mst01 mst02 mst03; do echo "$HOST.matrix.lab"; dig +short rh7-ocp3-${HOST}.matrix.lab; echo; done
+for HOSTNAME in `egrep 'openshift_m.*hostname' ~/ocp-3.11-multiple_master_native_ha.yml | awk -F\= '{ print $2 }'`; do echo "$HOSTNAME"; dig +short $HOSTNAME; echo; done
+
+
+```
+
 Dig in to this further:
 ```
  oc --config=/etc/origin/master/admin.kubeconfig --namespace=glusterfs exec glusterfs-storage-8xm2l -- gluster volume heal vol_0ccc1014f4e2871e25589a5b4459da09 info
