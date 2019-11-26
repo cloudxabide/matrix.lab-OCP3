@@ -39,7 +39,13 @@ sed -i -e '/ocp3/d' /home/jradtke/.ssh/known_hosts
 echo "# Go Cleanup Subscriptions on the portal"
 ssh-copy-id rh7-ocp3-bst01.matrix.lab 
 ssh rh7-ocp3-bst01.matrix.lab "sh /root/post_install.sh"
-# proceed to install_OCP3.sh script
+# proceed to install_OCP3.sh script, then come back to do snapshots
+```
+
+```
+for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`; do virsh snapshot-create-as --domain $HOST --name "post-install-snap" --description "post_install.sh has been run"; done 
+for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`; do virsh start $HOST ; done 
+
 ```
 
 ## Update Login Password for OCP console

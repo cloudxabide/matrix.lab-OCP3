@@ -32,7 +32,6 @@ exec 2>&1
 # Make sure you're on the right host, else leave a message and exit 
 [ `hostname -s` != "rh7-ocp3-bst01" ] && { echo "You are on the wrong host"; exit 9; }
 
-
 #  This entire script is intended to be run from the bastion host to all the nodes (the bastion included).
 #  Therefore, notice that commands are prefaced by "sudo" and the ssh command includes a '-t'
 #  SSH ControlSockets is likely the better/best way to actually be doing this work - but, this is just a lab and NOT 
@@ -67,6 +66,7 @@ chmod 0600 ~/.ssh/config
 # PASSWORD="Passw0rd"
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do 
+  echo "Copy SSH key to $HOST"
   ./copy_SSHKEY.exp $HOST $PASSWORD
   #ssh-copy-id $HOST
 done
@@ -88,12 +88,12 @@ EOF
 chmod 0600 ~/.ssh/config
 
 # Now, distribute the keys to the mansible user
-# Passw0rd
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do
   ./copy_SSHKEY.exp $HOST $PASSWORD
   #ssh-copy-id $HOST
 done
+
 # Test the connection (and sudo - which should have been done in a previous script)
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo grep mansible /etc/shadow"; echo ; done
 
