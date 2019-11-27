@@ -12,19 +12,21 @@ Fix this (output from build_KVM.sh):
 
 ```
 # Teardown 
-ssh apoc.matrix.lab
 
+ssh apoc.matrix.lab
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do ssh -t $HOST "sudo subscription-manager unregister"; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -rf /var/lib/libvirt/images/$HOST; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
 
 # Base OS Install (VM provision)
-cd ~/matrix.lab/Scripts/
+cd ~/matrix.lab/Scripts/; git pull
 for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | awk '{ print $3 }' | tr [a-z] [A-Z]`; do ./build_KVM.sh $GUEST; sleep 240; done
 
 # Create and attach new disk to VMs (third disk)
 # Work around to create and attach the third disk to the appropriate systems
-for HOST in `egrep 'inf|ocs' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 100g; done
+for HOST in `egrep 'inf' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 102g; done
+for HOST in `egrep 'ocs' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 120g; done
 # Uncomment this if you would like to use /dev/vdc for NFS
 #qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/RH7-OCP3-BST01/RH7-OCP3-BST01-2.qcow2 50g
 restorecon -RFvv /var/lib/libvirt/images/RH7-OCP3-{APP,BST,INF,MST,OCS}*/RH7-OCP3-*2.qcow2
@@ -36,7 +38,7 @@ for HOST in `virsh list --all | grep -i ocp | awk '{ print $2 }'`; do virsh star
 
 ```
 sed -i -e '/ocp3/d' /home/jradtke/.ssh/known_hosts
-echo "# Go Cleanup Subscriptions on the portal"
+sed -i -e '/ocp3/d' /home/jradtke/.ssh/known_hosts.matrix.lab
 ssh-copy-id rh7-ocp3-bst01.matrix.lab 
 ssh rh7-ocp3-bst01.matrix.lab "sh /root/post_install.sh"
 # proceed to install_OCP3.sh script, then come back to do snapshots

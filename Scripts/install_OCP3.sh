@@ -16,7 +16,6 @@
 #  Prep-work
 # git clone https://github.com/cloudxabide/matrix.lab
 # cd matrix.lab/Scripts
-# ./
 
 PASSWORD="Passw0rd"
 
@@ -63,7 +62,7 @@ chmod 0600 ~/.ssh/config
 
 # Establish connectivity and sync ssh-keys to hosts (as root) 
 # Need to figure out a IaC way of doing this
-# PASSWORD="Passw0rd"
+# PASSWORD="Passw0rd" # This was set towards the beginning of this script
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do 
   echo "Copy SSH key to $HOST"
