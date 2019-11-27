@@ -17,8 +17,8 @@ ansible_become=true
 openshift_deployment_type=openshift-enterprise
 # If you select "openshift-enterprise" you need to included the oreg_auth stuff below
 oreg_url=registry.redhat.io/openshift3/ose-${component}:${version}
-oreg_auth_user="Red Hat Login"
-oreg_auth_password="Red Hat Password"
+oreg_auth_user="<rhnuser>"
+oreg_auth_password="<rhnpass>"
 openshift_examples_modify_imagestreams=true
 
 # uncomment the following to enable htpasswd authentication; defaults to DenyAllPasswordIdentityProvider

@@ -48,8 +48,8 @@ openshift_release=v3.11
 openshift_deployment_type=openshift-enterprise
 
 oreg_url=registry.redhat.io/openshift3/ose-${component}:${version}
-oreg_auth_user="Red Hat User" 
-oreg_auth_password="Red Hat Network Password"
+oreg_auth_user="<rhnuser>" 
+oreg_auth_password="<rhnpass>"
 
 # https://docs.openshift.com/container-platform/3.11/install_config/certificate_customization.html
 openshift_master_cluster_method=native
