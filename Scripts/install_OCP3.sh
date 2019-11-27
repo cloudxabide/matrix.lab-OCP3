@@ -87,6 +87,7 @@ EOF
 chmod 0600 ~/.ssh/config
 
 # Now, distribute the keys to the mansible user
+# PASSWORD=Passw0rd
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do
   ./copy_SSHKEY.exp $HOST $PASSWORD
@@ -153,11 +154,63 @@ EOF
 [ -f /etc/sysconfig/docker-storage-setup ] && docker-storage-setup
 systemctl enable docker --now
 
+# Setup Docker on the Nodes
+#  CLEAN THIS SUDO STUFF UP, IF NEEDED
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v '#|bst' | awk '{ print $2 }'`
+do
+  ssh -t $HOST << EOF
+    uname -n
+    sudo wget http://10.10.10.10/Scripts/docker_setup.sh
+    echo "sudo yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION"
+    sudo yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION
+    sudo sh ./docker_setup.sh
+EOF
+  echo
+done
+
+# Shutdown all the VMs, then take a snapshot
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
+do 
+  echo "$HOST"
+  #ssh -t $HOST "uname -n;  sudo shutdown now -h"
+done
+
+DO_THIS_ON_HYPERVISOR() {
+ # This can be found in ./NOTES.md also 
+ # I still need to work on this.  The hosts with the extra disks (/dev/vdc) can not be snapshot'd since
+ #   the disk has not been used and appears to be "raw" - Idunno...
+ for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`; do virsh snapshot-create-as --domain $HOST --name "post-install-snap" --description "post_install.sh has been run"; done
+ for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`; do virsh snapshot-list --domain $HOST ; done
+ for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`; do virsh start $HOST ; done 
+}
+ 
+# Make sure docker-storage-setup ran correctly
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
+do
+  ssh $HOST "uname -n; sudo df -h /var/lib/docker"
+  echo
+done
+
+exit 0
+
+### THE FOLLOWING WILL NEED TO BE DONE MANUALLY (AND PROBABLY SHOULD ANYHOW)
+cp ~/matrix.lab/Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml ~/
+sed -i -e 's/<rhnuser>/PutYourRHNUserHere/'g ~/ocp-${OCP_VERSION}*.yml
+sed -i -e 's/<rhnpass>/PutYourRHNPassHere/'g ~/ocp-${OCP_VERSION}*.yml
+# Update reg_auth_{user,password} manually
+cd /usr/share/ansible/openshift-ansible
+# The following *absolutely* makes an assumption that there is only ONE inventory file in your home dir.  Update accordingly
+ansible all --list-hosts -i ~/ocp-${OCP_VERSION}*.yml 
+ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml
+ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml
+
+
+
 # I made the NFS portion a "routine" as I don't think I'll end up using it (but wanted to retain it)
 create_nfs_shares() {
 # Create an NFS share for the registry on Bastion (VDC in this case)
 parted -s /dev/vdc mklabel gpt mkpart pri ext4 2048s 100% set 1 lvm on
-pvcreate /dev/vdc1 
+pvcreate /dev/vdc1
 vgcreate vg_exports /dev/vdc1
 lvcreate -nlv_registry -L+10g vg_exports
 lvcreate -nlv_metrics -L+10g vg_exports
@@ -171,7 +224,7 @@ mkdir -p /exports/nfs/ocp3.matrix.lab/{registry,metrics}
 chmod 000 /exports/nfs/ocp3.matrix.lab/{registry,metrics}/
 echo "/dev/mapper/vg_exports-lv_registry /exports/nfs/ocp3.matrix.lab/registry xfs defaults 0 0" >> /etc/fstab
 echo "/dev/mapper/vg_exports-lv_metrics /exports/nfs/ocp3.matrix.lab/metrics xfs defaults 0 0" >> /etc/fstab
-mount -a 
+mount -a
 chmod 2770 /exports/nfs/ocp3.matrix.lab/{registry,metrics}
 chown nfsnobody:nfsnobody /exports/nfs/ocp3.matrix.lab/{registry,metrics}
 ls -laZ /exports/nfs/ocp3.matrix.lab/* -d
@@ -184,35 +237,4 @@ firewall-cmd --permanent --zone=$(firewall-cmd --get-default-zone) --add-service
 firewall-cmd --reload
 systemctl enable nfs-server.service  --now
 }
-
-# Setup Docker on the Nodes
-#  CLEAN THIS SUDO STUFF UP, IF NEEDED
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
-do
-  ssh -t $HOST << EOF
-    uname -n
-    sudo wget http://10.10.10.10/Scripts/docker_setup.sh
-    echo "sudo yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION"
-    sudo yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION
-    sudo sh ./docker_setup.sh
-EOF
-  echo
-done
-# Make sure docker-storage-setup ran correctly
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
-do
-  ssh $HOST "uname -n; sudo df -h /var/lib/docker"
-  echo
-done
-
-exit 0
-
-### THE FOLLOWING WILL NEED TO BE DONE MANUALLY (AND PROBABLY SHOULD ANYHOW)
-cp ~/matrix.lab/Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml ~/
-# Update reg_auth_{user,password} manually
-cd /usr/share/ansible/openshift-ansible
-# The following *absolutely* makes an assumption that there is only ONE inventory file in your home dir.  Update accordingly
-ansible all --list-hosts -i ~/ocp-${OCP_VERSION}*.yml 
-ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml
-ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml
 

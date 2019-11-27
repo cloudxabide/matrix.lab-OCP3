@@ -3,6 +3,7 @@
 ## TODO
 Need to mount sdb as /var/lib/libvirt/images/SDB
 Need to mount sdc as /var/lib/libvirt/images/SDC
+Refactor how to:  create VMs, do the foundational stuff, take a snapshot, add the disk (vdc) - current order will not allow things to work
 
 Fix this (output from build_KVM.sh):
   ERROR    Unknown OS name 'rhel7.7'. See `osinfo-query os` for valid values.
@@ -15,6 +16,7 @@ Fix this (output from build_KVM.sh):
 
 ssh apoc.matrix.lab
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do ssh -t $HOST "sudo subscription-manager unregister"; done
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -rf /var/lib/libvirt/images/$HOST; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
@@ -25,6 +27,7 @@ for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | awk '{ print
 
 # Create and attach new disk to VMs (third disk)
 # Work around to create and attach the third disk to the appropriate systems
+#  ADD THE DISK *AFTER* YOU TAKE SNAPSHOTS/
 for HOST in `egrep 'inf' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 102g; done
 for HOST in `egrep 'ocs' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 120g; done
 # Uncomment this if you would like to use /dev/vdc for NFS
