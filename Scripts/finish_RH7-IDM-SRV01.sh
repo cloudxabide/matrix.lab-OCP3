@@ -209,6 +209,10 @@ ipa dnsrecord-add matrix.lab rh7-ocp3-ocs01  --a-rec 10.10.10.191
 ipa dnsrecord-add matrix.lab rh7-ocp3-ocs02  --a-rec 10.10.10.192
 ipa dnsrecord-add matrix.lab rh7-ocp3-ocs03  --a-rec 10.10.10.193
 ipa dnsrecord-add matrix.lab rh7-ocp3-ocs04  --a-rec 10.10.10.194
+ipa dnsrecord-add matrix.lab rh7-ocp3-ocs11  --a-rec 10.10.10.196
+ipa dnsrecord-add matrix.lab rh7-ocp3-ocs12  --a-rec 10.10.10.197
+ipa dnsrecord-add matrix.lab rh7-ocp3-ocs13  --a-rec 10.10.10.198
+ipa dnsrecord-add matrix.lab rh7-ocp3-ocs14  --a-rec 10.10.10.199
 # OCP Hosts (Reverse)
 ipa dnsrecord-add 10.10.10.in-addr.arpa 170  --ptr-rec rh7-ocp3-mst.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 171  --ptr-rec rh7-ocp3-mst01.matrix.lab.
@@ -225,6 +229,10 @@ ipa dnsrecord-add 10.10.10.in-addr.arpa 191  --ptr-rec rh7-ocp3-ocs01.matrix.lab
 ipa dnsrecord-add 10.10.10.in-addr.arpa 192  --ptr-rec rh7-ocp3-ocs02.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 193  --ptr-rec rh7-ocp3-ocs03.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 194  --ptr-rec rh7-ocp3-ocs04.matrix.lab.
+ipa dnsrecord-add 10.10.10.in-addr.arpa 196  --ptr-rec rh7-ocp3-ocs11.matrix.lab.
+ipa dnsrecord-add 10.10.10.in-addr.arpa 197  --ptr-rec rh7-ocp3-ocs12.matrix.lab.
+ipa dnsrecord-add 10.10.10.in-addr.arpa 198  --ptr-rec rh7-ocp3-ocs13.matrix.lab.
+ipa dnsrecord-add 10.10.10.in-addr.arpa 199  --ptr-rec rh7-ocp3-ocs14.matrix.lab.
 
 # OCP tertiary domain (point at the Infra Nodes - routers) 
 # DomainName: Openshift Container Platform 3 - MidWest North (ocp3-mwn)
