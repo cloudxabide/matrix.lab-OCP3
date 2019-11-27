@@ -23,8 +23,11 @@ for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefin
 
 # Base OS Install (VM provision)
 cd ~/matrix.lab/Scripts/; git pull
-for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | awk '{ print $3 }' | tr [a-z] [A-Z]`; do ./build_KVM.sh $GUEST; sleep 240; done
+SLEEPYTIME=180 # In seconds
+# TEST THE FOLLOWING WITH THE NEXT RUN (added that "countdown")
+for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | awk '{ print $3 }' | tr [a-z] [A-Z]`; do ./build_KVM.sh $GUEST; while [ $SLEEPYTIME -gt 0 ]; do echo -ne "$SLEEPYTIME\033[0K\r"; sleep 1; : $((SLEEPYTIME--)); done; done
 
+while [ $SLEEPYTIME -gt 0 ]; do echo -ne "$SLEEPYTIME\033[0K\r"; sleep 1; : $((SLEEPYTIME--)); done
 # Create and attach new disk to VMs (third disk)
 # Work around to create and attach the third disk to the appropriate systems
 #  ADD THE DISK *AFTER* YOU TAKE SNAPSHOTS/
