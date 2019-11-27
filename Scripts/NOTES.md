@@ -13,7 +13,7 @@ Fix this (output from build_KVM.sh):
 
 ```
 # Teardown 
-
+# Passw0rd
 ssh apoc.matrix.lab
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do ssh -t $HOST "sudo subscription-manager unregister"; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
