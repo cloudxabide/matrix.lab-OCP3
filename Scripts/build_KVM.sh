@@ -71,8 +71,9 @@ do
     *)  echo "ERROR: Unsupported Release in $CONFIG"; exit 9;;
   esac
   echo "Install Source: --location=\"http://${WEBSERVER}/OS/${OSDIR}\" "
-  echo "NOTE: pause for 5 seconds to review parameters above"
-  sleep 5
+  SLEEPYTIME=5
+  echo "NOTE: pause for $SLEEPYTIME seconds to review parameters above"
+  while [ $SLEEPYTIME -gt 0 ]; do echo -ne "$SLEEPYTIME\033[0K\r"; sleep 1; : $((SLEEPYTIME--)); done
 # Temp fix
 case $OSVARIANT in
   rhel7.7)  OSVARIANT=rhel7.6;;
