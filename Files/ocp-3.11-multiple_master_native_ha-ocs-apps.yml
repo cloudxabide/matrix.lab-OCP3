@@ -29,16 +29,16 @@ rh7-ocp3-inf03.matrix.lab openshift_public_hostname=rh7-ocp3-inf03.matrix.lab op
 rh7-ocp3-app01.matrix.lab openshift_public_hostname=rh7-ocp3-app01.matrix.lab openshift_node_group_name='node-config-compute'
 rh7-ocp3-app02.matrix.lab openshift_public_hostname=rh7-ocp3-app02.matrix.lab openshift_node_group_name='node-config-compute'
 rh7-ocp3-app03.matrix.lab openshift_public_hostname=rh7-ocp3-app03.matrix.lab openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3-ocs01.matrix.lab openshift_node_group_name='node-config-gluster-apps'
-rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3-ocs02.matrix.lab openshift_node_group_name='node-config-gluster-apps'
-rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3-ocs03.matrix.lab openshift_node_group_name='node-config-gluster-apps'
-rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3-ocs04.matrix.lab openshift_node_group_name='node-config-gluster-apps'
+rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3-ocs01.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3-ocs02.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3-ocs03.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3-ocs04.matrix.lab openshift_node_group_name='node-config-compute'
 
 [glusterfs]
 rh7-ocp3-ocs01.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
 rh7-ocp3-ocs02.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'
 rh7-ocp3-ocs03.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
-rh7-ocp3-ocs04.matrix.lab glusterfs_zone=4 glusterfs_devices='["/dev/vdc"]'
+rh7-ocp3-ocs04.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
 
 [glusterfs_registry]
 rh7-ocp3-inf01.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
@@ -53,7 +53,6 @@ openshift_release=v3.11
 openshift_deployment_type=openshift-enterprise
 openshift_install_examples=true
 os_firewall_use_firewalld=True 
-
 
 ##################################################################################33
 ## Registry Source - BEGIN
@@ -96,19 +95,19 @@ openshift_storage_glusterfs_registry_namespace=infra-storage
 openshift_storage_glusterfs_registry_storageclass=false
 openshift_storage_glusterfs_registry_block_deploy=true
 openshift_storage_glusterfs_registry_block_host_vol_create=true
-openshift_storage_glusterfs_registry_block_host_vol_size=86
+openshift_storage_glusterfs_registry_block_host_vol_size=100
 openshift_storage_glusterfs_registry_block_storageclass=true
 openshift_storage_glusterfs_registry_block_storageclass_default=false
 
 # registry
 openshift_hosted_registry_storage_kind=glusterfs
-openshift_hosted_registry_storage_volume_size=10Gi
+openshift_hosted_registry_storage_volume_size=20Gi
 openshift_hosted_registry_selector="node-role.kubernetes.io/infra=true"
 
 # logging
 openshift_logging_install_logging=true
 openshift_logging_es_pvc_dynamic=true
-openshift_logging_es_pvc_size=10Gi
+openshift_logging_es_pvc_size=22Gi
 openshift_logging_es_cluster_size=3
 openshift_logging_es_pvc_storage_class_name='glusterfs-registry-block'
 openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra":"true"}
@@ -120,7 +119,7 @@ openshift_metrics_install_metrics=true
 openshift_metrics_hawkular_hostname=hawkular.ocp3-mwn.linuxrevolution.com
 openshift_metrics_storage_kind=dynamic
 openshift_master_dynamic_provisioning_enabled=true
-openshift_metrics_storage_volume_size=10Gi
+openshift_metrics_storage_volume_size=16Gi
 openshift_metrics_cassanda_pvc_storage_class_name='glusterfs-registry-block'
 openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra":"true"}
@@ -132,7 +131,7 @@ openshift_cluster_monitoring_operator_node_selector={"node-role.kubernetes.io/in
 openshift_cluster_monitoring_operator_prometheus_storage_enabled=true
 openshift_cluster_monitoring_operator_alertmanager_storage_enabled=true
 openshift_cluster_monitoring_operator_prometheus_storage_capacity=10Gi
-openshift_cluster_monitoring_operator_alertmanager_storage_capacity=2Gi
+openshift_cluster_monitoring_operator_alertmanager_storage_capacity=4Gi
 openshift_cluster_monitoring_operator_prometheus_storage_class_name='glusterfs-registry-block'
 openshift_cluster_monitoring_operator_alertmanager_storage_class_name='glusterfs-registry-block'
 
