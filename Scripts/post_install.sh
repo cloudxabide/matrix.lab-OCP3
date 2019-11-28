@@ -110,15 +110,15 @@ firewall-cmd --reload
 yum -y install sysstat pcp
 systemctl enable sysstate --now
 
-case `hostname -s` in 
-  *ocp*)
-cat << EOF > /etc/sysctl.d/98-ocp-tuning.conf
-# https://docs.openshift.com/container-platform/3.11/admin_guide/overcommit.html#disabling-swap-memory
-vm.overcommit_memory=1
-vm.panic_on_oom=0
-EOF
-  ;;
-esac
+#case `hostname -s` in 
+#  *ocp*)
+#cat << EOF > /etc/sysctl.d/98-ocp-tuning.conf
+## https://docs.openshift.com/container-platform/3.11/admin_guide/overcommit.html#disabling-swap-memory
+#vm.overcommit_memory=1
+#vm.panic_on_oom=0
+#EOF
+#  ;;
+#esac
 
 #  Update Host and reboot
 echo "NOTE:  update and reboot"

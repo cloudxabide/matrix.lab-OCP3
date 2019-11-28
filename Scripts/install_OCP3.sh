@@ -151,7 +151,7 @@ CONTAINER_ROOT_LV_SIZE="100%FREE"
 CONTAINER_ROOT_LV_MOUNT_PATH="/var/lib/docker"
 EOF
 
-[ -f /etc/sysconfig/docker-storage-setup ] && docker-storage-setup
+[ -f /etc/sysconfig/docker-storage-setup ] && docker-storage-setup; sleep 2
 systemctl enable docker --now
 
 # Setup Docker on the Nodes
@@ -168,6 +168,16 @@ EOF
   echo
 done
 
+# Make sure docker-storage-setup ran correctly
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
+do
+  ssh $HOST "uname -n; sudo df -h /var/lib/docker"
+  echo
+done
+
+
+LETS_CREATE_A_SNAPSHOT() {
+
 # Shutdown all the VMs, then take a snapshot
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
 do 
@@ -175,7 +185,6 @@ do
   #ssh -t $HOST "uname -n;  sudo shutdown now -h"
 done
 
-DO_THIS_ON_HYPERVISOR() {
  # This can be found in ./NOTES.md also 
  # I still need to work on this.  The hosts with the extra disks (/dev/vdc) can not be snapshot'd since
  #   the disk has not been used and appears to be "raw" - Idunno...
@@ -184,13 +193,6 @@ DO_THIS_ON_HYPERVISOR() {
  for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`; do virsh start $HOST ; done 
 }
  
-# Make sure docker-storage-setup ran correctly
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
-do
-  ssh $HOST "uname -n; sudo df -h /var/lib/docker"
-  echo
-done
-
 exit 0
 
 ### THE FOLLOWING WILL NEED TO BE DONE MANUALLY (AND PROBABLY SHOULD ANYHOW)
