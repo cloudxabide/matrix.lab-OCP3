@@ -14,8 +14,8 @@
 #
 
 #  Prep-work
-# git clone https://github.com/cloudxabide/matrix.lab
-# cd matrix.lab/Scripts
+[ ! -d ~/matrix.lab ] && cd ~; git clone https://github.com/cloudxabide/matrix.lab
+cd matrix.lab/Scripts
 
 PASSWORD="Passw0rd"
 
