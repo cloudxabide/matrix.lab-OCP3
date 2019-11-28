@@ -20,9 +20,10 @@ for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefin
 
 # Base OS Install (VM provision)
 cd ~/matrix.lab/Scripts/; git pull
-SLEEPYTIME=240 # In seconds
+# SLEEPYTIME=xxx - Time, in seconds, before script should start to build next VM (it's
 # TEST THE FOLLOWING WITH THE NEXT RUN (added that "countdown")
-for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | awk '{ print $3 }' | tr [a-z] [A-Z]`; do ./build_KVM.sh $GUEST; while [ $SLEEPYTIME -gt 0 ]; do echo -ne "$SLEEPYTIME\033[0K\r"; sleep 1; : $((SLEEPYTIME--)); done; done
+SLEEPYTIME=240; 
+for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | awk '{ print $3 }' | tr [a-z] [A-Z]`; do COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; done
 
 # Go execute the install_OCP3.sh procedure
 
