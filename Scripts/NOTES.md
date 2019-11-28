@@ -12,7 +12,7 @@ DONE -  ERROR    Unknown OS name 'rhel7.7'. See `osinfo-query os` for valid valu
 # Teardown 
 # Passw0rd
 ssh apoc.matrix.lab
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do ssh -t $HOST "sudo subscription-manager unregister"; done
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do ssh -oStrictHostkeyChecking=no -t $HOST "sudo subscription-manager unregister"; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -rf /var/lib/libvirt/images/$HOST; done
@@ -38,7 +38,7 @@ restorecon -RFvv /var/lib/libvirt/images/RH7-OCP3-{APP,BST,INF,MST,OCS}*/RH7-OCP
 
 for HOST in `egrep 'ocs' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do virsh attach-disk $HOST --source /var/lib/libvirt/images/${HOST}/${HOST}-2.qcow2 --target='vdc' --persistent;  done
 
-for HOST in `virsh list --all | grep -i ocp | awk '{ print $2 }'`; do virsh start $HOST; sleep 2; done
+for HOST in `virsh list --all | grep -i ocp | awk '{ print $2 }'`; do echo "$HOST"; virsh start $HOST; echo; sleep 2; done
 ```
 
 ```
@@ -64,10 +64,12 @@ This is how you update the htpasswd on the masters
 
 ## Update Memory settings on the VMs
 ```
-for HOST in `virsh list --all | grep OCP | egrep -v 'BST|MST|OCS' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 6G --config; done
-for HOST in `virsh list --all | grep OCP | egrep -v 'BST|MST|OCS' | awk '{ print $2 }'`; do virsh setmem $HOST --size 6G --config; done
-for HOST in `virsh list --all | grep OCP | egrep 'MST' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 4G --config; done
-for HOST in `virsh list --all | grep OCP | egrep 'MST' | awk '{ print $2 }'`; do virsh setmem $HOST --size 4G --config; done
+for HOST in `virsh list --all | grep OCP | egrep 'OCS' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 6G --config; done
+for HOST in `virsh list --all | grep OCP | egrep 'OCS' | awk '{ print $2 }'`; do virsh setmem $HOST --size 6G --config; done
+for HOST in `virsh list --all | grep OCP | egrep 'INF' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 4G --config; done
+for HOST in `virsh list --all | grep OCP | egrep 'INF' | awk '{ print $2 }'`; do virsh setmem $HOST --size 4G --config; done
+for HOST in `virsh list --all | grep OCP | egrep 'MST|APP' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 5G --config; done
+for HOST in `virsh list --all | grep OCP | egrep 'MST|APP' | awk '{ print $2 }'`; do virsh setmem $HOST --size 5G --config; done
 ```
 
 ## Issues
