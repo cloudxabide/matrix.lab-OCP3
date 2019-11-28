@@ -23,8 +23,8 @@ usage() {
 if [ $# -ne 1 ]; then usage; fi 
 if [ `whoami` != "root" ]; then echo "ERROR: you should be root"; exit 9; fi
 
-# See if the VM is already running
-virsh list | grep -w ${1} 
+# See if the VM is already running (or already exists, addd "--all")
+virsh list --all | grep -w ${1} 
 case $? in 
   0)
     echo "NOTE: VM ${1} already exists."; 
