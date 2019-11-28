@@ -1,12 +1,9 @@
 # NOTE.md
 
 ## TODO
-Need to mount sdb as /var/lib/libvirt/images/SDB
-Need to mount sdc as /var/lib/libvirt/images/SDC
-Refactor how to:  create VMs, do the foundational stuff, take a snapshot, add the disk (vdc) - current order will not allow things to work
 
 Fix this (output from build_KVM.sh):
-  ERROR    Unknown OS name 'rhel7.7'. See `osinfo-query os` for valid values.
+DONE -  ERROR    Unknown OS name 'rhel7.7'. See `osinfo-query os` for valid values.
 
 
 ## Rebuilding the Lab - this is run on apoc (KVM Host)
@@ -23,16 +20,16 @@ for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefin
 
 # Base OS Install (VM provision)
 cd ~/matrix.lab/Scripts/; git pull
-SLEEPYTIME=180 # In seconds
+SLEEPYTIME=240 # In seconds
 # TEST THE FOLLOWING WITH THE NEXT RUN (added that "countdown")
 for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | awk '{ print $3 }' | tr [a-z] [A-Z]`; do ./build_KVM.sh $GUEST; while [ $SLEEPYTIME -gt 0 ]; do echo -ne "$SLEEPYTIME\033[0K\r"; sleep 1; : $((SLEEPYTIME--)); done; done
 
-# Go do the install_OCP3.sh procedure
+# Go execute the install_OCP3.sh procedure
 
 # Create and attach new disk to VMs (third disk)
 # Work around to create and attach the third disk to the appropriate systems
 #  ADD THE DISK *AFTER* YOU TAKE SNAPSHOTS/
-for HOST in `egrep 'inf' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 102g; done
+#for HOST in `egrep 'inf' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 102g; done
 for HOST in `egrep 'ocs0' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 120g; done
 for HOST in `egrep 'ocs1' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 110g; done
 # Uncomment this if you would like to use /dev/vdc for NFS
