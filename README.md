@@ -50,7 +50,9 @@ FreeNAS (not a Red Hat Product, not even running Linux - but, customers have it 
 | :--------|:------------------------:| ----------------------------------:|:-----------:|:------------:|
 
 Command to retrieve Manufacturer, Model, Proc, and Memory:  
+```
 echo "`dmidecode -s system-manufacturer` `dmidecode -s baseboard-product-name`,`lscpu | grep "^Model name:" | grep -o -P '(?<=Intel\(R\)).*(?=\@)'`, `free -h | grep "Mem:" | awk '{ print $2 }'`"
+```
 
 ### ZION 
 * KVM Hypervisor hosting the following Guests:
