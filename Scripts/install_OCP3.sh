@@ -156,7 +156,7 @@ systemctl enable docker --now
 
 # Setup Docker on the Nodes
 #  CLEAN THIS SUDO STUFF UP, IF NEEDED
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v '#|bst' | awk '{ print $2 }'`
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
 do
   ssh -t $HOST << EOF
     uname -n
@@ -169,7 +169,7 @@ EOF
 done
 
 # Make sure docker-storage-setup ran correctly
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
 do
   ssh $HOST "uname -n; sudo df -h /var/lib/docker"
   echo
