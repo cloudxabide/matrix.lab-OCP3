@@ -206,6 +206,15 @@ ansible all --list-hosts -i ~/ocp-${OCP_VERSION}*.yml
 ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml
 ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml
 
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
+do
+  ssh -t $HOST << EOF
+    uname -n
+    #sudo grep IOA /etc/systemd/system.conf.d/origin-accounting.conf
+    sudo sed -i -e 's/DefaultBlockIOAccounting=yes/DefaultBlockIOAccounting=no/g' /etc/systemd/system.conf.d/origin-accounting.conf
+EOF
+  echo
+done
 
 
 # I made the NFS portion a "routine" as I don't think I'll end up using it (but wanted to retain it)
