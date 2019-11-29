@@ -70,7 +70,7 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 # Use a hashed/crypted password in the next field
 openshift_master_htpasswd_users={'ocpadmin': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauvNj0'}
 
-openshift_node_groups=[{"name": "node-config-master", "labels": ["node-role.kubernetes.io/master=true", "logging-infra-fluentd=true"]}, {"name": "node-config-infra", "labels": ["node-role.kubernetes.io/infra=true", "node-role.kubernetes.io/logging-apps=true", "node-role.kubernetes.io/logging-ops=true", "logging-infra-fluentd=true"]}, {"name": "node-config-gluster-apps", "labels": ["node-role.kubernetes.io/gluster-apps=true", "logging-infra-fluentd=true"]}, {"name": "node-config-compute", "labels": ["node-role.kubernetes.io/compute=true", "logging-infra-fluentd=true"]}, {"name": "node-config-gluster-ops","labels": ["node-role.kubernetes.io/gluster-ops=true","logging-infra-fluentd=true"]}]
+#openshift_node_groups=[{"name": "node-config-master", "labels": ["node-role.kubernetes.io/master=true", "logging-infra-fluentd=true"]}, {"name": "node-config-infra", "labels": ["node-role.kubernetes.io/infra=true", "node-role.kubernetes.io/logging-apps=true", "node-role.kubernetes.io/logging-ops=true", "logging-infra-fluentd=true"]}, {"name": "node-config-gluster-apps", "labels": ["node-role.kubernetes.io/gluster-apps=true", "logging-infra-fluentd=true"]}, {"name": "node-config-compute", "labels": ["node-role.kubernetes.io/compute=true", "logging-infra-fluentd=true"]}, {"name": "node-config-gluster-ops","labels": ["node-role.kubernetes.io/gluster-ops=true","logging-infra-fluentd=true"]}]
 
 # https://docs.openshift.com/container-platform/3.11/install_config/certificate_customization.html
 openshift_master_cluster_method=native
@@ -79,7 +79,7 @@ openshift_master_cluster_hostname=rh7-ocp3-mst.matrix.lab
 # The External Hostname (webUI)
 openshift_master_cluster_public_hostname=ocp3-console.linuxrevolution.com
 # The default subdomain *.cloudapps.domain.com
-openshift_master_default_subdomain=ocp3-mwn.linuxrevolution.com
+openshift_master_default_subdomain=ocp3-mwn.matrix.lab
 
 ##################################################################################33
 ## Storage (general) - BEGIN
