@@ -178,10 +178,13 @@ Our heroes will function as hypervisors or compute nodes.
 
 | Hostname            | vda | vdb    | vdc 
 |:--------------------|:----|:-------|:---
-| rh7-ocp3-bst01      | OS  | Docker | NFS exports (registry, metrics)
+| rh7-ocp3-bst01      | OS  | Docker | N/A (NFS exports (registry, metrics))
+| rh7-ocp3-mst        | OS  | Docker | N/A
 | rh7-ocp3-mst0[1:3]  | OS  | Docker | N/A
-| rh7-ocp3-inf0[1:3]  | OS  | Docker | GlusterFS (registry)
-| rh7-ocp3-app0[1:3]  | OS  | Docker | GlusterFS (apps)
+| rh7-ocp3-inf0[1:3]  | OS  | Docker | N/A
+| rh7-ocp3-app0[1:3]  | OS  | Docker | N/A
+| rh7-ocp3-ocs0[1:4]  | OS  | Docker | GlusterFS (infra)
+| rh7-ocp3-ocs1[1:4]  | OS  | Docker | GlusterFS (apps)
 
 ## Switch Layout
 
