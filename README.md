@@ -1,16 +1,18 @@
 # MATRIX.lab (aka LINUXREVOLUTION.COM)
 
 ## Status
-Untested.  I am currently making a TON of changes to make my lab Hyperconverged.
+Untested.  I am currently making a TON of changes to make my lab Hyperconverged.  
+Environment is currently being used to test OCP3.
 
 ## Overview
-My Homelab dedicated to deploying portoins of the Red Hat product portfolio.  
+My Homelab dedicated to deploying portoins of the Red Hat product portfolio and AWS integration.
 One of the goals (currently) is to build something somewhat "stateless" or shortlived.   
 It is primarily an IaaS and PaaS initiative.  This is intended to be a "lab" 
 installation - I would not use some of these tactics in a production or business
 environment.
 
 ### Deployment Modes
+* (current) Ad-hoc
 * RHVH 4.3 
 * RHHI = Hyperconverged - RHVH 4.2 + Gluster 
 * RHEL as RHV Hypervisors and Hyperconverged (only RHEL 7.4 supported)
@@ -42,8 +44,8 @@ FreeNAS (not a Red Hat Product, not even running Linux - but, customers have it 
 | APOC     | Red Hat Enterprise Linux | ASUS X99-PRO/USB 3.1, Xeon(R) CPU E5-2630 v3 , 94G  | 10.10.10.18 | 172.16.10.18 |
 
 ## PHYSICAL HOSTS (Idle)
-| Hostname | Purpose                  | Model, Proc, Mem Size              | IP (public) | IP (storage) |
-| :--------|:------------------------:| ----------------------------------:|:-----------:|:------------:|
+| Hostname | Purpose                  | Model, Proc, Mem Size                               | IP (public) | IP (storage) |
+| :--------|:------------------------:| ---------------------------------------------------:|:-----------:|:------------:|
 | NEO      | Red Hat Virtualization   | HP ProLiant ML30 Gen9, Xeon(R) CPU E3-1220 v5 , 31G | 10.10.10.11 | 172.16.10.11 |
 | TRINITY  | Red Hat Virtualization   | HP ProLiant ML30 Gen9, Xeon(R) CPU E3-1220 v5 , 31G | 10.10.10.12 | 172.16.10.12 |
 | SERAPH   | FreeNAS                  | ASRock Z77E-ITX, i5-3570K, 16GB                     | 10.10.10.19 | 172.16.10.19 |
