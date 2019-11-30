@@ -27,7 +27,6 @@ Also, this whole thing needs to be Ansible-ized at some point.  It's 2018....
 
 ## Products
 Red Hat Enterprise Linux (RHEL)  
-Red Hat Virtualization (RHV)  
 Red Hat Ansible Tower
 Red Hat Identity Management  
 Red Hat Storage (Gluster)  
@@ -125,31 +124,34 @@ To begin building the environment, I utilize:
 
 ## IaaS/PaaS layout 
 
-| Hostname          |            Product              |  Purpose            | Proc, Mem Size | Hypervisor |
-| :---------------- |:-------------------------------:|:-------------------:| --------------:|:----------:|
-| websrv            | CentOS 6                        | Web Server          | 1, 1024m       | zion       |
-| RH7-IDM-SRV01     | Red Hat Identity Management     | IdM and DNS         | 2, 1024m       | zion       |
-| ----------------- | ------------------------------- | ------------------- | -------------- | ---------- | 
-| RH7-SAT6-SRV01    | Red Hat Satellite 6             | Host Management     | 2, 4096m       | apoc       |
-| RH7-LNMS-SRV01    | libreNMS                        | Monitoring          | 2, 1024m       | apoc       |
-| RH7-IDM-SRV02     | Red Hat Identity Management     | IdM and DNS         | 2, 1024m       | apoc       |
-| ----------------- | ------------------------------- | ------------------- | -------------- | ---------- | 
-| RH7-RHV4-MGR01    | Red Hat Virtualization          | RHV Manager         | 2, 1024m       | RHV-SHE    |
-| RH7-OCP3-BST      | Red Hat Enteprise Linux         | Ansible Bastion     | 1, 1536m       | RHV        |
-| RH7-OCP3-MST      | Red Hat OCPv3                   | Master HAproxy      | 1, 1536m       | RHV        |
-| RH7-OCP3-MST01    | Red Hat OCPv3                   | Master Node         | 2, 3072m       | RHV        |
-| RH7-OCP3-MST02    | Red Hat OCPv3                   | Master Node         | 2, 3072m       | RHV        |
-| RH7-OCP3-MST03    | Red Hat OCPv3                   | Master Node         | 2, 3072m       | RHV        |
-| RH7-OCP3-INF01    | Red Hat OCPv3 (w/OCS)           | Infrastructure Node | 2, 3072m       | RHV        |
-| RH7-OCP3-INF02    | Red Hat OCPv3 (w/OCS)   	      | Infrastructure Node | 2, 3072m       | RHV        |
-| RH7-OCP3-INF03    | Red Hat OCPv3 (w/OCS)   	      | Infrastructure Node | 2, 3072m       | RHV        |
-| RH7-OCP3-APP01    | Red Hat OCPv3   	              | Application Node    | 2, 4096m       | RHV        |
-| RH7-OCP3-APP02    | Red Hat OCPv3                   | Application Node    | 2, 4096m       | RHV        |
-| RH7-OCP3-APP03    | Red Hat OCPv3                   | Application Node    | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS01    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps) | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS02    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps) | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS03    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps) | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS04    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps) | 2, 4096m       | RHV        |
+| Hostname          |            Product              |  Purpose             | Proc, Mem Size | Hypervisor |
+| :---------------- |:-------------------------------:|:--------------------:| --------------:|:----------:|
+| RH7-IDM-SRV01     | Red Hat Identity Management     | IdM and DNS          | 2, 1024m       | zion       |
+| RH7-LMS-SRV01     | libreNMS                        | Monitoring           | 2, 1024m       | zion       |
+| RH8-UTIL-SRV01    | Red Hat Enteprise Linux         | Util, DMZ Bastion    | 2, 1024m       | zion       |
+| ----------------- | ------------------------------- | ---------------------| -------------- | ---------- | 
+| RH7-SAT6-SRV01    | Red Hat Satellite 6             | Host Management      | 2, 4096m       | sati       |
+| RH7-IDM-SRV02     | Red Hat Identity Management     | IdM and DNS          | 2, 1024m       | sati       |
+| ----------------- | ------------------------------- | ---------------------| -------------- | ---------- | 
+| RH7-OCP3-BST      | Red Hat Enteprise Linux         | Ansible Bastion      | 1, 1536m       | RHV        |
+| RH7-OCP3-MST      | Red Hat OCPv3                   | Master HAproxy       | 1, 1536m       | RHV        |
+| RH7-OCP3-MST01    | Red Hat OCPv3                   | Master Node          | 2, 3072m       | RHV        |
+| RH7-OCP3-MST02    | Red Hat OCPv3                   | Master Node          | 2, 3072m       | RHV        |
+| RH7-OCP3-MST03    | Red Hat OCPv3                   | Master Node          | 2, 3072m       | RHV        |
+| RH7-OCP3-INF01    | Red Hat OCPv3                   | Infrastructure Node  | 2, 3072m       | RHV        |
+| RH7-OCP3-INF02    | Red Hat OCPv3    	              | Infrastructure Node  | 2, 3072m       | RHV        |
+| RH7-OCP3-INF03    | Red Hat OCPv3    	              | Infrastructure Node  | 2, 3072m       | RHV        |
+| RH7-OCP3-APP01    | Red Hat OCPv3   	              | Application Node     | 2, 4096m       | RHV        |
+| RH7-OCP3-APP02    | Red Hat OCPv3                   | Application Node     | 2, 4096m       | RHV        |
+| RH7-OCP3-APP03    | Red Hat OCPv3                   | Application Node     | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS01    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS02    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS03    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS04    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS11    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS12    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS13    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 4096m       | RHV        |
+| RH7-OCP3-OCS14    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 4096m       | RHV        |
        
 | Node Type       | Description     |
 | :-------------- |:---------------:|
@@ -159,6 +161,8 @@ To begin building the environment, I utilize:
 | Application     | Application nodes will provide Docker for hosting containers
 | Storage (apps)  | Hosting either Application or 
 | Storage (infra) | Infrastrcture (metrics, logging, registry) data
+
+[OCP3 Cluster with OCS - Cluster Oveview](images/OCP3-OCS_Cluster_Overview.png)
 
 ## External Repos
 
