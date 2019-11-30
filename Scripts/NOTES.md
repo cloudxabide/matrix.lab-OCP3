@@ -19,13 +19,21 @@ for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -rf /var/l
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
 
 # Base OS Install (VM provision)
+[ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; }
 cd ~/matrix.lab/Scripts/; git pull
 # SLEEPYTIME=xxx - Time, in seconds, before script should start to build next VM (it's
 # TEST THE FOLLOWING WITH THE NEXT RUN (added that "countdown")
 SLEEPYTIME=240; 
-for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | awk '{ print $3 }' | tr [a-z] [A-Z]`; do COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; done
+case `hostname -s` in 
+  apoc)
+    for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | egrep '1$|3$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; done
+  ;;
+  morpheus)
+    for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | egrep '2$|4$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; done
+  ;;
+esac
 
-# Go execute the install_OCP3.sh procedure
+# Now, go execute the install_OCP3.sh procedure
 
 # Create and attach new disk to VMs (third disk)
 # Work around to create and attach the third disk to the appropriate systems

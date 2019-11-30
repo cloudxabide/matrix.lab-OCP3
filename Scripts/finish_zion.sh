@@ -98,7 +98,6 @@ systemctl stop NetworkManager; systemctl start NetworkManager
 EOF
 sh /root/nmcli_cmds.sh &
 
-
 #####################################
 #####################################
 #
