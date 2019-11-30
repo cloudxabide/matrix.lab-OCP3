@@ -197,9 +197,9 @@ exit 0
 
 ### THE FOLLOWING WILL NEED TO BE DONE MANUALLY (AND PROBABLY SHOULD ANYHOW)
 cp ~/matrix.lab/Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml ~/
+# The following updates RHN info, or update reg_auth_{user,password} manually
 sed -i -e 's/<rhnuser>/PutYourRHNUserHere/'g ~/ocp-${OCP_VERSION}*.yml
 sed -i -e 's/<rhnpass>/PutYourRHNPassHere/'g ~/ocp-${OCP_VERSION}*.yml
-# Update reg_auth_{user,password} manually
 cd /usr/share/ansible/openshift-ansible
 # The following *absolutely* makes an assumption that there is only ONE inventory file in your home dir.  Update accordingly
 ansible all --list-hosts -i ~/ocp-${OCP_VERSION}*.yml 
