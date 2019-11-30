@@ -1,12 +1,15 @@
 # NOTE.md
 
+NOTES:
+* I had to modify this to be "host aware" - I.e. install certain VMs on one Hypervisor and the others on the other.k
+
 ## TODO
 
 Fix this (output from build_KVM.sh):
 DONE -  ERROR    Unknown OS name 'rhel7.7'. See `osinfo-query os` for valid values.
 
 
-## Rebuilding the Lab - this is run on apoc (KVM Host)
+## Rebuilding the Lab - this is run on apoc (KVM Host) (and now morpheus)
 
 ```
 # Teardown 
@@ -30,6 +33,7 @@ case `hostname -s` in
   ;;
   morpheus)
     for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | egrep '2$|4$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; done
+    ./build_KVM.sh RH7-OCP3-MST
   ;;
 esac
 
@@ -38,18 +42,37 @@ esac
 # Create and attach new disk to VMs (third disk)
 # Work around to create and attach the third disk to the appropriate systems
 #  ADD THE DISK *AFTER* YOU TAKE SNAPSHOTS/
-#for HOST in `egrep 'inf' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 102g; done
-for HOST in `egrep 'ocs0' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 120g; done
-for HOST in `egrep 'ocs1' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 110g; done
+case `hostname -s` in
+  apoc)
+    for HOST in `egrep 'ocs0' ~/matrix.lab/Files/etc_hosts | egrep '1$|3$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 120g; done
+    for HOST in `egrep 'ocs1' ~/matrix.lab/Files/etc_hosts | egrep '1$|3$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 110g; done
+  ;;
+  morpheus)
+    for HOST in `egrep 'ocs0' ~/matrix.lab/Files/etc_hosts | egrep '2$|4$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 120g; done
+    for HOST in `egrep 'ocs1' ~/matrix.lab/Files/etc_hosts | egrep '2$|4$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 110g; done
+  ;;
+esac
 # Uncomment this if you would like to use /dev/vdc for NFS
 #qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/RH7-OCP3-BST01/RH7-OCP3-BST01-2.qcow2 50g
+
+# Set the correct SELinux context
 restorecon -RFvv /var/lib/libvirt/images/RH7-OCP3-{APP,BST,INF,MST,OCS}*/RH7-OCP3-*2.qcow2
 
-for HOST in `egrep 'ocs' ~/matrix.lab/Files/etc_hosts | awk '{ print $3 }' | tr [a-z] [A-Z]`; do virsh attach-disk $HOST --source /var/lib/libvirt/images/${HOST}/${HOST}-2.qcow2 --target='vdc' --persistent;  done
+#### ATTACH THE DISK
+case `hostname -s` in
+  apoc)
+    for HOST in `egrep 'ocs' ~/matrix.lab/Files/etc_hosts | egrep '1$|3$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do virsh attach-disk $HOST --source /var/lib/libvirt/images/${HOST}/${HOST}-2.qcow2 --target='vdc' --persistent;  done
+  ;;
+  morpheus)
+    for HOST in `egrep 'ocs' ~/matrix.lab/Files/etc_hosts | egrep '2$|4$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do virsh attach-disk $HOST --source /var/lib/libvirt/images/${HOST}/${HOST}-2.qcow2 --target='vdc' --persistent;  done
+  ;;
+esac
 
+# START THE VMS
 for HOST in `virsh list --all | grep -i ocp | awk '{ print $2 }'`; do echo "$HOST"; virsh start $HOST; echo; sleep 2; done
 ```
 
+## Build the bastion
 ```
 sed -i -e '/ocp3/d' ~/.ssh/known_hosts
 sed -i -e '/ocp3/d' ~/.ssh/known_hosts.matrix.lab
