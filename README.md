@@ -81,47 +81,6 @@ Our heroes will function as hypervisors or compute nodes.
   *  Ansible Tower?
   *  Nagios/libreNMS
 
-## ISSUES:
-Intel NUC only has a single NIC.  A problem that can be remedied easily enough, but since I had another ITX-based machine laying around, it made sense to go that route.  
-Intel NUC also has issues when I run my build script for KVM guests.  I don't have time to deal with that crap at this time.  So, I'll run the Asus for now.  
-
-## Build Steps
-* Build laptop from DVD (manually, but reference a kickstart @ github) 
-  * register to RHN
-  * Install/Configure PXE/tftp/HTTP/DNS
-  * share out DVD ISO sources via HTTP 
-  * build RH7-IDM-SRV01 as KVM guest 
-* Build ZION from Network and register to RHN.
-  * populate /etc/hosts using the entire list of KVM guests 
-  * Build RH7-SAT6-SRV01 and register to RHN (sync channels)
-  * Build RH7-IDM-SRV01/02 and register to RH7-SAT6-SRV01
-    * update DNS using 'ipa' command found in finish script
-  * Update DNS resolvers on all hosts to now point to the IDM systems
-  * Build RH6RHVMGR
-* Build SERAPH and create iSCSI targets and NFS shares (for OpenShift)
-  * build RH7-IDM-SRV02 as KVM guest 
-* Build NEO/TRINITY/MORPHEUS with BaseOS (RHV/RHEL) 
-* Attach NEO and TRINITY to RH7-RHV4-MGR01 to make them RHV Hypervisors
-* point RHV Manager at SERAPH for Storage
-
-## NOTES
-To begin building the environment, I utilize:
- - a build_KVM.sh script, which relies on .myconfig to identify parameters about each host.
- - \<HOSTNAME\>.ks file which is the kickstart file (anaconda-ks.cfg) for each host
- - ./post_install.sh a script that *should* end up in /root post kickstart.  This script registers node to Satellite and performs some housekeeping.
- - finish_\<HOSTNAME\>.sh which should contain all the post-build steps
-
-```
-# echo "RH7-IDM-SRV:EL7:4:1536:50:200:server:7.5:BIOS" >> .myconfig
-# ./build_KVM.sh RH7-IDM-SRV
-# ssh-copy-id RH7-IDM-SRV
-# ssh RH7-IDM-SRV01
-# ./post_install.sh
-# wget http://10.10.10.10/finish_`hostname -f`.sh
-# chmod u+x finish_`hostname -f`.sh
-# ./finish_`hostname -f`.sh
-```
-
 ## IaaS/PaaS layout 
 
 | Hostname          |            Product              |  Purpose             | Proc, Mem Size | Hypervisor |
@@ -134,24 +93,24 @@ To begin building the environment, I utilize:
 | RH7-IDM-SRV02     | Red Hat Identity Management     | IdM and DNS          | 2, 1024m       | sati       |
 | ----------------- | ------------------------------- | ---------------------| -------------- | ---------- | 
 | RH7-OCP3-BST      | Red Hat Enteprise Linux         | Ansible Bastion      | 1, 1536m       | RHV        |
-| RH7-OCP3-MST      | Red Hat OCPv3                   | Master HAproxy       | 1, 1536m       | RHV        |
-| RH7-OCP3-MST01    | Red Hat OCPv3                   | Master Node          | 2, 3072m       | RHV        |
-| RH7-OCP3-MST02    | Red Hat OCPv3                   | Master Node          | 2, 3072m       | RHV        |
-| RH7-OCP3-MST03    | Red Hat OCPv3                   | Master Node          | 2, 3072m       | RHV        |
-| RH7-OCP3-INF01    | Red Hat OCPv3                   | Infrastructure Node  | 2, 3072m       | RHV        |
-| RH7-OCP3-INF02    | Red Hat OCPv3    	              | Infrastructure Node  | 2, 3072m       | RHV        |
-| RH7-OCP3-INF03    | Red Hat OCPv3    	              | Infrastructure Node  | 2, 3072m       | RHV        |
-| RH7-OCP3-APP01    | Red Hat OCPv3   	              | Application Node     | 2, 4096m       | RHV        |
-| RH7-OCP3-APP02    | Red Hat OCPv3                   | Application Node     | 2, 4096m       | RHV        |
-| RH7-OCP3-APP03    | Red Hat OCPv3                   | Application Node     | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS01    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS02    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS03    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS04    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS11    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS12    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS13    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 4096m       | RHV        |
-| RH7-OCP3-OCS14    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 4096m       | RHV        |
+| RH7-OCP3-MST      | Red Hat OCPv3                   | Master HAproxy       | 1, 2048m       | RHV        |
+| RH7-OCP3-MST01    | Red Hat OCPv3                   | Master Node          | 2, 5120m       | RHV        |
+| RH7-OCP3-MST02    | Red Hat OCPv3                   | Master Node          | 2, 5120m       | RHV        |
+| RH7-OCP3-MST03    | Red Hat OCPv3                   | Master Node          | 2, 5120m       | RHV        |
+| RH7-OCP3-INF01    | Red Hat OCPv3                   | Infrastructure Node  | 2, 4096m       | RHV        |
+| RH7-OCP3-INF02    | Red Hat OCPv3    	              | Infrastructure Node  | 2, 4096m       | RHV        |
+| RH7-OCP3-INF03    | Red Hat OCPv3    	              | Infrastructure Node  | 2, 4096m       | RHV        |
+| RH7-OCP3-APP01    | Red Hat OCPv3   	              | Application Node     | 2, 5120m       | RHV        |
+| RH7-OCP3-APP02    | Red Hat OCPv3                   | Application Node     | 2, 5120m       | RHV        |
+| RH7-OCP3-APP03    | Red Hat OCPv3                   | Application Node     | 2, 5120m       | RHV        |
+| RH7-OCP3-OCS01    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 6092m       | RHV        |
+| RH7-OCP3-OCS02    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 6092m       | RHV        |
+| RH7-OCP3-OCS03    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 6092m       | RHV        |
+| RH7-OCP3-OCS04    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 6092m       | RHV        |
+| RH7-OCP3-OCS11    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 6092m       | RHV        |
+| RH7-OCP3-OCS12    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 6092m       | RHV        |
+| RH7-OCP3-OCS13    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 6092m       | RHV        |
+| RH7-OCP3-OCS14    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 6092m       | RHV        |
        
 | Node Type       | Description     |
 | :-------------- |:---------------:|
@@ -312,7 +271,48 @@ LAG8 - (unassigned)
  ---------------  --------------  -------------- --------------       
 </pre>
 
-# Converting to Aperture.lab
+## ISSUES:
+Intel NUC only has a single NIC.  A problem that can be remedied easily enough, but since I had another ITX-based machine laying around, it made sense to go that route.
+Intel NUC also has issues when I run my build script for KVM guests.  I don't have time to deal with that crap at this time.  So, I'll run the Asus for now.
+
+## Build Steps
+* Build laptop from DVD (manually, but reference a kickstart @ github)
+  * register to RHN
+  * Install/Configure PXE/tftp/HTTP/DNS
+  * share out DVD ISO sources via HTTP
+  * build RH7-IDM-SRV01 as KVM guest
+* Build ZION from Network and register to RHN.
+  * populate /etc/hosts using the entire list of KVM guests
+  * Build RH7-SAT6-SRV01 and register to RHN (sync channels)
+  * Build RH7-IDM-SRV01/02 and register to RH7-SAT6-SRV01
+    * update DNS using 'ipa' command found in finish script
+  * Update DNS resolvers on all hosts to now point to the IDM systems
+  * Build RH6RHVMGR
+* Build SERAPH and create iSCSI targets and NFS shares (for OpenShift)
+  * build RH7-IDM-SRV02 as KVM guest
+* Build NEO/TRINITY/MORPHEUS with BaseOS (RHV/RHEL)
+* Attach NEO and TRINITY to RH7-RHV4-MGR01 to make them RHV Hypervisors
+* point RHV Manager at SERAPH for Storage
+
+## NOTES
+To begin building the environment, I utilize:
+ - a build_KVM.sh script, which relies on .myconfig to identify parameters about each host.
+ - \<HOSTNAME\>.ks file which is the kickstart file (anaconda-ks.cfg) for each host
+ - ./post_install.sh a script that *should* end up in /root post kickstart.  This script registers node to Satellite and performs some housekeeping.
+ - finish_\<HOSTNAME\>.sh which should contain all the post-build steps
+
+```
+# echo "RH7-IDM-SRV:EL7:4:1536:50:200:server:7.5:BIOS" >> .myconfig
+# ./build_KVM.sh RH7-IDM-SRV
+# ssh-copy-id RH7-IDM-SRV
+# ssh RH7-IDM-SRV01
+# ./post_install.sh
+# wget http://10.10.10.10/finish_`hostname -f`.sh
+# chmod u+x finish_`hostname -f`.sh
+# ./finish_`hostname -f`.sh
+```
+
+## Converting to Aperture.lab
 <pre>
 rsync -tugrpolvv --exclude "README.md" --exclude "images" --exclude "*ilo*" /data/Projects/matrix.lab/ /data/Projects/aperture.lab/
 sed -i -e 's/matrix.lab/aperture.lab/g' /data/Projects/aperture.lab/*.{ks,sh,txt,hosts,html}
