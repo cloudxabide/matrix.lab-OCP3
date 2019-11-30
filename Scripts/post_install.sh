@@ -108,11 +108,7 @@ firewall-cmd --reload
 
 # Install Sysstat (SAR) and PCP
 yum -y install sysstat pcp
-systemctl enable sysstate --now
-
-#case `hostname -s` in 
-#  *ocp*)
-#cat << EOF > /etc/sysctl.d/98-ocp-tuning.conf
+systemctl enable sysstat --now
 
 #  Update Host and reboot
 echo "NOTE:  update and reboot"
@@ -122,3 +118,4 @@ exit 0
 
 ## I believe the "deploy_cluster.yml" playbook takes care of this
 ## https://docs.openshift.com/container-platform/3.11/admin_guide/overcommit.html#disabling-swap-memory
+
