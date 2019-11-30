@@ -1,4 +1,4 @@
-#!/bin/bash
+te!/bin/bash
 WEBSERVER=10.10.10.10
 
 export rhnuser=$(curl -s ${WEBSERVER}/OS/.rhninfo | grep rhnuser | cut -f2 -d\=)
@@ -131,7 +131,7 @@ firewall-cmd --reload
 
 # Install Sysstat (SAR) and PCP
 yum -y install sysstat pcp
-systemctl enable sysstate --now
+systemctl enable sysstat --now
 
 #  Update Host and reboot
 echo "NOTE:  update and reboot"
