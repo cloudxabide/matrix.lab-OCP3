@@ -162,7 +162,7 @@ To begin building the environment, I utilize:
 | Storage (apps)  | Hosting either Application or 
 | Storage (infra) | Infrastrcture (metrics, logging, registry) data
 
-[OCP3 Cluster with OCS - Cluster Oveview](images/OCP3-OCS_Cluster_Overview.png)
+![OCP3 Cluster with OCS - Cluster Oveview](images/OCP3-OCS_Cluster_Overview.png)
 
 ## External Repos
 
