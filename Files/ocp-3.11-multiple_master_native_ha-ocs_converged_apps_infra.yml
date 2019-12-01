@@ -15,6 +15,9 @@ rh7-ocp3-mst01.matrix.lab openshift_public_hostname=rh7-ocp3-mst01.matrix.lab
 rh7-ocp3-mst02.matrix.lab openshift_public_hostname=rh7-ocp3-mst02.matrix.lab
 rh7-ocp3-mst03.matrix.lab openshift_public_hostname=rh7-ocp3-mst03.matrix.lab
 
+[lb]
+rh7-ocp3-mst.matrix.lab
+
 [nodes]
 rh7-ocp3-mst01.matrix.lab openshift_public_hostname=rh7-ocp3-mst01.matrix.lab openshift_node_group_name='node-config-master'
 rh7-ocp3-mst02.matrix.lab openshift_public_hostname=rh7-ocp3-mst02.matrix.lab openshift_node_group_name='node-config-master'
@@ -42,10 +45,11 @@ ansible_become=true
 debug_level=2
 openshift_release=v3.11
 openshift_deployment_type=openshift-enterprise
+os_firewall_use_firewalld=True 
 
 oreg_url=registry.redhat.io/openshift3/ose-${component}:${version}
-oreg_auth_user=rhnuser
-oreg_auth_password=rhnpass
+oreg_auth_user=<rhnuser>
+oreg_auth_password=<rhnpass>
 
 openshift_master_cluster_method=native
 openshift_master_cluster_hostname=rh7-ocp-mst.matrix.lab
@@ -115,3 +119,6 @@ openshift_master_htpasswd_users={'ocpadmin': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauv
 
 openshift_install_examples=true
 openshift_master_default_subdomain=ocp3-mwn .linuxrevolution.com
+
+openshift_disable_check=memory_availability
+
