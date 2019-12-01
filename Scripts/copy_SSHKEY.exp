@@ -1,6 +1,12 @@
 #!/usr/bin/expect -f
 
 # TODO:  This needs to be updated to check whether it is asking "yes" or no
+#        At this point, this script has no "logic" and therefore you will need to
+#        create ~/.ssh/config with the following:
+#        Host *.matrix.lab
+#          StrictHostKeyChecking=no
+# 
+#        ssh-copy-id does not have a way to add that option
 
 set force_conservative 0  ;# set to 1 to force conservative mode even if
                           ;# script wasn't run conservatively originally
