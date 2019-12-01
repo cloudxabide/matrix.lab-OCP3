@@ -70,12 +70,9 @@ do
     RHS3) OSDIR="RHS-3";;
     *)  echo "ERROR: Unsupported Release in $CONFIG"; exit 9;;
   esac
-  echo "Install Source: --location=\"http://${WEBSERVER}/OS/${OSDIR}\" "
-  SLEEPYTIME=5
-  echo "NOTE: pause for $SLEEPYTIME seconds to review parameters above"
-  while [ $SLEEPYTIME -gt 0 ]; do echo -ne "$SLEEPYTIME\033[0K\r"; sleep 1; : $((SLEEPYTIME--)); done
 
-# DISPLAY SOME HELPFUL INFO
+  echo "Install Source: --location=\"http://${WEBSERVER}/OS/${OSDIR}\" "
+  # DISPLAY SOME HELPFUL INFO
   echo $GUESTNAME $RELEASE $NUMCPUS $MEM $HDDA $HDDB $RELEASETYPE $RELEASEVER $BIOSTYPE $USE_SATELLITE $PURPOSE
   echo "GUESTNAME: $GUESTNAME"
   echo "RELEASE: $RELEASE"
@@ -92,6 +89,11 @@ do
   echo "DISCONNECTED: $DISCONNECTED"
   echo "SYSTEM PURPOSE: $PURPOSE"
   echo "BASE INSTALL:  $INSTALL"
+
+  ## RUN A TIMER BEFORE PROCEEDING
+  SLEEPYTIME=5
+  echo "NOTE: pause for $SLEEPYTIME seconds to review parameters above"
+  while [ $SLEEPYTIME -gt 0 ]; do echo -ne "Proceed in:  $SLEEPYTIME\033[0K\r"; sleep 1; : $((SLEEPYTIME--)); done
 
 # CREATE THE BASEDIR AND DISK IMAGE FILES
 if [ ! -d /var/lib/libvirt/images/${GUESTNAME} ]

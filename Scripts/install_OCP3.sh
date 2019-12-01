@@ -118,7 +118,7 @@ for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print 
 do
   ssh -t $HOST << EOF
     uname -n
-    sudo  $OCP_REPOS_MGMT
+    sudo  $OCP_REPOS_MGMT &
     echo
 EOF
 done
@@ -152,7 +152,7 @@ CONTAINER_ROOT_LV_MOUNT_PATH="/var/lib/docker"
 EOF
 
 [ -f /etc/sysconfig/docker-storage-setup ] && docker-storage-setup; sleep 2
-systemctl enable docker --now
+systemctl enable docker --now &
 
 # Setup Docker on the Nodes
 #  CLEAN THIS SUDO STUFF UP, IF NEEDED
