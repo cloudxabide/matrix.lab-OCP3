@@ -11,8 +11,7 @@ ps -ef | grep post_instaill.sh | grep -v grep && { echo "ERROR: script is alread
 
 touch $LOG_FILE
 exec 1>$LOG_FILE 
-exec 2>&1
-
+exec 2>&1 
 WEBSERVER="10.10.10.10"
 
 PWD=`pwd`
@@ -111,6 +110,23 @@ firewall-cmd --reload
 yum -y install sysstat pcp
 systemctl enable sysstat --now
 
+#  Configure tuned
+$(which yum) -y install tuned
+case `dmidecode -s system-manufacturer` in
+  'Red Hat'|'oVirt')
+    tuned-adm profile virtual-guest
+    subscription-manager repos --enable=rhel-7-server-rh-common-rpms
+    yum -y install rhevm-guest-agent
+    systemctl enable ovirt-guest-agent; systemctl start $_
+  ;;
+  HP)
+    tuned-adm profile virtual-host
+  ;;
+  *)
+    tuned-adm profile balanced
+  ;;
+esac 
+ 
 #  Update Host and reboot
 echo "NOTE:  update and reboot"
 yum -y update && shutdown now -r
