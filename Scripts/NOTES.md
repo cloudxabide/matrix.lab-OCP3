@@ -14,18 +14,22 @@ DONE -  ERROR    Unknown OS name 'rhel7.7'. See `osinfo-query os` for valid valu
 ```
 # Teardown 
 # Passw0rd
-ssh apoc.matrix.lab
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do ssh -oStrictHostkeyChecking=no -t $HOST "sudo subscription-manager unregister"; done
+ssh rh7-ocp3-bst01.matrix.lab
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo subscription-manager unregister"; echo ; done
+
+ssh apoc.matrix.lab morpheus.matrix.lab
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -rf /var/lib/libvirt/images/$HOST; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
 
+# Do this on ALL the Hypervisors (and zion)
 # Base OS Install (VM provision)
 [ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; }
 cd ~/matrix.lab/Scripts/; git pull
 # SLEEPYTIME=xxx - Time, in seconds, before script should start to build next VM (it's
 # TEST THE FOLLOWING WITH THE NEXT RUN (added that "countdown")
+#### BUILD   
 SLEEPYTIME=240; 
 case `hostname -s` in 
   apoc)
@@ -39,6 +43,7 @@ esac
 
 # Now, go execute the install_OCP3.sh procedure
 
+#### CREATE DISKS 
 # Create and attach new disk to VMs (third disk)
 # Work around to create and attach the third disk to the appropriate systems
 #  ADD THE DISK *AFTER* YOU TAKE SNAPSHOTS/
