@@ -90,8 +90,6 @@ hammer organization add-domain --domain="${DOMAIN}" --name="${ORGANIZATION}"
 ######################
 ## Collect information
 hammer product list --organization="${ORGANIZATION}" > ~/hammer_product_list.out
-PRODUCT='Red Hat Enterprise Linux Server'
-hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
 
 ######################
 PRODUCT='Red Hat Enterprise Linux Server'
@@ -103,12 +101,11 @@ do
   echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
   echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever='7Server' --product=\"${PRODUCT}\" --id=\"${REPO}\" "
   hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever='7Server' --product="${PRODUCT}" --id="${REPO}"
-  echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever='7.6' --product=\"${PRODUCT}\" --id=\"${REPO}\" "
-  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever='7.6' --product="${PRODUCT}" --id="${REPO}"
+  echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever='7.7' --product=\"${PRODUCT}\" --id=\"${REPO}\" "
+  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever='7.7' --product="${PRODUCT}" --id="${REPO}"
 done
 ## THERE ARE REPOS WHICH DO *NOT* ACCEPT A "releasever" VALUE
-#REPOS="4185 4188 3030"
-REPOS="4188 8503"
+REPOS="8503" # Satellite Tools 6.5
 for REPO in $REPOS
 do
   echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
@@ -119,6 +116,16 @@ done
 PRODUCT='Red Hat Software Collections for RHEL Server'
 hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
 REPOS="2808"
+for REPO in $REPOS
+do
+  echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
+  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever='7Server' --product="${PRODUCT}" --id="${REPO}"
+done
+
+######################
+PRODUCT='Red Hat Ansible Engine'
+hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
+REPOS="7387"
 for REPO in $REPOS
 do
   echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
@@ -148,13 +155,13 @@ hammer repository create --name='EPEL 7 - x86_64' --organization="${ORGANIZATION
 
 #################
 ## SYNC EVERYTHING (Manually)
-#for i in $(hammer --csv repository list --organization="${ORGANIZATION}" | awk -F, {'print $1'} | grep -vi '^ID'); do echo "hammer repository synchronize --id ${i} --organization=\"${ORGANIZATION}\" --async"; done
 for i in $(hammer --csv repository list --organization="${ORGANIZATION}" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization="${ORGANIZATION}" --async; sleep 1; done
 
 ################
 # SYNC PLANS - I believe these are working now.
 #   I may... want to separate all the major products out to their own Sync Plan though.
 hammer sync-plan create --enabled true --interval=daily --name='Daily sync - Red Hat' --description="Daily Sync Plan for Red Hat Products" --sync-date='2015-11-22 02:00:00' --organization="${ORGANIZATION}"
+hammer product set-sync-plan --sync-plan='Daily sync - Red Hat' --organization="${ORGANIZATION}" --name='Red Hat Ansible Engine'
 hammer product set-sync-plan --sync-plan='Daily sync - Red Hat' --organization="${ORGANIZATION}" --name='Red Hat Enterprise Linux Server'
 hammer product set-sync-plan --sync-plan='Daily sync - Red Hat' --organization="${ORGANIZATION}" --name='Red Hat OpenShift Container Platform'
 hammer product set-sync-plan --sync-plan='Daily sync - Red Hat' --organization="${ORGANIZATION}" --name='Red Hat Software Collections for RHEL Server'
