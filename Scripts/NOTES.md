@@ -22,16 +22,12 @@ for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print 
 Status:  I doubt this will work as expected - needs to be tested  
 
 ```
-HYPERVISORS="apoc.matrix.lab morpheus.matrix.lab"
-for HYPERVISOR in $HYPERVISORS
-do 
-  ssh -t $HYPERVISOR << EOF 
-    for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
-    for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
-    for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -rf /var/lib/libvirt/images/$HOST; done
-    for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
-EOF
-done
+HYPERVISORS="
+# ssh to apoc.matrix.lab morpheus.matrix.lab"
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -rf /var/lib/libvirt/images/$HOST; done
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
 
 # Do this on ALL the Hypervisors (and zion)
 # Base OS Install (VM provision)
@@ -43,12 +39,13 @@ cd ~/matrix.lab/Scripts/; git pull
 SLEEPYTIME=240; 
 case `hostname -s` in 
   apoc)
-    for GUEST in `grep -v \# ~/matrix.lab/Files/etc_hosts | grep ocp | egrep '1$|3$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; done
+    for GUEST in `grep -v \# ~/matrix.lab/Files/etc_hosts | grep ocp | egrep -v 'bst' | egrep '1$|3$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; done
   ;;
   morpheus)
     for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | egrep '2$|4$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; done
     # Build the Load Balancer (which has no numeric representation in the hostname, nor VM name)
-    ./build_KVM.sh RH7-OCP3-MST
+    ./build_KVM.sh RH7-OCP3-MST; sleep $SLEEPYTIME
+    ./build_KVM.sh RH7-OCP3-BST01; sleep $SLEEPYTIME
   ;;
 esac
 # START THE VMS
@@ -70,7 +67,7 @@ sed -i -e '/ocp3/d' ~/.ssh/known_hosts
 sed -i -e '/ocp3/d' ~/.ssh/known_hosts.matrix.lab
 ssh-copy-id rh7-ocp3-bst01.matrix.lab 
 ssh rh7-ocp3-bst01.matrix.lab "sh /root/post_install.sh"
-# proceed to install_OCP3.sh script, then come back to do snapshots
+# proceed to install_OCP3.sh script, run post_install.sh on all the nodes, then come back to do snapshots
 ```
 
 ## Create Snapshots, if you want to.  (Shutdown the VM though)

@@ -75,7 +75,7 @@ rm ~/.ssh/config
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
 do 
   echo "Connecting to remote host:"
-  ssh -t $HOST "uname -n; sh ./post_install.sh" 
+  ssh $HOST "uname -n; sh ./post_install.sh & " 
 done
 
 # Switch the connections to the mansible user 
@@ -90,7 +90,6 @@ chmod 0600 ~/.ssh/config
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do
   ./copy_SSHKEY.exp $HOST $PASSWORD
-  #ssh-copy-id $HOST
 done
 
 # Test the connection (and sudo - which should have been done in a previous script)
@@ -150,8 +149,8 @@ CONTAINER_ROOT_LV_SIZE="100%FREE"
 CONTAINER_ROOT_LV_MOUNT_PATH="/var/lib/docker"
 EOF
 
-[ -f /etc/sysconfig/docker-storage-setup ] && docker-storage-setup; sleep 2
-systemctl enable docker --now &
+[ -f /etc/sysconfig/docker-storage-setup ] && docker-storage-setup; sleep 2 
+systemctl enable docker --now 
 
 # Setup Docker on the Nodes
 #  CLEAN THIS SUDO STUFF UP, IF NEEDED
