@@ -94,9 +94,9 @@ NOTE:  These memory values are not yet solidified.
 | ----------------- | ------------------------------- | ---------------------| -------------- | ---------- | 
 | RH7-SAT6-SRV01    | Red Hat Satellite 6             | Host Management      | 2, 4096m       | sati       |
 | RH7-IDM-SRV02     | Red Hat Identity Management     | IdM and DNS          | 2, 1024m       | sati       |
-| RH7-OCP3-BST      | Red Hat Enteprise Linux         | Ansible Bastion      | 1, 1536m       | RHV        |
+| RH7-OCP3-BST      | Red Hat Enteprise Linux         | Ansible Bastion      | 2, 2048m       | sati       |
 | ----------------- | ------------------------------- | ---------------------| -------------- | ---------- | 
-| RH7-OCP3-MST      | Red Hat OCPv3                   | Master HAproxy       | 1, 2048m       | RHV        |
+| RH7-OCP3-MST      | Red Hat OCPv3                   | Master HAproxy       | 2, 2048m       | RHV        |
 | RH7-OCP3-MST01    | Red Hat OCPv3                   | Master Node          | 2, 5120m       | RHV        |
 | RH7-OCP3-MST02    | Red Hat OCPv3                   | Master Node          | 2, 5120m       | RHV        |
 | RH7-OCP3-MST03    | Red Hat OCPv3                   | Master Node          | 2, 5120m       | RHV        |
@@ -106,14 +106,14 @@ NOTE:  These memory values are not yet solidified.
 | RH7-OCP3-APP01    | Red Hat OCPv3   	              | Application Node     | 2, 5120m       | RHV        |
 | RH7-OCP3-APP02    | Red Hat OCPv3                   | Application Node     | 2, 5120m       | RHV        |
 | RH7-OCP3-APP03    | Red Hat OCPv3                   | Application Node     | 2, 5120m       | RHV        |
-| RH7-OCP3-OCS01    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 6092m       | RHV        |
-| RH7-OCP3-OCS02    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 6092m       | RHV        |
-| RH7-OCP3-OCS03    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 6092m       | RHV        |
-| RH7-OCP3-OCS04    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 6092m       | RHV        |
-| RH7-OCP3-OCS11    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 6092m       | RHV        |
-| RH7-OCP3-OCS12    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 6092m       | RHV        |
-| RH7-OCP3-OCS13    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 6092m       | RHV        |
-| RH7-OCP3-OCS14    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 6092m       | RHV        |
+| RH7-OCP3-OCS01    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 3, 8192m       | RHV        |
+| RH7-OCP3-OCS02    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 8192m       | RHV        |
+| RH7-OCP3-OCS03    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 8192m       | RHV        |
+| RH7-OCP3-OCS04    | Red Hat OCPv3 (w/OCS)           | Storage Node (infra) | 2, 8192m       | RHV        |
+| RH7-OCP3-OCS11    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 8192m       | RHV        |
+| RH7-OCP3-OCS12    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 8192m       | RHV        |
+| RH7-OCP3-OCS13    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 8192m       | RHV        |
+| RH7-OCP3-OCS14    | Red Hat OCPv3 (w/OCS)           | Storage Node (apps)  | 2, 8192m       | RHV        |
        
 | Node Type       | Description     |
 | :-------------- |:---------------:|
@@ -212,8 +212,8 @@ LAG1 - seraph-storage
 LAG2 - neo-guestnet  
 LAG3 - neo-storage  
 LAG4 - trinity-guestnet  
-LAG5 - trinity-storage  
-LAG6 - morpheus-guestnet 
+LAG5 - trinity-storage   
+LAG6 - morpheus-guestnet   
 LAG7 - morpheus-storage  
 LAG8 - (unassigned)
 </pre>
