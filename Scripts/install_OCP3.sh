@@ -67,7 +67,6 @@ for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print 
 do 
   echo "Copy SSH key to $HOST"
   ./copy_SSHKEY.exp $HOST $PASSWORD
-  #ssh-copy-id $HOST
 done
 unalias rm
 rm ~/.ssh/config
