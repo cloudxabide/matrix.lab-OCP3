@@ -4,7 +4,7 @@
 #             and fetch the configuration parameters from a configuration file
 #           I created it to primarily save myself some time
 #  Author:  James Radtke <jradtke@redhat.com>
-#   NOTES:  This is NOT a Red Hat supported work
+#   NOTES:  This is NOT a Red Hat supported effort 
 
 # VARS
 GUESTNAME=${1}
@@ -74,10 +74,6 @@ do
   SLEEPYTIME=5
   echo "NOTE: pause for $SLEEPYTIME seconds to review parameters above"
   while [ $SLEEPYTIME -gt 0 ]; do echo -ne "$SLEEPYTIME\033[0K\r"; sleep 1; : $((SLEEPYTIME--)); done
-# Temp fix
-case $OSVARIANT in
-  rhel7.7)  OSVARIANT=rhel7.6;;
-esac 
 
 # DISPLAY SOME HELPFUL INFO
   echo $GUESTNAME $RELEASE $NUMCPUS $MEM $HDDA $HDDB $RELEASETYPE $RELEASEVER $BIOSTYPE $USE_SATELLITE $PURPOSE
@@ -123,7 +119,7 @@ then
   if [ ! -f /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.qcow2  ] 
   then
     echo "qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.qcow2 ${HDDC}G "
-    qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.qcow2 ${HDDC}
+    qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.qcow2 ${HDDC}G
     sleep 5
   fi
 fi

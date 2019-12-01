@@ -17,11 +17,21 @@ DONE -  ERROR    Unknown OS name 'rhel7.7'. See `osinfo-query os` for valid valu
 ssh rh7-ocp3-bst01.matrix.lab
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo subscription-manager unregister"; echo ; done
 
-ssh apoc.matrix.lab morpheus.matrix.lab
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -rf /var/lib/libvirt/images/$HOST; done
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
+
+## Teardown/Cleanup
+Status:  I doubt this will work as expected - needs to be tested  
+
+```
+HYPERVISORS="apoc.matrix.lab morpheus.matrix.lab"
+for HYPERVISOR in $HYPERVISORS
+do 
+  ssh -t $HYPERVISOR << EOF 
+    for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
+    for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
+    for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -rf /var/lib/libvirt/images/$HOST; done
+    for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
+EOF
+done
 
 # Do this on ALL the Hypervisors (and zion)
 # Base OS Install (VM provision)
@@ -37,44 +47,21 @@ case `hostname -s` in
   ;;
   morpheus)
     for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | egrep '2$|4$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; done
-    ./build_KVM.sh RH7-OCP3-MST
+    # Build the Load Balancer (which has no numeric representation in the hostname, nor VM name)
+    COUNTER=${SLEEPYTIME}; ./build_KVM.sh RH7-OCP3-MST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--));
   ;;
 esac
-
-# Now, go execute the install_OCP3.sh procedure
-
-#### CREATE DISKS 
-# Create and attach new disk to VMs (third disk)
-# Work around to create and attach the third disk to the appropriate systems
-#  ADD THE DISK *AFTER* YOU TAKE SNAPSHOTS/
-case `hostname -s` in
-  apoc)
-    for HOST in `egrep 'ocs0' ~/matrix.lab/Files/etc_hosts | egrep '1$|3$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 120g; done
-    for HOST in `egrep 'ocs1' ~/matrix.lab/Files/etc_hosts | egrep '1$|3$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 110g; done
-  ;;
-  morpheus)
-    for HOST in `egrep 'ocs0' ~/matrix.lab/Files/etc_hosts | egrep '2$|4$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 120g; done
-    for HOST in `egrep 'ocs1' ~/matrix.lab/Files/etc_hosts | egrep '2$|4$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/$HOST/${HOST}-2.qcow2 110g; done
-  ;;
-esac
-# Uncomment this if you would like to use /dev/vdc for NFS
-#qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/RH7-OCP3-BST01/RH7-OCP3-BST01-2.qcow2 50g
-
-# Set the correct SELinux context
-restorecon -RFvv /var/lib/libvirt/images/RH7-OCP3-{APP,BST,INF,MST,OCS}*/RH7-OCP3-*2.qcow2
-
-#### ATTACH THE DISK
-case `hostname -s` in
-  apoc)
-    for HOST in `egrep 'ocs' ~/matrix.lab/Files/etc_hosts | egrep '1$|3$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do virsh attach-disk $HOST --source /var/lib/libvirt/images/${HOST}/${HOST}-2.qcow2 --target='vdc' --persistent;  done
-  ;;
-  morpheus)
-    for HOST in `egrep 'ocs' ~/matrix.lab/Files/etc_hosts | egrep '2$|4$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do virsh attach-disk $HOST --source /var/lib/libvirt/images/${HOST}/${HOST}-2.qcow2 --target='vdc' --persistent;  done
-  ;;
-esac
-
 # START THE VMS
 for HOST in `virsh list --all | grep -i ocp | awk '{ print $2 }'`; do echo "$HOST"; virsh start $HOST; echo; sleep 2; done
+```
+
+## Housekeeping on personal machine
+```
+sed -i -e '/ocp3/d' ~/.ssh/known_hosts
+sed -i -e '/ocp3/d' ~/.ssh/known_hosts.matrix.lab
+ssh-copy-id rh7-ocp3-bst01.matrix.lab
+ssh rh7-ocp3-bst01.matrix.lab "sh /root/post_install.sh"
+# proceed to install_OCP3.sh script, then come back to do snapshots
 ```
 
 ## Build the bastion

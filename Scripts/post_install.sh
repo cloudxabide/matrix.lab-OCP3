@@ -84,7 +84,7 @@ sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sud
 # Enable Cockpit (AFAIK this will be universally applied)
 # Manage Cockpit
 yum -y install cockpit
-systemctl enable --now cockpit.socket
+systemctl enable cockpit.socket
 firewall-cmd --permanent --zone=$(firewall-cmd --get-default-zone) --add-service=cockpit 
 firewall-cmd --complete-reload
 
@@ -99,10 +99,11 @@ esac
 
 # Enable SNMP (for LibreNMS)
 yum -y install  net-snmp net-snmp-utils
-mv /etc/snmp/snmpd.conf //etc/snmp/snmpd.conf-`date +%F`
+mv /etc/snmp/snmpd.conf /etc/snmp/snmpd.conf-`date +%F`
+WEBSERVER=10.10.10.10
 curl http://${WEBSERVER}/Files/etc_snmp_snmpd.conf > /etc/snmp/snmpd.conf
 restorecon -Fvv /etc/snmp/snmpd.conf
-systemctl enable snmpd --now
+systemctl enable snmpd --now &
 firewall-cmd --permanent --add-service=snmp
 firewall-cmd --reload
 
