@@ -14,6 +14,8 @@
 #
 
 #  Prep-work
+
+(which git) || yum -y install git
 [ ! -d ~/matrix.lab ] && cd ~; git clone https://github.com/cloudxabide/matrix.lab
 cd matrix.lab/Scripts
 
@@ -214,7 +216,8 @@ EOF
   echo
 done
 
-
+###############################
+#### NFS STUFF
 # I made the NFS portion a "routine" as I don't think I'll end up using it (but wanted to retain it)
 create_nfs_shares() {
 # Create an NFS share for the registry on Bastion (VDC in this case)

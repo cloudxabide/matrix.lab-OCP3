@@ -84,6 +84,7 @@ Our heroes will function as hypervisors or compute nodes.
   *  Nagios/libreNMS
 
 ## IaaS/PaaS layout 
+NOTE:  These memory values are not yet solidified.
 
 | Hostname          |            Product              |  Purpose             | Proc, Mem Size | Hypervisor |
 | :---------------- |:-------------------------------:|:--------------------:| --------------:|:----------:|
@@ -93,8 +94,8 @@ Our heroes will function as hypervisors or compute nodes.
 | ----------------- | ------------------------------- | ---------------------| -------------- | ---------- | 
 | RH7-SAT6-SRV01    | Red Hat Satellite 6             | Host Management      | 2, 4096m       | sati       |
 | RH7-IDM-SRV02     | Red Hat Identity Management     | IdM and DNS          | 2, 1024m       | sati       |
-| ----------------- | ------------------------------- | ---------------------| -------------- | ---------- | 
 | RH7-OCP3-BST      | Red Hat Enteprise Linux         | Ansible Bastion      | 1, 1536m       | RHV        |
+| ----------------- | ------------------------------- | ---------------------| -------------- | ---------- | 
 | RH7-OCP3-MST      | Red Hat OCPv3                   | Master HAproxy       | 1, 2048m       | RHV        |
 | RH7-OCP3-MST01    | Red Hat OCPv3                   | Master Node          | 2, 5120m       | RHV        |
 | RH7-OCP3-MST02    | Red Hat OCPv3                   | Master Node          | 2, 5120m       | RHV        |
