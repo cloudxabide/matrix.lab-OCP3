@@ -29,9 +29,10 @@ fi
 wget http://${WEBSERVER}/Scripts/finish_$(hostname -s | tr [a-z] [A-Z]).sh 
 
 # Display warning (in case this script was run interactively)
+SLEEPYTIME=5
 echo "NOTE: This script will update host and REBOOT host"
-echo "  Press CTRL-C to quit (you have 5 seconds)"
-sleep 5
+echo "  Press CTRL-C to quit (you have ${SLEEPYTIME} seconds)"
+while [ $SLEEPYTIME -gt 0 ]; do echo -ne "Will proceed in:  $SLEEPYTIME\033[0K\r"; sleep 1; : $((SLEEPYTIME--)); done
 
 # Register the system if not already (exit if the config file is not present) - I need to get an activation key and use vault for this 
 export rhnuser=$(curl -s ${WEBSERVER}/OS/.rhninfo | grep rhnuser | cut -f2 -d\=)

@@ -14,10 +14,9 @@
 #
 
 #  Prep-work
-
 (which git) || yum -y install git
-[ ! -d ~/matrix.lab ] && cd ~; git clone https://github.com/cloudxabide/matrix.lab
-cd matrix.lab/Scripts
+[ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; }
+cd ~/matrix.lab/Scripts; git pull
 
 PASSWORD="Passw0rd"
 
@@ -215,38 +214,4 @@ do
 EOF
   echo
 done
-
-###############################
-#### NFS STUFF
-# I made the NFS portion a "routine" as I don't think I'll end up using it (but wanted to retain it)
-create_nfs_shares() {
-# Create an NFS share for the registry on Bastion (VDC in this case)
-parted -s /dev/vdc mklabel gpt mkpart pri ext4 2048s 100% set 1 lvm on
-pvcreate /dev/vdc1
-vgcreate vg_exports /dev/vdc1
-lvcreate -nlv_registry -L+10g vg_exports
-lvcreate -nlv_metrics -L+10g vg_exports
-mkfs.xfs /dev/mapper/vg_exports-lv_registry
-mkfs.xfs /dev/mapper/vg_exports-lv_metrics
-
-# semanage fcontext --list
-yum -y install nfs-utils
-
-mkdir -p /exports/nfs/ocp3.matrix.lab/{registry,metrics}
-chmod 000 /exports/nfs/ocp3.matrix.lab/{registry,metrics}/
-echo "/dev/mapper/vg_exports-lv_registry /exports/nfs/ocp3.matrix.lab/registry xfs defaults 0 0" >> /etc/fstab
-echo "/dev/mapper/vg_exports-lv_metrics /exports/nfs/ocp3.matrix.lab/metrics xfs defaults 0 0" >> /etc/fstab
-mount -a
-chmod 2770 /exports/nfs/ocp3.matrix.lab/{registry,metrics}
-chown nfsnobody:nfsnobody /exports/nfs/ocp3.matrix.lab/{registry,metrics}
-ls -laZ /exports/nfs/ocp3.matrix.lab/* -d
-
-echo "/exports/nfs/ocp3.matrix.lab/registry 10.10.10.0/24(rw,sync,no_root_squash)" >> /etc/exports
-echo "/exports/nfs/ocp3.matrix.lab/metrics 10.10.10.0/24(rw,sync,no_root_squash)" >> /etc/exports
-exportfs -a; exportfs
-
-firewall-cmd --permanent --zone=$(firewall-cmd --get-default-zone) --add-service={nfs,mountd,rpc-bind}
-firewall-cmd --reload
-systemctl enable nfs-server.service  --now
-}
 
