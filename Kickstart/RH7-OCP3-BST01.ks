@@ -48,9 +48,7 @@ reboot
 @base
 @core
 expect
-git
 ntp
-perl
 tuned
 %end
 

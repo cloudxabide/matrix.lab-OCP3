@@ -47,9 +47,7 @@ reboot
 %packages
 @base
 @core
-git
 ntp
-perl
 tuned
 %end
 
