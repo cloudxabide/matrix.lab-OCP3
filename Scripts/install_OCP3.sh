@@ -9,16 +9,15 @@
 #   Notes:  This is NOT IaC yet.  :-(
 #           This a "non Production" build approach.  
 #           I have the bastion setup to do NFS to the cluster (if/when Gluster is not being used)
-#          This entire script is intended to be run from the bastion host to all the nodes (the bastion included).
-#            Therefore, notice that commands are prefaced by "sudo" and the ssh command includes a '-t'
-#            SSH ControlSockets is likely the better/best way to actually be doing this work - but, this is just 
-#            a lab and NOT how OCP should be installed anyhow.
-
+#           This entire script is intended to be run from the bastion host to all the nodes (the bastion included).
+#             Therefore, notice that commands are prefaced by "sudo" and the ssh command includes a '-t'
+#             SSH ControlSockets is likely the better/best way to actually be doing this work - but, this is just 
+#              a lab and NOT how OCP should be installed anyhow.
+#
 #    TODO:  Need to figure out a better way for sending the password to ssh-copy-id
 #           use getops to either get the password as an ARGV, or set it to a default
 #
 
-# VARIABLES
 PASSWORD="Passw0rd"
 
 #set -o errexit
@@ -30,18 +29,17 @@ touch $LOG_FILE
 exec 1>$LOG_FILE 
 exec 2>&1
 
+# Make sure you're on the right host, else leave a message and exit 
+[ `hostname -s` != "rh7-ocp3-bst01" ] && { echo "You are on the wrong host"; exit 9; }
+
 #  Prep-work
 (which git) || yum -y install git
 [ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; }
 cd ~/matrix.lab/Scripts; git pull
 
-# Make sure you're on the right host, else leave a message and exit 
-[ `hostname -s` != "rh7-ocp3-bst01" ] && { echo "You are on the wrong host"; exit 9; }
-
 # I may remove this later, as it might actually goof something up
 (grep OCP_VERSION ~/.bash_profile) ||  { echo -e "OCP_VERSION=3.11\nexport OCP_VERSION" >> ~/.bash_profile; }
 . ~/.bash_profile
-
 
 # How to manually subscribe 
 #  subscription-manager register
@@ -57,22 +55,14 @@ cd ~/matrix.lab/Scripts; git pull
 
 # Alright - this next step is a bit "rammy".  HOWEVER... this host should only be used as the Bastion 
 #   to an OCP3 Cluster (and, in my case, should not already have any customizations done)
-cat << EOF > ~/.ssh/config
-Host *.matrix.lab
-  StrictHostKeyChecking no
-EOF
-chmod 0600 ~/.ssh/config
 
 # Establish connectivity and sync ssh-keys to hosts (as root) 
-# Need to figure out a IaC way of doing this
 # PASSWORD="Passw0rd" # This was set towards the beginning of this script
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do 
   echo "Copy SSH key to $HOST"
   ./copy_SSHKEY.exp $HOST $PASSWORD
 done
-unalias rm
-rm ~/.ssh/config
  
 # Run the "post_install.sh" script on all the hosts (which adds user:mansible)
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
@@ -83,7 +73,7 @@ done
 # You can actually proceed without waiting for that last step.  However... the nodes are going to reboot at some point.
 
 # Switch the connections to the mansible user 
-cat << EOF > ~/.ssh/config
+(grep mansible ~/.ssh/config) || cat << EOF > ~/.ssh/config
 Host *.matrix.lab
   User mansible
 EOF
@@ -140,25 +130,9 @@ case $OCP_VERSION in
   ;;
 esac 
 
-# Install openshift-ansible and docker on Bastion
-yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION 
-
-# Configure Docker Storage (this section *may* be version specific also)
-cat << EOF > /etc/sysconfig/docker-storage-setup
-STORAGE_DRIVER=overlay2
-VG=docker-vg
-DEVS=/dev/vdb
-CONTAINER_ROOT_LV_NAME="docker-root-lv"
-CONTAINER_ROOT_LV_SIZE="100%FREE"
-CONTAINER_ROOT_LV_MOUNT_PATH="/var/lib/docker"
-EOF
-
-[ -f /etc/sysconfig/docker-storage-setup ] && docker-storage-setup 
-systemctl enable docker --now 
-
-# Setup Docker on the Nodes
+# Setup Docker and OpenShift Utils on the Nodes
 #  CLEAN THIS SUDO STUFF UP, IF NEEDED
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#' | awk '{ print $2 }'`
 do
   ssh -t $HOST << EOF
     uname -n
@@ -171,7 +145,7 @@ EOF
 done
 
 # Make sure docker-storage-setup ran correctly
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#' | awk '{ print $2 }'`
 do
   ssh $HOST "uname -n; sudo df -h /var/lib/docker"
   echo
@@ -197,17 +171,7 @@ done
  
 exit 0
 
-### THE FOLLOWING WILL NEED TO BE DONE MANUALLY (AND PROBABLY SHOULD ANYHOW)
-cp ~/matrix.lab/Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml ~/
-# The following updates RHN info, or update reg_auth_{user,password} manually
-sed -i -e 's/<rhnuser>/PutYourRHNUserHere/'g ~/ocp-${OCP_VERSION}*.yml
-sed -i -e 's/<rhnpass>/PutYourRHNPassHere/'g ~/ocp-${OCP_VERSION}*.yml
-cd /usr/share/ansible/openshift-ansible
-# The following *absolutely* makes an assumption that there is only ONE inventory file in your home dir.  Update accordingly
-ansible all --list-hosts -i ~/ocp-${OCP_VERSION}*.yml 
-ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml
-ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml
-
+# Run this to disable error logging
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
 do
   ssh -t $HOST << EOF
