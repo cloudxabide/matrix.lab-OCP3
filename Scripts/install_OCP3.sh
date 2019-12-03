@@ -9,15 +9,16 @@
 #   Notes:  This is NOT IaC yet.  :-(
 #           This a "non Production" build approach.  
 #           I have the bastion setup to do NFS to the cluster (if/when Gluster is not being used)
+#          This entire script is intended to be run from the bastion host to all the nodes (the bastion included).
+#            Therefore, notice that commands are prefaced by "sudo" and the ssh command includes a '-t'
+#            SSH ControlSockets is likely the better/best way to actually be doing this work - but, this is just 
+#            a lab and NOT how OCP should be installed anyhow.
+
 #    TODO:  Need to figure out a better way for sending the password to ssh-copy-id
 #           use getops to either get the password as an ARGV, or set it to a default
 #
 
-#  Prep-work
-(which git) || yum -y install git
-[ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; }
-cd ~/matrix.lab/Scripts; git pull
-
+# VARIABLES
 PASSWORD="Passw0rd"
 
 #set -o errexit
@@ -29,17 +30,18 @@ touch $LOG_FILE
 exec 1>$LOG_FILE 
 exec 2>&1
 
+#  Prep-work
+(which git) || yum -y install git
+[ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; }
+cd ~/matrix.lab/Scripts; git pull
+
 # Make sure you're on the right host, else leave a message and exit 
 [ `hostname -s` != "rh7-ocp3-bst01" ] && { echo "You are on the wrong host"; exit 9; }
-
-#  This entire script is intended to be run from the bastion host to all the nodes (the bastion included).
-#  Therefore, notice that commands are prefaced by "sudo" and the ssh command includes a '-t'
-#  SSH ControlSockets is likely the better/best way to actually be doing this work - but, this is just a lab and NOT 
-#    how OCP should be installed anyhow.
 
 # I may remove this later, as it might actually goof something up
 (grep OCP_VERSION ~/.bash_profile) ||  { echo -e "OCP_VERSION=3.11\nexport OCP_VERSION" >> ~/.bash_profile; }
 . ~/.bash_profile
+
 
 # How to manually subscribe 
 #  subscription-manager register
