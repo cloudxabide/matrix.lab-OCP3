@@ -65,10 +65,9 @@ openshift_master_cluster_method=native
 # The Internal Hostname (node to master communication) (Trying .matrix.lab to see if it allows external access)
 openshift_master_cluster_hostname=rh7-ocp3-mst.matrix.lab
 # The External Hostname (webUI)
-openshift_master_cluster_public_hostname=ocp3-console.linuxrevolution.com
+openshift_master_cluster_public_hostname=ocp3-console.matrix.lab
 # The default subdomain *.cloudapps.domain.com
-#openshift_master_default_subdomain=ocp3-mwn.linuxrevolution.com
-openshift_master_default_subdomain=ocp3-mwn.matrix.lab
+openshift_master_default_subdomain=cloudapps.matrix.lab
 
 ##################################################################################33
 ## Storage (general) - BEGIN
@@ -110,7 +109,7 @@ openshift_logging_es_nodeselector={"node-role.kubernetes.io/infra":"true"}
 
 # metrics
 openshift_metrics_install_metrics=true
-openshift_metrics_hawkular_hostname=hawkular.ocp3-mwn.linuxrevolution.com
+openshift_metrics_hawkular_hostname=hawkular.cloudapps.matrix.lab
 openshift_metrics_storage_kind=dynamic
 openshift_master_dynamic_provisioning_enabled=true
 openshift_metrics_storage_volume_size=10Gi
