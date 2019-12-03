@@ -62,7 +62,7 @@ ssh-copy-id rh7-ocp3-bst01.matrix.lab
 ssh rh7-ocp3-bst01.matrix.lab "sh /root/post_install.sh"  # This will reboot the bastion
 
 ssh rh7-ocp3-bst01.matrix.lab
-HYPERVISORS="apoc morpheus"
+HYPERVISORS="apoc morpheus zion sati"
 for HYPERVISOR in $HYPERVISORS
 do 
   ssh-copy-id $HYPERVISOR
@@ -77,7 +77,6 @@ done
 for HOST in `virsh list --all | grep -i ocp | awk '{ print $2 }'`; do echo "$HOST"; virsh start $HOST; echo; sleep 2; done
 #  Wait about 3 minutes for things to settle
 ```
-
 
 ### Make a copy of the config, then copy it to bastion
 NOTE:  This is klunky and sucks, not worth the time to clean it up though.
@@ -130,10 +129,10 @@ This is how you update the htpasswd on the masters
 ```
 for HOST in `virsh list --all | grep OCP | egrep 'OCS' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 6G --config; done
 for HOST in `virsh list --all | grep OCP | egrep 'OCS' | awk '{ print $2 }'`; do virsh setmem $HOST --size 6G --config; done
-for HOST in `virsh list --all | grep OCP | egrep 'INF' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 4G --config; done
-for HOST in `virsh list --all | grep OCP | egrep 'INF' | awk '{ print $2 }'`; do virsh setmem $HOST --size 4G --config; done
-for HOST in `virsh list --all | grep OCP | egrep 'MST|APP' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 5G --config; done
-for HOST in `virsh list --all | grep OCP | egrep 'MST|APP' | awk '{ print $2 }'`; do virsh setmem $HOST --size 5G --config; done
+for HOST in `virsh list --all | grep OCP | egrep 'INF|APP' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 8G --config; done
+for HOST in `virsh list --all | grep OCP | egrep 'INF|APP' | awk '{ print $2 }'`; do virsh setmem $HOST --size 8G --config; done
+for HOST in `virsh list --all | grep OCP | egrep 'MST' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 8G --config; done
+for HOST in `virsh list --all | grep OCP | egrep 'MST' | awk '{ print $2 }'`; do virsh setmem $HOST --size 8G --config; done
 ```
 
 
