@@ -53,7 +53,7 @@ case `hostname -s` in
   ;;
 esac
 ```
-
+awk '{ print $3 }' | tr [a-z] [A-Z]`; do
 ## Finish up the bastion
 ```
 sed -i -e '/ocp3/d' ~/.ssh/known_hosts
@@ -102,13 +102,16 @@ EOF
 
 ## Run the (actual) OCP Ansible Playbooks now:
 ```
-ssh -t rh7-ocp3-bst01.matrix.lab << EOF
+### THE FOLLOWING WILL NEED TO BE DONE MANUALLY (AND PROBABLY SHOULD ANYHOW)
+cp ~/matrix.lab/Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml ~/
+# The following updates RHN info, or update reg_auth_{user,password} manually
+sed -i -e 's/<rhnuser>/PutYourRHNUserHere/'g ~/ocp-${OCP_VERSION}*.yml
+sed -i -e 's/<rhnpass>/PutYourRHNPassHere/'g ~/ocp-${OCP_VERSION}*.yml
 cd /usr/share/ansible/openshift-ansible
 # The following *absolutely* makes an assumption that there is only ONE inventory file in your home dir.  Update accordingly
 ansible all --list-hosts -i ~/ocp-${OCP_VERSION}*.yml
 ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml
 ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml
-EOF
 ```
 
 ## Create Snapshots, if you want to.  (Shutdown the VM though)
