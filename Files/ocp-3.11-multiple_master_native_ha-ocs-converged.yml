@@ -29,16 +29,11 @@ rh7-ocp3-inf03.matrix.lab openshift_public_hostname=rh7-ocp3-inf03.matrix.lab op
 rh7-ocp3-app01.matrix.lab openshift_public_hostname=rh7-ocp3-app01.matrix.lab openshift_node_group_name='node-config-compute'
 rh7-ocp3-app02.matrix.lab openshift_public_hostname=rh7-ocp3-app02.matrix.lab openshift_node_group_name='node-config-compute'
 rh7-ocp3-app03.matrix.lab openshift_public_hostname=rh7-ocp3-app03.matrix.lab openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3-ocs01.matrix.lab openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3-ocs02.matrix.lab openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3-ocs03.matrix.lab openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3-ocs04.matrix.lab openshift_node_group_name='node-config-compute'
 
 [glusterfs]
-rh7-ocp3-ocs01.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
-rh7-ocp3-ocs02.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'
-rh7-ocp3-ocs03.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
-rh7-ocp3-ocs04.matrix.lab glusterfs_zone=4 glusterfs_devices='["/dev/vdc"]'
+rh7-ocp3-app01.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
+rh7-ocp3-app02.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'
+rh7-ocp3-app03.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
 
 [glusterfs_registry]
 rh7-ocp3-inf01.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
@@ -63,7 +58,7 @@ oreg_auth_password="<rhnpass>"
 
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
 # Use a hashed/crypted password in the next field
-openshift_master_htpasswd_users={'ocpadmin': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauvNj0'}
+openshift_master_htpasswd_users={'ocpadmin': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauvNj0', 'morpheus': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauvNj0'}
 
 # https://docs.openshift.com/container-platform/3.11/install_config/certificate_customization.html
 openshift_master_cluster_method=native
