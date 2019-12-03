@@ -38,7 +38,7 @@ exec 2>&1
 #    how OCP should be installed anyhow.
 
 # I may remove this later, as it might actually goof something up
-echo -e "OCP_VERSION=3.11\nexport OCP_VERSION" >> ~/.bash_profile
+(grep OCP_VERSION ~/.bash_profile) ||  { echo -e "OCP_VERSION=3.11\nexport OCP_VERSION" >> ~/.bash_profile; }
 . ~/.bash_profile
 
 # How to manually subscribe 
@@ -78,6 +78,7 @@ do
   echo "Connecting to remote host:"
   ssh $HOST "uname -n; sh ./post_install.sh & " 
 done
+# You can actually proceed without waiting for that last step.  However... the nodes are going to reboot at some point.
 
 # Switch the connections to the mansible user 
 cat << EOF > ~/.ssh/config
@@ -140,6 +141,7 @@ esac
 # Install openshift-ansible and docker on Bastion
 yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION 
 
+ONLY_INSTALL_THIS_ON_THE_FIRST_INSTALL() {
 # Configure Docker Storage (this section *may* be version specific also)
 cat << EOF > /etc/sysconfig/docker-storage-setup
 STORAGE_DRIVER=overlay2
@@ -150,8 +152,9 @@ CONTAINER_ROOT_LV_SIZE="100%FREE"
 CONTAINER_ROOT_LV_MOUNT_PATH="/var/lib/docker"
 EOF
 
-[ -f /etc/sysconfig/docker-storage-setup ] && docker-storage-setup; sleep 2 
+[ -f /etc/sysconfig/docker-storage-setup ] && docker-storage-setup 
 systemctl enable docker --now 
+}
 
 # Setup Docker on the Nodes
 #  CLEAN THIS SUDO STUFF UP, IF NEEDED
