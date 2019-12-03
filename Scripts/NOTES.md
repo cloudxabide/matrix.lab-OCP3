@@ -133,14 +133,11 @@ for HOST in `virsh list --all | grep OCP | egrep 'INF|APP' | awk '{ print $2 }'`
 for HOST in `virsh list --all | grep OCP | egrep 'INF|APP' | awk '{ print $2 }'`; do virsh setmem $HOST --size 8G --config; done
 for HOST in `virsh list --all | grep OCP | egrep 'MST' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 8G --config; done
 for HOST in `virsh list --all | grep OCP | egrep 'MST' | awk '{ print $2 }'`; do virsh setmem $HOST --size 8G --config; done
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do  virsh setvcpus --count 2 $HOST --config; done
+
 ```
 
-
-
-
 ## Random Stuff
-
-
 ### THE FOLLOWING WILL NEED TO BE DONE MANUALLY (AND PROBABLY SHOULD ANYHOW)
 cp ~/matrix.lab/Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml /tmp/
 # The following updates RHN info, or update reg_auth_{user,password} manually

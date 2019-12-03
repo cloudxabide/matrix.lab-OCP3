@@ -141,7 +141,6 @@ esac
 # Install openshift-ansible and docker on Bastion
 yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION 
 
-ONLY_INSTALL_THIS_ON_THE_FIRST_INSTALL() {
 # Configure Docker Storage (this section *may* be version specific also)
 cat << EOF > /etc/sysconfig/docker-storage-setup
 STORAGE_DRIVER=overlay2
@@ -154,7 +153,6 @@ EOF
 
 [ -f /etc/sysconfig/docker-storage-setup ] && docker-storage-setup 
 systemctl enable docker --now 
-}
 
 # Setup Docker on the Nodes
 #  CLEAN THIS SUDO STUFF UP, IF NEEDED
