@@ -12,3 +12,11 @@ if [ -f .bash_profile.d/* ]; then . ~/.bash_profile.d/*; fi
 # User specific environment and startup programs
 # If you need something to run every time you "login", then add it here.
 
+TITLE="`/usr/bin/whoami`@`hostname -s`"
+
+case `uname` in
+  Linux)
+    echo -e "\033]0;${TITLE}\007";
+  ;;
+esac
+
