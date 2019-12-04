@@ -28,9 +28,15 @@ set PASSWORD [lindex $argv 1]
 
 expect "]#" 
 send "ssh-copy-id -o ${SSHOPTIONS} ${HOSTNAME}\r"
-expect "assword:"
-send "${PASSWORD}\r"
-expect "added"
+expect {
+  "assword:" {
+    send "${PASSWORD}\r"
+  }
+  "installed" {
+    send "\r"
+  }
+}
+expect "]#"
 send "exit\r" 
 
 expect eof
