@@ -96,13 +96,17 @@ cp ~/matrix.lab/Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml ~/
 sed -i -e 's/<rhnuser>/PutYourRHNUserHere/'g ~/ocp-${OCP_VERSION}*.yml
 sed -i -e 's/<rhnpass>/PutYourRHNPassHere/'g ~/ocp-${OCP_VERSION}*.yml
 cd /usr/share/ansible/openshift-ansible
-# The following *absolutely* makes an assumption that there is only ONE inventory file in your home dir.  Update accordingly
+# The following *absolutely* makes an assumption that there is only ONE inventory file in your home dir.  
+#    Update accordingly
+# If you need to wipe /dev/vdc after snapshots (this needs to be tested)
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; [ -d /dev/vdc ] && sudo wipefs -a /dev/vdc"; echo ; done
+#
 ansible all --list-hosts -i ~/ocp-${OCP_VERSION}*.yml
 ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml
 ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml
 # OR
-ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml -vvvvv | tee ocp_prerequisites-`date +%F`.logs 
-ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml -vvvvv | tee ocp_deploy_cluster-`date +%F`-ver2.logs 
+ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml -vvv | tee ocp_prerequisites-`date +%F`.logs 
+ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml -vvv | tee ocp_deploy_cluster-`date +%F`.logs 
 ```
 
 ## Create Snapshots, if you want to.  (Shutdown the VM though)
