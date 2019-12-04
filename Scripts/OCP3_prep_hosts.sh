@@ -43,8 +43,7 @@ sed -i -e '/ocp3/d' ~/.ssh/known_hosts
 
 #  Prep-work
 (which git) || yum -y install git
-[ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; }
-cd ~/matrix.lab/Scripts; git pull
+[ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; } || { cd ~/matrix.lab/Scripts; git pull; }
 
 # I may remove this later, as it might actually goof something up
 (grep OCP_VERSION ~/.bash_profile) ||  { echo -e "OCP_VERSION=3.11\nexport OCP_VERSION" >> ~/.bash_profile; }
@@ -56,9 +55,6 @@ cd ~/matrix.lab/Scripts; git pull
 # See if there is an ssh key, and create it if not
 [ ! -f ~/.ssh/id_rsa ] && { echo | ssh-keygen -trsa -b2048 -N ''; }
 
-# Alright - this next step is a bit "rammy".  HOWEVER... this host should only be used as the Bastion 
-#   to an OCP3 Cluster (and, in my case, should not already have any customizations done)
-
 # Establish connectivity and sync ssh-keys to hosts (as root) 
 # PASSWORD="Passw0rd" # This was set towards the beginning of this script
 [ -f ~/.ssh/config ] && mv ~/.ssh/config ~/.ssh/config.bak
@@ -69,10 +65,12 @@ do
 done
  
 # Run the "post_install.sh" script on all the hosts (which adds user:mansible)
+SLEEPYTIME=15
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
 do 
   echo "Connecting to remote host:"
   ssh $HOST "uname -n; sh ./post_install.sh & " 
+  sleep $SLEEPYTIME
 done
 [ -f ~/.ssh/config.bak ] && mv ~/.ssh/config.bak ~/.ssh/config
 

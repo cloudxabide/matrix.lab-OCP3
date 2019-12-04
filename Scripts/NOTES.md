@@ -34,8 +34,7 @@ Do this on ALL the Hypervisors (and zion)
 # Base OS Install (VM provision)  
 
 ```
-[ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; }
-cd ~/matrix.lab/Scripts/; git pull
+[ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; } || { cd ~/matrix.lab/Scripts/; git pull; }
 # SLEEPYTIME=xxx - Time, in seconds, before script should start to build next VM (it's
 SLEEPYTIME=180; 
 case `hostname -s` in 
@@ -83,8 +82,7 @@ for HOST in `virsh list --all | grep -i ocp | awk '{ print $2 }'`; do echo "$HOS
 ```
 ssh -t rh7-ocp3-bst01.matrix.lab << EOF
 (which git) || yum -y install git
-[ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; }
-cd ~/matrix.lab/Scripts
+[ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; } || {  cd ~/matrix.lab/Scripts; }
 sh ./OCP3_prep_hosts.sh
 EOF
 ```
