@@ -50,7 +50,6 @@ openshift_install_examples=true
 # The following are custom values
 #os_firewall_use_firewalld=True 
 openshift_restart_nodes_serial=1
-openshift_release=v3.11
 openshift_pkg_version=-3.11.153
 openshift_image_tag=v3.11.153
 
