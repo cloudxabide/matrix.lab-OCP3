@@ -37,7 +37,7 @@ Do this on ALL the Hypervisors (and zion)
 [ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; }
 cd ~/matrix.lab/Scripts/; git pull
 # SLEEPYTIME=xxx - Time, in seconds, before script should start to build next VM (it's
-SLEEPYTIME=240; 
+SLEEPYTIME=180; 
 case `hostname -s` in 
   apoc)
     for GUEST in `grep -v \# ~/matrix.lab/Files/etc_hosts | grep ocp | egrep -v 'bst|ocs' | egrep '1$|3$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; done
@@ -85,7 +85,7 @@ ssh -t rh7-ocp3-bst01.matrix.lab << EOF
 (which git) || yum -y install git
 [ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; }
 cd ~/matrix.lab/Scripts
-sh ./install_OCP3.sh
+sh ./OCP3_prep_hosts.sh
 EOF
 ```
 
