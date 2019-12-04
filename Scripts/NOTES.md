@@ -53,7 +53,7 @@ case `hostname -s` in
   ;;
 esac
 ```
-awk '{ print $3 }' | tr [a-z] [A-Z]`; do
+
 ## Finish up the bastion
 ```
 sed -i -e '/ocp3/d' ~/.ssh/known_hosts
@@ -68,6 +68,7 @@ do
   ssh-copy-id $HYPERVISOR
 done
 
+HYPERVISORS="apoc morpheus zion sati"
 for HYPERVISOR in $HYPERVISORS
 do
   ssh -t $HYPERVISOR "cd matrix.lab; git pull"
@@ -103,7 +104,7 @@ ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml
 ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml
 # OR
 ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml -vvvvv | tee ocp_prerequisites-`date +%F`.logs 
-ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml -vvvvv | tee ocp_deploy_cluster-`date +%F`.logs 
+ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml -vvvvv | tee ocp_deploy_cluster-`date +%F`-ver2.logs 
 ```
 
 ## Create Snapshots, if you want to.  (Shutdown the VM though)
@@ -122,13 +123,15 @@ This is how you update the htpasswd on the masters
 
 ## Update Memory settings on the VMs
 ```
+#  OCS Nodes
 for HOST in `virsh list --all | grep OCP | egrep 'OCS' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 6G --config; done
 for HOST in `virsh list --all | grep OCP | egrep 'OCS' | awk '{ print $2 }'`; do virsh setmem $HOST --size 6G --config; done
-# 
-for HOST in `virsh list --all | grep OCP | egrep 'INF|APP' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 10G --config; done
-for HOST in `virsh list --all | grep OCP | egrep 'INF|APP' | awk '{ print $2 }'`; do virsh setmem $HOST --size 10G --config; done
-for HOST in `virsh list --all | grep OCP | egrep 'MST' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 16G --config; done
-for HOST in `virsh list --all | grep OCP | egrep 'MST' | awk '{ print $2 }'`; do virsh setmem $HOST --size 16G --config; done
+#  INF/APP Nodes
+for HOST in `virsh list --all | grep OCP | egrep 'INF|APP' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 8G --config; done
+for HOST in `virsh list --all | grep OCP | egrep 'INF|APP' | awk '{ print $2 }'`; do virsh setmem $HOST --size 8G --config; done
+#  MASTERS
+for HOST in `virsh list --all | grep OCP | egrep 'MST' | awk '{ print $2 }'`; do virsh setmaxmem $HOST --size 8G --config; done
+for HOST in `virsh list --all | grep OCP | egrep 'MST' | awk '{ print $2 }'`; do virsh setmem $HOST --size 8G --config; done
 #
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do  virsh setvcpus --count 2 $HOST --config; done
 
@@ -149,16 +152,7 @@ ansible all --list-hosts -i ~/ocp-${OCP_VERSION}*.yml
 ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml
 ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml
 EOF
-
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
-do
-  ssh -t $HOST << EOF
-    uname -n
-    #sudo grep IOA /etc/systemd/system.conf.d/origin-accounting.conf
-    sudo sed -i -e 's/DefaultBlockIOAccounting=yes/DefaultBlockIOAccounting=no/g' /etc/systemd/system.conf.d/origin-accounting.conf
-EOF
-  echo
-done
+```
 
 ### NFS Server
 ```
