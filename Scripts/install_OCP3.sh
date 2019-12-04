@@ -32,6 +32,15 @@ exec 2>&1
 # Make sure you're on the right host, else leave a message and exit 
 [ `hostname -s` != "rh7-ocp3-bst01" ] && { echo "You are on the wrong host"; exit 9; }
 
+# How to manually subscribe
+#  subscription-manager register
+#  subscription-manager refresh
+#  POOLID=`subscription-manager list --available --matches 'Red Hat OpenShift Container Platform' | grep "Pool ID:" | awk '{ print $3 }' | tail -1`
+#  subscription-manager attach --pool=$POOLID
+
+# Remove the old ssh-key fingerprint
+sed -i -e '/ocp3/d' ~/.ssh/known_hosts
+
 #  Prep-work
 (which git) || yum -y install git
 [ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; }
@@ -40,12 +49,6 @@ cd ~/matrix.lab/Scripts; git pull
 # I may remove this later, as it might actually goof something up
 (grep OCP_VERSION ~/.bash_profile) ||  { echo -e "OCP_VERSION=3.11\nexport OCP_VERSION" >> ~/.bash_profile; }
 . ~/.bash_profile
-
-# How to manually subscribe 
-#  subscription-manager register
-#  subscription-manager refresh
-#  POOLID=`subscription-manager list --available --matches 'Red Hat OpenShift Container Platform' | grep "Pool ID:" | awk '{ print $3 }' | tail -1`
-#  subscription-manager attach --pool=$POOLID
 
 # Install "expect" if it is missing
 (which expect) || yum -y install expect
