@@ -81,6 +81,10 @@ Host *.matrix.lab
 EOF
 chmod 0600 ~/.ssh/config
 
+# WAIT ABOUT 5 MINUTES TO ALLOW VMS TO REBOOT
+SLEEPYTIME=300
+while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done
+
 # Now, distribute the keys to the mansible user
 # PASSWORD=Passw0rd
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
@@ -89,7 +93,7 @@ do
 done
 
 # Test the connection (and sudo - which should have been done in a previous script)
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo grep mansible /etc/shadow"; echo ; done
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo grep mansible /etc/shadow || echo ERROR"; echo ; done
 
 ######################################################################
 ## NOTE: 

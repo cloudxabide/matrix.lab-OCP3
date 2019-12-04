@@ -56,15 +56,14 @@ esac
 ## Finish up the bastion
 ```
 sed -i -e '/ocp3/d' ~/.ssh/known_hosts
-sed -i -e '/ocp3/d' ~/.ssh/known_hosts.matrix.lab
 ssh-copy-id rh7-ocp3-bst01.matrix.lab
 ssh rh7-ocp3-bst01.matrix.lab "sh /root/post_install.sh"  # This will reboot the bastion
 
 ssh rh7-ocp3-bst01.matrix.lab
 HYPERVISORS="apoc morpheus zion sati"
-for HYPERVISOR in $HYPERVISORS
+for HOST in $HYPERVISORS
 do 
-  ssh-copy-id $HYPERVISOR
+  ssh-copy-id $HOST
 done
 
 HYPERVISORS="apoc morpheus zion sati"
@@ -73,12 +72,13 @@ do
   ssh -t $HYPERVISOR "cd matrix.lab; git pull"
 done
 
-# START THE VMS 
-for HOST in `virsh list --all | grep -i ocp | awk '{ print $2 }'`; do echo "$HOST"; virsh start $HOST; echo; sleep 2; done
+# START THE VMS  (need to make this executable via SSH)
+HYPERVISORS="apoc morpheus zion sati"
+for HOST in `/usr/bin/sudo /usr/bin/virsh list --all | grep -i ocp | awk '{ print $2 }'`; do echo "$HOST"; /usr/bin/sudo /usr/bin/virsh start $HOST; echo; sleep 2; done
 #  Wait about 3 minutes for things to settle
 ```
 
-# Go and prep all the nodes
+## Go and prep all the nodes
 ```
 ssh -t rh7-ocp3-bst01.matrix.lab << EOF
 (which git) || yum -y install git
@@ -109,7 +109,6 @@ ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml -vvvv
 ```
 for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`; do virsh snapshot-create-as --domain $HOST --name "post-install-snap" --description "post_install.sh has been run"; done 
 for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`; do virsh start $HOST ; done 
-
 ```
 
 ## Update Login Password for OCP console
