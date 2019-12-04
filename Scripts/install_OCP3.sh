@@ -58,6 +58,7 @@ cd ~/matrix.lab/Scripts; git pull
 
 # Establish connectivity and sync ssh-keys to hosts (as root) 
 # PASSWORD="Passw0rd" # This was set towards the beginning of this script
+[ -f ~/.ssh/config ] && mv ~/.ssh/config ~/.ssh/config.bak
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do 
   echo "Copy SSH key to $HOST"
@@ -70,7 +71,7 @@ do
   echo "Connecting to remote host:"
   ssh $HOST "uname -n; sh ./post_install.sh & " 
 done
-# You can actually proceed without waiting for that last step.  However... the nodes are going to reboot at some point.
+[ -f ~/.ssh/config.bak ] && mv ~/.ssh/config.bak ~/.ssh/config
 
 # Switch the connections to the mansible user 
 (grep mansible ~/.ssh/config) || cat << EOF > ~/.ssh/config

@@ -78,19 +78,7 @@ for HOST in `virsh list --all | grep -i ocp | awk '{ print $2 }'`; do echo "$HOS
 #  Wait about 3 minutes for things to settle
 ```
 
-### Make a copy of the config, then copy it to bastion
-NOTE:  This is klunky and sucks, not worth the time to clean it up though.
-``` 
-OCP_VERSION=3.11
-### THE FOLLOWING WILL NEED TO BE DONE MANUALLY (AND PROBABLY SHOULD ANYHOW)
-cp ~/matrix.lab/Files/ocp-${OCP_VERSION}*.yml /tmp/
-# The following updates RHN info, or update reg_auth_{user,password} manually
-sed -i -e 's/<rhnuser>/PutYourRHNUserHere/'g /tmp/ocp-${OCP_VERSION}*.yml
-sed -i -e 's/<rhnpass>/PutYourRHNPassHere/'g /tmp/ocp-${OCP_VERSION}*.yml
-scp /tmp/ocp-${OCP_VERSION}*.yml rh7-ocp3-bst01.matrix.lab:
-```
-
-# Prep the environment (install sshkeys, etc...)
+# Go and prep all the nodes
 ```
 ssh -t rh7-ocp3-bst01.matrix.lab << EOF
 (which git) || yum -y install git
@@ -100,6 +88,7 @@ sh ./install_OCP3.sh
 EOF
 ```
 
+### Make a copy of the config, then copy it to bastion
 ## Run the (actual) OCP Ansible Playbooks now:
 ```
 ### THE FOLLOWING WILL NEED TO BE DONE MANUALLY (AND PROBABLY SHOULD ANYHOW)
