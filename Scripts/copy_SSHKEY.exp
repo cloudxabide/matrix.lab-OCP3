@@ -22,7 +22,7 @@ set timeout 3
 spawn $env(SHELL)
 match_max 100000
 
-set SSHOPTIONS="StrictHostkeyChecking=no"
+set SSHOPTIONS "StrictHostkeyChecking=no"
 set HOSTNAME [lindex $argv 0]
 set PASSWORD [lindex $argv 1]
 
