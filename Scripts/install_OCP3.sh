@@ -152,6 +152,7 @@ do
   echo
 done
 
+exit 0
 
 LETS_CREATE_A_SNAPSHOT() {
 
@@ -170,7 +171,6 @@ done
  for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`; do virsh start $HOST ; done 
 }
  
-exit 0
 
 # Run this to disable error logging
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`

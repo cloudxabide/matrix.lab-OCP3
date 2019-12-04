@@ -101,6 +101,9 @@ cd /usr/share/ansible/openshift-ansible
 ansible all --list-hosts -i ~/ocp-${OCP_VERSION}*.yml
 ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml
 ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml
+# OR
+ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml -vvvvv | tee ocp_prerequisites-`date +%F`.logs 
+ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml -vvvvv | tee ocp_deploy_cluster-`date +%F`.logs 
 ```
 
 ## Create Snapshots, if you want to.  (Shutdown the VM though)

@@ -33,6 +33,13 @@ mount -a
 PACKAGES="git"
 yum -y install $PACKAGES
 
+# Disable services
+DISABLE_SERVICES="avahi-daemon iscsid"
+for SVC in $DISABLE_SERVICES
+do
+  systemctl disable $SVC --now
+done
+
 #####################################
 #####################################
 #
