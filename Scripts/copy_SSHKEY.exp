@@ -32,7 +32,7 @@ expect {
   "assword:" {
     send "${PASSWORD}\r"
   }
-  "installed" {
+  "they already exist" {
     send "\r"
   }
 }
