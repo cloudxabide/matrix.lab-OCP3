@@ -149,40 +149,7 @@ EOF
 done
 
 # Make sure docker-storage-setup ran correctly
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#' | awk '{ print $2 }'`
-do
-  ssh $HOST "uname -n; sudo df -h /var/lib/docker"
-  echo
-done
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo df -h /var/lib/docker"; echo "#########################"; done
 
 exit 0
-
-LETS_CREATE_A_SNAPSHOT() {
-
-# Shutdown all the VMs, then take a snapshot
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
-do 
-  echo "$HOST"
-  #ssh -t $HOST "uname -n;  sudo shutdown now -h"
-done
-
- # This can be found in ./NOTES.md also 
- # I still need to work on this.  The hosts with the extra disks (/dev/vdc) can not be snapshot'd since
- #   the disk has not been used and appears to be "raw" - Idunno...
- for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`; do virsh snapshot-create-as --domain $HOST --name "post-install-snap" --description "post_install.sh has been run"; done
- for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`; do virsh snapshot-list --domain $HOST ; done
- for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`; do virsh start $HOST ; done 
-}
- 
-
-# Run this to disable error logging
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
-do
-  ssh -t $HOST << EOF
-    uname -n
-    #sudo grep IOA /etc/systemd/system.conf.d/origin-accounting.conf
-    sudo sed -i -e 's/DefaultBlockIOAccounting=yes/DefaultBlockIOAccounting=no/g' /etc/systemd/system.conf.d/origin-accounting.conf
-EOF
-  echo
-done
 
