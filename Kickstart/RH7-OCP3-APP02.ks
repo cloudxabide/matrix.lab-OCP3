@@ -12,7 +12,7 @@ keyboard --vckeymap=us --xlayouts='us'
 lang en_US.UTF-8
 
 # Network information
-network --bootproto=static --device=eth0 --ip=10.10.10.182 --netmask=255.255.255.0 --gateway=10.10.10.1 --activate --nameserver=10.10.10.121,10.10.10.122,8.8.8.8 --hostname=rh7-ocp3-app02.matrix.lab 
+network --bootproto=static --device=eth0 --ip=10.10.10.182 --netmask=255.255.255.0 --gateway=10.10.10.1 --activate --nameserver=10.10.10.121,10.10.10.122 --hostname=rh7-ocp3-app02.matrix.lab 
 
 # Root password
 rootpw --iscrypted $6$03gqrB.BA2aR.mkG$gSzJgslhseoNAe1GojYe8uQG1/mavSGIVf62BDA9MtQkRr06Ua9AXYspTOsdJ61d1QUmEhojWQ7RG.oZeWyu9/
