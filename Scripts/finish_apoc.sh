@@ -34,7 +34,7 @@ PACKAGES="git"
 yum -y install $PACKAGES
 
 # Disable services
-DISABLE_SERVICES="avahi-daemon iscsid"
+DISABLE_SERVICES="avahi-daemon iscsid bluetooth.service"
 for SVC in $DISABLE_SERVICES
 do
   systemctl disable $SVC --now

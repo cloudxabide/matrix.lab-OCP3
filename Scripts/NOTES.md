@@ -67,9 +67,10 @@ do
 done
 
 HYPERVISORS="apoc morpheus zion sati"
+cd ~/matrix.lab; git pull
 for HYPERVISOR in $HYPERVISORS
 do
-  ssh -t $HYPERVISOR "cd matrix.lab; git pull"
+  ssh -t $HYPERVISOR "cd ~/matrix.lab; git pull"
 done
 
 # START THE VMS  (need to make this executable via SSH)
