@@ -38,7 +38,7 @@ exec 2>&1
 #  POOLID=`subscription-manager list --available --matches 'Red Hat OpenShift Container Platform' | grep "Pool ID:" | awk '{ print $3 }' | tail -1`
 #  subscription-manager attach --pool=$POOLID
 
-# Remove the old ssh-key fingerprint
+# Remove the old ssh-key fingerprints
 sed -i -e '/ocp3/d' ~/.ssh/known_hosts
 
 #  Prep-work
