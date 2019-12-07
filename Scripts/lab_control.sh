@@ -35,4 +35,11 @@ do
   COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done;
 done
 
+teardown() {
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -f /var/lib/libvirt/images/$HOST/; done
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rmdir /var/lib/libvirt/images/$HOST; done
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
+}
 exit 0
