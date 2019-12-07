@@ -2,6 +2,18 @@
 
 # TODO:  I'll make this accept parameters - for now it's just to build
 
+example() {
+HYPERVISORS="apoc neo trinty morpheus"
+for HYPERVISOR in $HYPERVISORS
+do
+  ssh -t $HYPERVISOR << EOF
+    cd ~/matrix.lab/Scripts
+    nohup ./lab_control.sh build &
+EOF
+done
+}
+
+
 [ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; cd ~/matrix.lab/Scripts/; } || { cd ~/matrix.lab/Scripts/; git pull; }
 
 SLEEPYTIME=200;
