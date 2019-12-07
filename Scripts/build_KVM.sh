@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Purpose:  This is a script create to process a single hostname as input 
 #             and fetch the configuration parameters from a configuration file
