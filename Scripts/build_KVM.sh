@@ -73,7 +73,7 @@ do
 
   echo "Install Source: --location=\"http://${WEBSERVER}/OS/${OSDIR}\" "
   # DISPLAY SOME HELPFUL INFO
-  echo $GUESTNAME $HYPERVISOR $RELEASE $NUMCPUS $MEM $HDDA $HDDB $RELEASETYPE $RELEASEVER $BIOSTYPE $USE_SATELLITE $PURPOSE
+  echo $GUESTNAME $HYPERVISOR $RELEASE $NUMCPUS $MEM $HDDA $HDDB $HDDC $RELEASETYPE $RELEASEVER $BIOSTYPE $USE_SATELLITE $PURPOSE
   echo "GUESTNAME: $GUESTNAME"
   echo "HYPERVISOR: $HYPERVISOR"
   echo "RELEASE: $RELEASE"
@@ -104,7 +104,7 @@ then
 fi
 if [ ! -f /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.qcow2 ]
 then
-  echo "qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/imagesemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.qcow2 ${HDDA}G "
+  echo "qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.qcow2 ${HDDA}G "
   qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.qcow2 ${HDDA}G 
 fi 
 if [ $HDDB != 0 ]

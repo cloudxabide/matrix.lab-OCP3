@@ -36,21 +36,29 @@ Do this on ALL the Hypervisors (and zion)
 ```
 [ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; } || { cd ~/matrix.lab/Scripts/; git pull; }
 # SLEEPYTIME=xxx - Time, in seconds, before script should start to build next VM (it's
-SLEEPYTIME=180; 
-case `hostname -s` in 
-  apoc)
-    for GUEST in `grep -v \# ~/matrix.lab/Files/etc_hosts | grep ocp | egrep -v 'bst|ocs' | egrep '1$|3$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; done
-  ;;
-  morpheus)
-    for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | egrep -v 'bst|ocs' | egrep '2$|4$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; done
-    # Build the Load Balancer (which has no numeric representation in the hostname, nor VM name)
-    ./build_KVM.sh RH7-OCP3-MST; sleep $SLEEPYTIME
-  ;;
-  sati)
-    # Don't rebuild the bastion every time any longer...
-    ./build_KVM.sh RH7-OCP3-BST01; sleep $SLEEPYTIME
-  ;;
-esac
+SLEEPYTIME=200; 
+HYPERVISOR=`hostname -s`
+for GUEST in `grep -v \# .myconfig | grep  $HYPERVISOR | awk -F: '{ print $1 }'`
+do 
+  echo "./build_KVM.sh $GUEST"
+  COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done;
+done
+
+## OLD METHOD - I'm leaving this as I might need it later
+#case `hostname -s` in 
+#  apoc)
+#    for GUEST in `grep -v \# ~/matrix.lab/Files/etc_hosts | grep ocp | egrep -v 'bst|ocs' | egrep '1$|3$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; done
+#  ;;
+#  morpheus)
+#    for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | egrep -v 'bst|ocs' | egrep '2$|4$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; done
+#    # Build the Load Balancer (which has no numeric representation in the hostname, nor VM name)
+#    ./build_KVM.sh RH7-OCP3-MST; sleep $SLEEPYTIME
+#  ;;
+#  sati)
+#    # Don't rebuild the bastion every time any longer...
+#    ./build_KVM.sh RH7-OCP3-BST01; sleep $SLEEPYTIME
+#  ;;
+#esac
 ```
 
 ## Finish up the bastion
@@ -60,21 +68,22 @@ ssh-copy-id rh7-ocp3-bst01.matrix.lab
 ssh rh7-ocp3-bst01.matrix.lab "sh /root/post_install.sh"  # This will reboot the bastion
 
 ssh rh7-ocp3-bst01.matrix.lab
-HYPERVISORS="apoc morpheus zion sati"
+HYPERVISORS="apoc neo trinity morpheus zion sati"
 for HOST in $HYPERVISORS
 do 
   ssh-copy-id $HOST
 done
 
-HYPERVISORS="apoc morpheus zion sati"
-cd ~/matrix.lab; git pull
+HYPERVISORS="apoc neo trinity morpheus zion sati"
 for HYPERVISOR in $HYPERVISORS
 do
-  ssh -t $HYPERVISOR "cd ~/matrix.lab; git pull"
+  ssh -t $HYPERVISOR << EOF
+  (which git) || yum -y install git
+  [ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; } || { cd ~/matrix.lab/Scripts; git pull; }
+EOF
 done
 
 # START THE VMS  (need to make this executable via SSH)
-HYPERVISORS="apoc morpheus zion sati"
 for HOST in `/usr/bin/sudo /usr/bin/virsh list --all | grep -i ocp | awk '{ print $2 }'`; do echo "$HOST"; /usr/bin/sudo /usr/bin/virsh start $HOST; echo; sleep 2; done
 #  Wait about 3 minutes for things to settle
 ```
