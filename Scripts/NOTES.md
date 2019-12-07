@@ -80,7 +80,7 @@ for HYPERVISOR in $HYPERVISORS
 do
   ssh -t $HYPERVISOR << EOF
   (which git) || yum -y install git
-  [ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; } || { cd ~/matrix.lab/Scripts; git pull; }
+  [ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; cd ~/matrix.lab/Scripts; } || { cd ~/matrix.lab/Scripts; git pull; }
 EOF
 done
 
