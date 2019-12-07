@@ -36,10 +36,15 @@ do
 done
 
 teardown() {
+
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -f /var/lib/libvirt/images/$HOST/; done
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -f /var/lib/libvirt/images/$HOST/*; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rmdir /var/lib/libvirt/images/$HOST; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
+}
+
+startup() {
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh start $HOST; done
 }
 exit 0
