@@ -13,6 +13,17 @@ EOF
 done
 }
 
+# Make sure lab is up-to-date
+get_to_gittin() {
+HYPERVISORS="apoc neo trinity morpheus zion sati"
+for HYPERVISOR in $HYPERVISORS
+do
+  ssh -t $HYPERVISOR << EOF
+  (which git) || yum -y install git
+  [ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; cd ~/matrix.lab/Scripts; } || { cd ~/matrix.lab/Scripts; git pull; }
+EOF
+done
+}
 
 [ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; cd ~/matrix.lab/Scripts/; } || { cd ~/matrix.lab/Scripts/; git pull; }
 
