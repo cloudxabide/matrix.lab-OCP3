@@ -2,8 +2,7 @@
 
 # TODO:  I'll make this accept parameters - for now it's just to build
 
-[ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; cd ~/matrix.lab/Scripts/ } || { cd ~/matrix.lab/Scripts/; git pull; }
-
+[ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; cd ~/matrix.lab/Scripts/; } || { cd ~/matrix.lab/Scripts/; git pull; }
 
 SLEEPYTIME=200;
 HYPERVISOR=`hostname -s`
