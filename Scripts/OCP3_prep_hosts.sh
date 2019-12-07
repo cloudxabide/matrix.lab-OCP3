@@ -58,6 +58,7 @@ sed -i -e '/ocp3/d' ~/.ssh/known_hosts
 # Establish connectivity and sync ssh-keys to hosts (as root) 
 # PASSWORD="Passw0rd" # This was set towards the beginning of this script
 [ -f ~/.ssh/config ] && mv ~/.ssh/config ~/.ssh/config.bak
+sed -i -e '/ocp3/d' ~/.ssh/known_hosts
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do 
   echo "Copy SSH key to $HOST"
@@ -70,6 +71,7 @@ for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst |
 do 
   echo "Connecting to remote host:"
   ssh $HOST "uname -n; sh ./post_install.sh & " 
+  echo
   sleep $SLEEPYTIME
 done
 [ -f ~/.ssh/config.bak ] && mv ~/.ssh/config.bak ~/.ssh/config
@@ -89,7 +91,9 @@ while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; 
 # PASSWORD=Passw0rd
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
 do
+  echo "# ###########################################"
   ./copy_SSHKEY.exp $HOST $PASSWORD
+  echo
 done
 
 # Test the connection (and sudo - which should have been done in a previous script)
