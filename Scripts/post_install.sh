@@ -49,7 +49,7 @@ case `cut -f5 -d\: /etc/system-release-cpe` in
   7.*)
     echo "NOTE:  detected EL7"
     subscription-manager repos --disable="*" --enable rhel-7-server-rpms
-    subscription-manager release set=7.6
+    subscription-manager release --set=7.6
   ;;
   8.*)
     echo "NOTE:  detected EL8"
