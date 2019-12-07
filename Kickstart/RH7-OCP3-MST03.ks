@@ -3,7 +3,7 @@
 auth --enableshadow --passalgo=sha512
 cmdline
 # Use network installation
-url --url="http://10.10.10.10/OS/rhel-server-7.7-x86_64/"
+url --url="http://10.10.10.10/OS/rhel-server-7.6-x86_64/"
 # Run the Setup Agent on first boot
 #firstboot --enable
 # Keyboard layouts
