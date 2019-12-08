@@ -8,14 +8,19 @@
 #    Date:  2019-10-31
 #   Notes:  This is NOT IaC yet.  :-(
 #           This a "non Production" build approach.  
-#           I have the bastion setup to do NFS to the cluster (if/when Gluster is not being used)
-#           This entire script is intended to be run from the bastion host to all the nodes (the bastion included).
-#             Therefore, notice that commands are prefaced by "sudo" and the ssh command includes a '-t'
-#             SSH ControlSockets is likely the better/best way to actually be doing this work - but, this is just 
-#              a lab and NOT how OCP should be installed anyhow.
+#           I have the bastion setup to do NFS to the cluster (if/when Gluster 
+#             is not being used)
+#           This entire script is intended to be run from the bastion host to 
+#             all the nodes (the bastion included).
+#             Therefore, notice that commands are prefaced by "sudo" and the ssh 
+#                command includes a '-t'
+#             SSH ControlSockets is likely the better/best way to actually be 
+#               doing this work - but, this is just a lab and NOT how OCP should 
+#               be installed anyhow.
 #
-#    TODO:  Need to figure out a better way for sending the password to ssh-copy-id
-#           use getops to either get the password as an ARGV, or set it to a default
+#    TODO:  Need to figure out a better way for sending the password to 
+#             ssh-copy-id use getops to either get the password as an ARGV, or 
+#             set it to a default
 #
 
 PASSWORD="Passw0rd"
@@ -59,7 +64,7 @@ sed -i -e '/ocp3/d' ~/.ssh/known_hosts
 # PASSWORD="Passw0rd" # This was set towards the beginning of this script
 [ -f ~/.ssh/config ] && mv ~/.ssh/config ~/.ssh/config.bak
 sed -i -e '/ocp3/d' ~/.ssh/known_hosts
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
 do 
   echo "Copy SSH key to $HOST"
   ./copy_SSHKEY.exp $HOST $PASSWORD
@@ -67,7 +72,7 @@ done
  
 # Run the "post_install.sh" script on all the hosts (which adds user:mansible)
 SLEEPYTIME=15
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | grep -v bst | awk '{ print $2 }'`
 do 
   COUNTER=$SLEEPYTIME
   echo "Connecting to remote host:"
@@ -93,7 +98,7 @@ while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; 
 
 # Now, distribute the keys to the mansible user
 # PASSWORD=Passw0rd
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
 do
   echo "# ###########################################"
   ./copy_SSHKEY.exp $HOST $PASSWORD
@@ -120,7 +125,7 @@ case $OCP_VERSION in
 esac
 
 # Go update all the hosts with the correct/appropriate Repos
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
 do
   ssh -t $HOST << EOF
     uname -n
@@ -146,7 +151,7 @@ esac
 
 # Setup Docker and OpenShift Utils on the Nodes
 #  CLEAN THIS SUDO STUFF UP, IF NEEDED
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#' | awk '{ print $2 }'`
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
 do
   ssh -t $HOST << EOF
     uname -n
@@ -159,7 +164,7 @@ EOF
 done
 
 # Make sure docker-storage-setup ran correctly
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo df -h /var/lib/docker"; echo "#########################"; done
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo df -h /var/lib/docker"; echo "#########################"; done
 
 exit 0
 
