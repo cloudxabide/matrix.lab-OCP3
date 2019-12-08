@@ -38,9 +38,6 @@ exec 2>&1
 #  POOLID=`subscription-manager list --available --matches 'Red Hat OpenShift Container Platform' | grep "Pool ID:" | awk '{ print $3 }' | tail -1`
 #  subscription-manager attach --pool=$POOLID
 
-# Remove the old ssh-key fingerprints
-sed -i -e '/ocp3/d' ~/.ssh/known_hosts
-
 #  Prep-work
 (which git) || yum -y install git
 [ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; } || { cd ~/matrix.lab/Scripts; git pull; }
@@ -54,6 +51,9 @@ sed -i -e '/ocp3/d' ~/.ssh/known_hosts
 
 # See if there is an ssh key, and create it if not
 [ ! -f ~/.ssh/id_rsa ] && { echo | ssh-keygen -trsa -b2048 -N ''; }
+
+# Remove the old ssh-key fingerprints
+sed -i -e '/ocp3/d' ~/.ssh/known_hosts
 
 # Establish connectivity and sync ssh-keys to hosts (as root) 
 # PASSWORD="Passw0rd" # This was set towards the beginning of this script
@@ -69,22 +69,26 @@ done
 SLEEPYTIME=15
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | grep -v bst | awk '{ print $2 }'`
 do 
+  COUNTER=$SLEEPYTIME
   echo "Connecting to remote host:"
   ssh $HOST "uname -n; sh ./post_install.sh & " 
   echo
-  sleep $SLEEPYTIME
+  while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done
 done
-[ -f ~/.ssh/config.bak ] && mv ~/.ssh/config.bak ~/.ssh/config
+
+# Make sure they have all rebooted
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo uptime"; echo ; done
 
 # Switch the connections to the mansible user 
+[ -f ~/.ssh/config.bak ] && mv ~/.ssh/config.bak ~/.ssh/config
 (grep mansible ~/.ssh/config) || cat << EOF > ~/.ssh/config
 Host *.matrix.lab
   User mansible
 EOF
 chmod 0600 ~/.ssh/config
 
-# WAIT ABOUT 5 MINUTES TO ALLOW VMS TO REBOOT
-SLEEPYTIME=300
+# WAIT ABOUT 5 MINUTES TO ALLOW VMS TO REBOOT (This needs to be tested if it's to be truly "automated")
+SLEEPYTIME=300; COUNTER=$SLEEPYTIME
 while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done
 
 # Now, distribute the keys to the mansible user
