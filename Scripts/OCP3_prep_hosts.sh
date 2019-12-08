@@ -134,9 +134,6 @@ do
 EOF
 done
 
-# Install supporting pakcages on Bastion
-yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
-
 # Set Docker version depending on OCP version
 case $OCP_VERSION in
   3.9)

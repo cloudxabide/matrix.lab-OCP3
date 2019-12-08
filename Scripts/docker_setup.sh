@@ -3,7 +3,8 @@
 # If docker-vg exists, then exit
 (vgs docker-vg) && { echo "Docker already installed"; exit 9; }
 
-yum -y install docker
+# This should have been done previously
+#yum -y install docker
 
 cat << EOF > /etc/sysconfig/docker-storage-setup
 STORAGE_DRIVER=overlay2
