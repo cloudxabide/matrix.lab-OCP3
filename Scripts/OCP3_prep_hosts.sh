@@ -101,7 +101,7 @@ do
 done
 
 # Test the connection (and sudo - which should have been done in a previous script)
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | grep -v \# | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo grep mansible /etc/shadow || echo ERROR"; echo ; done
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo grep mansible /etc/shadow || echo ERROR"; echo ; done
 
 ######################################################################
 ## NOTE: 
