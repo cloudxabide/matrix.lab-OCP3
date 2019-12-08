@@ -42,6 +42,10 @@ for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -f /var/lib/libvirt/images/$HOST/*; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rmdir /var/lib/libvirt/images/$HOST; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
+# I don't recommend you do the following unless you REALLY know it's going to do what you want
+find /etc/ -name "*OCP3*" -exec rm {} \; 
+systemctl restart libvirtd
+
 }
 
 startup() {
