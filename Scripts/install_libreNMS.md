@@ -139,6 +139,15 @@ chown librenms:librenms /opt/librenms/config.php
 
 ```
 
+## Add Hosts via command line
+```
+cd /opt/librenms
+for HOST in mst01 mst02 mst03 inf01 inf02 inf03 app01 app02 app03 ocs01 ocs02 ocs03 ocs04 ocs11 ocs12 ocs13 ocs13 ocs14
+do 
+  ./addhost.php  rh7-ocp3-${HOST}.matrix.lab publicRO v2c
+done
+```
+
 ## Testing
 ```
 yum -y install net-snmp net-snmp-utils
