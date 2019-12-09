@@ -103,22 +103,25 @@ EOF
 ```
 ### THE FOLLOWING WILL NEED TO BE DONE MANUALLY (AND PROBABLY SHOULD ANYHOW)
 cp ~/matrix.lab/Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml ~/
-# The following updates RHN info, or update reg_auth_{user,password} manually
-sed -i -e 's/<rhnuser>/PutYourRHNUserHere/'g ~/ocp-${OCP_VERSION}*.yml
-sed -i -e 's/<rhnpass>/PutYourRHNPassHere/'g ~/ocp-${OCP_VERSION}*.yml
+# If you need to wipe /dev/vdc after snapshots (this needs to be tested)
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; [ -d /dev/vdc ] && sudo wipefs -a /dev/vdc"; echo ; done
 
 # The following *absolutely* makes an assumption that there is only ONE inventory file in your home dir.  
 #    Update accordingly
-# If you need to wipe /dev/vdc after snapshots (this needs to be tested)
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; [ -d /dev/vdc ] && sudo wipefs -a /dev/vdc"; echo ; done
 #
+# The following updates RHN info, or update reg_auth_{user,password} manually
+cd ~/matrix.lab/Scripts/
+cp ocp-3.11-multiple_master_native_ha-2xOCS.yml ocp-3.11-multiple_master_native_ha-2xOCS-pre.yml ~
+sed -i -e 's/<rhnuser>/PutYourRHNUserHere/'g ~/ocp-${OCP_VERSION}*.yml
+sed -i -e 's/<rhnpass>/PutYourRHNPassHere/'g ~/ocp-${OCP_VERSION}*.yml
+# 
 cd /usr/share/ansible/openshift-ansible
-ansible all --list-hosts -i ~/ocp-${OCP_VERSION}*.yml
-ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml
-ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml
-# OR
-ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/prerequisites.yml -vvv | tee ocp_prerequisites-`date +%F`.logs 
-ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml -vvv | tee ocp_deploy_cluster-`date +%F`.logs 
+ansible all --list-hosts -i ~/ocp-3.11-multiple_master_native_ha-2xOCS-pre.yml
+# The prereqs can be executed with the Gluster components present in the Inventory
+ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml playbooks/prerequisites.yml -vvv | tee ocp_prerequisites-`date +%F`.logs
+ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS-pre.yml playbooks/deploy_cluster.yml -vvv | tee ocp_deploy_cluster-pre-`date +%F`.logs
+ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml playbooks/openshift-glusterfs/config.yml  -vvv | tee ocp_glusterfs-config`date +%F`.logs
+
 ```
 
 ## Create Snapshots, if you want to.  (Shutdown the VM though)
