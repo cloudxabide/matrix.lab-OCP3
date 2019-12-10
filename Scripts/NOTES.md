@@ -122,6 +122,7 @@ ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml playbooks/pre
 ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS-pre.yml playbooks/deploy_cluster.yml -vvv | tee ocp_deploy_cluster-pre-`date +%F`.logs
 ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml playbooks/openshift-glusterfs/config.yml  -vvv | tee ocp_glusterfs-config`date +%F`.logs
 
+ansible-playbook --flush-cache ...
 ```
 
 ## Create Snapshots, if you want to.  (Shutdown the VM though)
