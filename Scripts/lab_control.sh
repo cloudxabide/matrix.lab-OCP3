@@ -64,7 +64,7 @@ systemctl restart libvirtd
 }
 
 ##################################### ##########################################
-startup() {
+start_VMS() {
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh start $HOST; done
 }
 
@@ -72,7 +72,7 @@ for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh start $
 if [ $# -ne 1 ]; then usage; fi
 
 case $1 in 
-  start) start ;;
+  start) start_VMS ;;
   stop) stop ;;
   build) build_VMS ;;
   update) update ;;
