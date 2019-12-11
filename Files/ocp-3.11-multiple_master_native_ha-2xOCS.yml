@@ -76,14 +76,24 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 # Use a hashed/crypted password in the next field
 openshift_master_htpasswd_users={'ocpadmin': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauvNj0'}
 
-# https://docs.openshift.com/container-platform/3.11/install_config/certificate_customization.html
 openshift_master_cluster_method=native
+
+###########
+# Internal Hostname Info
+###########
 # The Internal Hostname (node to master communication) (Trying .matrix.lab to see if it allows external access)
 openshift_master_cluster_hostname=rh7-ocp3-mst.matrix.lab
-# The External Hostname (webUI)
+
+###########
+# External Hostname Info
+###########
+# The External Hostname (webconsole)
 openshift_master_cluster_public_hostname=ocp3-console.linuxrevolution.com
-# The default subdomain *.cloudapps.domain.com
-openshift_master_default_subdomain=ocp3-mwn.matrix.lab
+# The default subdomain for new apps (*.cloudapps.domain.com)
+openshift_master_default_subdomain=ocp3-mwn.linuxrevolution.com
+# Cluster Console Hostname (note: different than the "webconsole" hostname)
+openshift_console_install=true
+openshift_console_hostname=cluster-console.ocp3-mwn.linuxrevolution.com
 
 # Stuff to test
 #os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
