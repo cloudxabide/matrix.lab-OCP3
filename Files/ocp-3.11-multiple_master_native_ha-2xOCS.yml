@@ -11,20 +11,6 @@ rh7-ocp3-mst01.matrix.lab openshift_public_hostname=rh7-ocp3-mst01.matrix.lab
 rh7-ocp3-mst02.matrix.lab openshift_public_hostname=rh7-ocp3-mst02.matrix.lab
 rh7-ocp3-mst03.matrix.lab openshift_public_hostname=rh7-ocp3-mst03.matrix.lab
 
-# 120GB - storage-apps
-[glusterfs]
-rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3-ocs01.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
-rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3-ocs02.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'
-rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3-ocs03.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
-rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3-ocs04.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
-
-# 280GB - storage-infra
-[glusterfs_registry]
-rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3-ocs11.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
-rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3-ocs12.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'
-rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3-ocs13.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
-rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3-ocs14.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
-
 # https://access.redhat.com/documentation/en-us/red_hat_openshift_container_storage/3.11/html/deployment_guide/chap-documentation-deploy-cns
 # 4.5. Deploying Red Hat Openshift Container Storage in Converged mode for Applications with Registry, Logging, and Metrics
 [nodes]
@@ -45,6 +31,20 @@ rh7-ocp3-ocs11.matrix.lab openshift_schedulable=true openshift_node_group_name='
 rh7-ocp3-ocs12.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
 rh7-ocp3-ocs13.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
 rh7-ocp3-ocs14.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
+
+# 120GB - storage-apps
+[glusterfs]
+rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3-ocs01.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
+rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3-ocs02.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'
+rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3-ocs03.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
+rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3-ocs04.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
+
+# 280GB - storage-infra
+[glusterfs_registry]
+rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3-ocs11.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
+rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3-ocs12.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'
+rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3-ocs13.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
+rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3-ocs14.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
 
 [OSEv3:children]
 masters
@@ -86,16 +86,14 @@ template_service_broker_install=true
 openshift_clock_enabled=true
 
 openshift_restart_nodes_serial=1
+os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
 
 ###########
-# Internal Hostname Info
+## HOSTNAME DEFINITIONS
 ###########
 # The Internal Hostname (node to master communication) (Trying .matrix.lab to see if it allows external access)
 openshift_master_cluster_hostname=rh7-ocp3-mst.matrix.lab
 
-###########
-# External Hostname Info
-###########
 # The External Hostname (webconsole)
 openshift_master_cluster_public_hostname=ocp3-console.linuxrevolution.com
 
@@ -105,9 +103,8 @@ openshift_master_default_subdomain=ocp3-mwn.linuxrevolution.com
 # Cluster Console Hostname (note: different than the "webconsole" hostname)
 openshift_console_install=true
 openshift_console_hostname=cluster-console.ocp3-mwn.linuxrevolution.com
-
-# Stuff to test
-os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
+openshift_logging_kibana_hostname=logging.ocp3-mwn.linuxrevolution.com
+openshift_metrics_hawkular_hostname=hawkular.ocp3-mwn.linuxrevolution.com
 
 ##################################################################################33
 ## Storage (general) - BEGIN
@@ -146,7 +143,6 @@ openshift_logging_es_pvc_size=15Gi
 openshift_logging_es_cluster_size=3
 openshift_logging_es_pvc_storage_class_name='glusterfs-registry-block'
 openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra":"true"}
-openshift_logging_kibana_hostname=logging.ocp3-mwn.linuxrevolution.com
 openshift_logging_curator_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_logging_es_nodeselector={"node-role.kubernetes.io/infra":"true"}
 
@@ -154,7 +150,6 @@ openshift_logging_es_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_cassandra_pvc_storage_class_name='glusterfs-registry-block'
 openshift_metrics_cassandra_storage_type=pv
-openshift_metrics_hawkular_hostname=hawkular.ocp3-mwn.linuxrevolution.com
 openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_install_metrics=true
