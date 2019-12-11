@@ -48,3 +48,20 @@ oc login --certificate-authority=rh7-ocp3-mst.matrix.lab.pem --username=morpheus
 
 
 
+
+# I'm not positive, but this needs to be further vetted
+```
+# on a master 
+oc -n openshift-infra
+oc patch storageclass glusterfs-registry-block -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+
+# On bastion
+ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml ./playbooks/openshift-metrics/config.yml
+
+
+# on a master 
+oc patch storageclass glusterfs-registry-block -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+```
+
+
+
