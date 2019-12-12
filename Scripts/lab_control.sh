@@ -51,7 +51,7 @@ done
 }
 
 ##################################### ##########################################
-teardown() {
+teardown_VMS() {
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -f /var/lib/libvirt/images/$HOST/*; done
@@ -75,6 +75,7 @@ case $1 in
   start) start_VMS ;;
   stop) stop ;;
   build) build_VMS ;;
+  teardown) teardown_VMS ;;
   update) update ;;
   *) usage ;;
 esac
