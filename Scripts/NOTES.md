@@ -115,12 +115,12 @@ cp ocp-3.11-multiple_master_native_ha-2xOCS.yml ocp-3.11-multiple_master_native_
 sed -i -e 's/<rhnuser>/PutYourRHNUserHere/'g ~/ocp-${OCP_VERSION}*.yml
 sed -i -e 's/<rhnpass>/PutYourRHNPassHere/'g ~/ocp-${OCP_VERSION}*.yml
 # 
-cd /usr/share/ansible/openshift-ansible
-ansible all --list-hosts -i ~/ocp-3.11-multiple_master_native_ha-2xOCS-pre.yml
 # The prereqs can be executed with the Gluster components present in the Inventory
-ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml playbooks/prerequisites.yml -vvv | tee ocp_prerequisites-`date +%F`.logs &
-ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS-pre.yml playbooks/deploy_cluster.yml -vvv | tee ocp_deploy_cluster-pre-`date +%F`.logs &
-ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml playbooks/openshift-glusterfs/config.yml  -vvv | tee ocp_glusterfs-config`date +%F`.logs &
+cd /usr/share/ansible/openshift-ansible
+ansible all --list-hosts -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml
+nohup ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml playbooks/prerequisites.yml -vvv | tee ocp_prerequisites-`date +%F`.logs &
+nohup ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS-noGluster.yml playbooks/deploy_cluster.yml -vvv | tee ocp_deploy_cluster-noGluster-`date +%F`.logs &
+ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml playbooks/openshift-glusterfs/config.yml  -vvv | tee ocp_glusterfs-config-`date +%F`.logs &
 
 ansible-playbook --flush-cache ...
 ```
