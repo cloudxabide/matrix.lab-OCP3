@@ -1,50 +1,50 @@
 [masters]
-rh7-ocp3-mst01.matrix.lab openshift_public_hostname=rh7-ocp3-mst01.matrix.lab
-rh7-ocp3-mst02.matrix.lab openshift_public_hostname=rh7-ocp3-mst02.matrix.lab
-rh7-ocp3-mst03.matrix.lab openshift_public_hostname=rh7-ocp3-mst03.matrix.lab
+rh7-ocp3-mst01.matrix.lab 
+rh7-ocp3-mst02.matrix.lab 
+rh7-ocp3-mst03.matrix.lab 
 
 [lb]
-rh7-ocp3-mst.matrix.lab openshift_public_hostname=rh7-ocp3-mst.matrix.lab
+rh7-ocp3-mst.matrix.lab 
 
 [etcd]
-rh7-ocp3-mst01.matrix.lab openshift_public_hostname=rh7-ocp3-mst01.matrix.lab
-rh7-ocp3-mst02.matrix.lab openshift_public_hostname=rh7-ocp3-mst02.matrix.lab
-rh7-ocp3-mst03.matrix.lab openshift_public_hostname=rh7-ocp3-mst03.matrix.lab
+rh7-ocp3-mst01.matrix.lab 
+rh7-ocp3-mst02.matrix.lab
+rh7-ocp3-mst03.matrix.lab 
 
 # https://access.redhat.com/documentation/en-us/red_hat_openshift_container_storage/3.11/html/deployment_guide/chap-documentation-deploy-cns
 # 4.5. Deploying Red Hat Openshift Container Storage in Converged mode for Applications with Registry, Logging, and Metrics
 [nodes]
-rh7-ocp3-mst01.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-master'
-rh7-ocp3-mst02.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-master'
-rh7-ocp3-mst03.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-master'
-rh7-ocp3-inf01.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
-rh7-ocp3-inf02.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
-rh7-ocp3-inf03.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
-rh7-ocp3-app01.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
-rh7-ocp3-app02.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
-rh7-ocp3-app03.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs01.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
-rh7-ocp3-ocs02.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
-rh7-ocp3-ocs03.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
-rh7-ocp3-ocs04.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
-rh7-ocp3-ocs11.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs12.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs13.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs14.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
+rh7-ocp3-mst01.matrix.lab openshift_public_hostname=rh7-ocp3-mst01.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-master'
+rh7-ocp3-mst02.matrix.lab openshift_public_hostname=rh7-ocp3-mst02.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-master'
+rh7-ocp3-mst03.matrix.lab openshift_public_hostname=rh7-ocp3-mst03.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-master'
+rh7-ocp3-inf01.matrix.lab openshift_public_hostname=rh7-ocp3-inf01.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
+rh7-ocp3-inf02.matrix.lab openshift_public_hostname=rh7-ocp3-inf02.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
+rh7-ocp3-inf03.matrix.lab openshift_public_hostname=rh7-ocp3-inf03.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
+rh7-ocp3-app01.matrix.lab openshift_public_hostname=rh7-ocp3-app01.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
+rh7-ocp3-app02.matrix.lab openshift_public_hostname=rh7-ocp3-app02.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
+rh7-ocp3-app03.matrix.lab openshift_public_hostname=rh7-ocp3-app03.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3-ocs01.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
+rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3-ocs02.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
+rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3-ocs03.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
+rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3-ocs04.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
+rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3-ocs11.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3-ocs12.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3-ocs13.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3-ocs14.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
 
 # 120GB - storage-apps
 #[glusterfs]
-#rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3-ocs01.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
-#rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3-ocs02.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'
-#rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3-ocs03.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
-#rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3-ocs04.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
+#rh7-ocp3-ocs01.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
+#rh7-ocp3-ocs02.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'
+#rh7-ocp3-ocs03.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
+#rh7-ocp3-ocs04.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
 
 # 280GB - storage-infra
 #[glusterfs_registry]
-#rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3-ocs11.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
-#rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3-ocs12.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'
-#rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3-ocs13.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
-#rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3-ocs14.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
+#rh7-ocp3-ocs11.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
+#rh7-ocp3-ocs12.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'
+#rh7-ocp3-ocs13.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
+#rh7-ocp3-ocs14.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
 
 [OSEv3:children]
 masters
