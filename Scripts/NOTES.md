@@ -16,17 +16,11 @@ NOTES:
 ```
 # Passw0rd
 ssh rh7-ocp3-bst01.matrix.lab
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo subscription-manager unregister"; echo ; done
-```
+HYPERVISORS="apoc neo trinity morpheus"
+for HOST in $HYPERVISORS; do ssh -t $HOST "matrix.lab/Scripts/lab_control.sh teardown &"; done
+for HOST in $HYPERVISORS; do ssh -t $HOST "cd matrix.lab/Scripts/; nohup ./lab_control.sh build &  "; done 
+for HOST in $HYPERVISORS; do ssh -t $HOST "virsh list --all"; done
 
-### Teardown (remove VMs)
-
-```
-# ssh to apoc.matrix.lab morpheus.matrix.lab
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -rf /var/lib/libvirt/images/$HOST; done
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
 ```
 
 ### Build VMs
@@ -116,11 +110,23 @@ sed -i -e 's/<rhnuser>/PutYourRHNUserHere/'g ~/ocp-${OCP_VERSION}*.yml
 sed -i -e 's/<rhnpass>/PutYourRHNPassHere/'g ~/ocp-${OCP_VERSION}*.yml
 # 
 # The prereqs can be executed with the Gluster components present in the Inventory
+INVENTORY="${HOME}/ocp-3.11-multiple_master_native_ha-2xOCS.yml"
+INVENTORY_NOGLUSTER="${HOME}/ocp-3.11-multiple_master_native_ha-2xOCS-noGluster.yml"
 cd /usr/share/ansible/openshift-ansible
-ansible all --list-hosts -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml
-nohup ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml playbooks/prerequisites.yml -vvv | tee ocp_prerequisites-`date +%F`.logs &
-nohup ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS-noGluster.yml playbooks/deploy_cluster.yml -vvv | tee ocp_deploy_cluster-noGluster-`date +%F`.logs &
-ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml playbooks/openshift-glusterfs/config.yml  -vvv | tee ocp_glusterfs-config-`date +%F`.logs &
+ansible all --list-hosts -i ${INVENTORY} 
+# Run preReqs with full inventory (will succeed)
+nohup ansible-playbook -i ${INVENTORY} playbooks/prerequisites.yml -vvv | tee 01-ocp_prerequisites-`date +%F`.logs &
+# Run deploy_cluster with full inventory (will fail with "GlusterFS pods not found")
+nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 02-ocp_deploy_cluster-`date +%F`.logs &
+# Run deploy_cluster with Gluster resources removed (will succeed)
+nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} playbooks/deploy_cluster.yml -vvv | tee 03-ocp_deploy_cluster_noGluster-`date +%F`.logs &
+# Run deploy_cluster with Gluster present again (will succeed)
+nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} playbooks/openshift-glusterfs/config.yml -vvv | tee 03-ocp_deploy_cluster-noGluster-`date +%F`.logs &
+
+# NOTE:  this is where things become unclear.... do I just run the full inventory, or do I have to run the remaining playbooks manually/individually 
+# Run deploy_cluster with full inventory (will succeed)
+nohup ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml playbooks/deploy_cluster.yml -vvv | tee 05-ocp_deploy_cluster-noGluster-`date +%F`.logs &
+
 
 ansible-playbook --flush-cache ...
 ```
@@ -240,4 +246,8 @@ do
 EOF
   echo
 done
+```
+Random Bits
+```
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo subscription-manager unregister"; echo ; done
 ```

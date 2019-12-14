@@ -82,7 +82,21 @@ do
 done
 
 # Make sure they have all rebooted
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo uptime"; echo ; done
+# TODO: Introduce logic to determine if they *have* rebooted
+SLEEPYTIME=15; ERROR=1
+while [ $ERROR -gt 0 ]
+do 
+  COUNTER=$SLEEPYTIME
+  ERROR=0
+  for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'` 
+  do 
+    COUNT=`ssh $HOST "last | grep boo |wc -l"`
+    echo "$COUNT"
+    if [ $COUNT -ne 2 ]; then ERROR=$((ERROR+1)) ; fi
+    echo "ERROR: $ERROR"
+  done
+  if [ $ERROR != 0 ]; then while [ $COUNTER -gt 0 ]; do echo -ne "Check again in (seconds): $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; fi
+done
 
 # Switch the connections to the mansible user 
 [ -f ~/.ssh/config.bak ] && mv ~/.ssh/config.bak ~/.ssh/config

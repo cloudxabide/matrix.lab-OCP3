@@ -13,7 +13,7 @@ example() {
 HYPERVISORS="apoc neo trinity morpheus"
 for HYPERVISOR in $HYPERVISORS
 do
-  ssh -t $HYPERVISOR << EOF
+  ssh -l root -t $HYPERVISOR << EOF
     cd ~/matrix.lab/Scripts
     nohup ./lab_control.sh build &
 EOF
@@ -52,6 +52,7 @@ done
 
 ##################################### ##########################################
 teardown_VMS() {
+sudo subscription-manager unregister
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -f /var/lib/libvirt/images/$HOST/*; done
@@ -60,14 +61,12 @@ for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefin
 # I don't recommend you do the following unless you REALLY know it's going to do what you want
 find /etc/ -name "*OCP3*" -exec rm {} \; 
 systemctl restart libvirtd
-
 }
 
 ##################################### ##########################################
 start_VMS() {
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh start $HOST; done
 }
-
 
 if [ $# -ne 1 ]; then usage; fi
 
