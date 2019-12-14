@@ -19,6 +19,8 @@ DATE=`date +%Y%m%d`
 ARCH=`uname -p`
 YUM=$(which yum)
 
+echo "# NOTE: Running post_install.sh at `date +%F`"
+
 if [ `/bin/whoami` != "root" ]
 then
   echo "ERROR:  You should be root to run this..."
