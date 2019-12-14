@@ -331,3 +331,4 @@ sed -i -e 's/10.10.10.in/122.168.192.in/g' /data/Projects/aperture.lab/finish_rh
 sed -i -e 's/10.10.10./192.168.122./g' /data/Projects/aperture.lab/finish_rh7-idm-srv01.sh
 sed -i -e 's/10.10.10./192.168.122./g' /data/Projects/aperture.lab/hosts
 </pre>
+
