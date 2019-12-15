@@ -72,6 +72,7 @@ case $1 in
   build) build_VMS ;;
   teardown) teardown_VMS ;;
   update) update ;;
+  gitpull) get_to_gittin ;;
   *) usage ;;
 esac
 
