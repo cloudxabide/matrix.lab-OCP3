@@ -21,13 +21,11 @@ cd matrix.lab/Scripts
 ./lab_control.sh gitpull
 
 # Provision the OCP3 guests on the Hypervisors
+# THIS STILL NEEDS WORK :-(
 HYPERVISORS="apoc neo trinity morpheus"
 for HYPERVISOR in $HYPERVISORS
 do
-  ssh -l root -t $HYPERVISOR << EOF
-    cd ~/matrix.lab/Scripts
-    nohup ./lab_control.sh build &
-EOF
+  ssh -l root -t $HYPERVISOR "cd ~/matrix.lab/Scripts; nohup ./lab_control.sh build &"
 done
 
 # You need to wait until they are all done being provisioned (they will terminate when complete)

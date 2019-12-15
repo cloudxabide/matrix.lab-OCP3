@@ -46,9 +46,16 @@ do
 done
 }
 
+unregister_VMS() {
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
+do 
+  ssh -l root -t $HOST "uname -n; sudo subscription-manager unregister"
+  echo
+done
+
+} 
 ##################################### ##########################################
 teardown_VMS() {
-sudo subscription-manager unregister
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -f /var/lib/libvirt/images/$HOST/*; done
