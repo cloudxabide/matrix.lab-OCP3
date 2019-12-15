@@ -49,13 +49,17 @@ done
 ## Deploy OpenShift on VMs
 This part requires a bit more interactive participation.  The process depends on what YOU are trying to do - the following is a faily complex way of calling what *should* be a simple process (there is something wrong with how Gluster is deployed right now)
 ```
-NVENTORY="${HOME}/ocp-3.11-multiple_master_native_ha-2xOCS.yml"
+cp ${HOME}/matrix.lab/Files/*2xOCS*.yml ${HOME} 
+sed -i -e 's/<rhnuser>/yo/g' ${HOME}/*OCS*yml
+sed -i -e 's/<rhnpass>/moreyo/g' ${HOME}/*OCS*yml
+
+INVENTORY="${HOME}/ocp-3.11-multiple_master_native_ha-2xOCS.yml"
 INVENTORY_NOGLUSTER="${HOME}/ocp-3.11-multiple_master_native_ha-2xOCS-noGluster.yml"
 cd /usr/share/ansible/openshift-ansible
 ansible all --list-hosts -i ${INVENTORY}
 # Run preReqs with full inventory (will succeed)
 nohup ansible-playbook -i ${INVENTORY} playbooks/prerequisites.yml -vvv | tee 01-ocp_prerequisites-`date +%F`.logs &
-# Run deploy_cluster with full inventory (will fail with "GlusterFS pods not found")
+# Run deploy_cluster with full inventory (will fail with "Task: Check for GlusterFS cluster health / Task: Check for GlusterFS cluster health)
 nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 02-ocp_deploy_cluster-`date +%F`.logs &
 # Run deploy_cluster with Gluster resources removed (will succeed)
 nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} playbooks/deploy_cluster.yml -vvv | tee 03-ocp_deploy_cluster_noGluster-`date +%F`.logs &

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # TODO:  I'll make this accept parameters - for now it's just to build
-         Determine if this is being run from Bastion, or Hypervisor
+#        OK - I have realized this script sucks - should it be run from the bastion, from the nodes?
 
 usage() {
   echo "ERROR:"
@@ -35,15 +35,6 @@ done
 }
 
 ##################################### ##########################################
-deploy_ssh_keys() {
-HYPERVISORS="apoc neo trinity morpheus zion sati"
-for HYPERVISOR in $HYPERVISORS
-do
-  ssh-copy-id root@$HYPERVISOR
-done
-}
-
-##################################### ##########################################
 build_VMS() {
 SLEEPYTIME=200;
 HYPERVISOR=`hostname -s`
@@ -70,13 +61,7 @@ systemctl restart libvirtd
 
 ##################################### ##########################################
 start_VMS() {
-HYPERVISORS="apoc neo trinity morpheus"
-for HYPERVISOR in $HYPERVISORS
-do
-  ssh -l root -t $HYPERVISOR << EOF
-    for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh start $HOST; done
-EOF
-done
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh start $HOST; done
 }
 
 if [ $# -ne 1 ]; then usage; fi
@@ -86,8 +71,7 @@ case $1 in
   stop) stop ;;
   build) build_VMS ;;
   teardown) teardown_VMS ;;
-  gitpull) get_to_gittin ;;
-  sshcopyid) deploy_ssh_keys ;;
+  update) update ;;
   *) usage ;;
 esac
 

@@ -23,6 +23,7 @@
 #             set it to a default
 #
 
+WEBSERVER=10.10.10.10
 PASSWORD="Passw0rd"
 
 #set -o errexit
@@ -166,7 +167,7 @@ for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ 
 do
   ssh -t $HOST << EOF
     uname -n
-    sudo wget http://10.10.10.10/Scripts/docker_setup.sh
+    sudo wget http://${WEBSERVER}/Scripts/docker_setup.sh
     echo "sudo yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION"
     sudo yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION
     sudo sh ./docker_setup.sh
@@ -176,6 +177,9 @@ done
 
 # Make sure docker-storage-setup ran correctly
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo df -h /var/lib/docker"; echo "#########################"; done
+
+# Reboot the Guests
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; shutdown now -r"; echo "#########################"; done
 
 exit 0
 
