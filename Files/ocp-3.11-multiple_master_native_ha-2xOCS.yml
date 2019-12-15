@@ -24,14 +24,14 @@ rh7-ocp3-inf03.matrix.lab openshift_public_hostname=rh7-ocp3-inf03.matrix.lab op
 rh7-ocp3-app01.matrix.lab openshift_public_hostname=rh7-ocp3-app01.matrix.lab openshift_node_group_name='node-config-compute'
 rh7-ocp3-app02.matrix.lab openshift_public_hostname=rh7-ocp3-app02.matrix.lab openshift_node_group_name='node-config-compute'
 rh7-ocp3-app03.matrix.lab openshift_public_hostname=rh7-ocp3-app03.matrix.lab openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3-ocs01.matrix.lab openshift_node_group_name='node-config-infra'
-rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3-ocs02.matrix.lab openshift_node_group_name='node-config-infra'
-rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3-ocs03.matrix.lab openshift_node_group_name='node-config-infra'
-rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3-ocs04.matrix.lab openshift_node_group_name='node-config-infra'
-rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3-ocs11.matrix.lab openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3-ocs12.matrix.lab openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3-ocs13.matrix.lab openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3-ocs14.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3-ocs01.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3-ocs02.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3-ocs03.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3-ocs04.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3-ocs11.matrix.lab openshift_node_group_name='node-config-infra'
+rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3-ocs12.matrix.lab openshift_node_group_name='node-config-infra'
+rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3-ocs13.matrix.lab openshift_node_group_name='node-config-infra'
+rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3-ocs14.matrix.lab openshift_node_group_name='node-config-infra'
 
 [etcd]
 rh7-ocp3-mst01.matrix.lab openshift_public_hostname=rh7-ocp3-mst01.matrix.lab
@@ -41,15 +41,15 @@ rh7-ocp3-mst03.matrix.lab openshift_public_hostname=rh7-ocp3-mst03.matrix.lab
 [lb]
 rh7-ocp3-mst.matrix.lab  openshift_public_hostname=rh7-ocp3-mst.matrix.lab
 
-# 280GB - storage-infra
-[glusterfs_registry]
+# 120GB - storage-apps
+[glusterfs]
 rh7-ocp3-ocs01.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
 rh7-ocp3-ocs02.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'
 rh7-ocp3-ocs03.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
 rh7-ocp3-ocs04.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
 
-# 120GB - storage-apps
-[glusterfs]
+# 280GB - storage-infra
+[glusterfs_registry]
 rh7-ocp3-ocs11.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
 rh7-ocp3-ocs12.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'
 rh7-ocp3-ocs13.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
@@ -86,7 +86,6 @@ openshift_master_htpasswd_users={'ocpadmin': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauv
 openshift_enable_service_catalog=true
 # Enable template service broker (requires service catalog to be enabled, above)
 template_service_broker_install=true
-
 
 ###########
 ## HOSTNAME DEFINITIONS

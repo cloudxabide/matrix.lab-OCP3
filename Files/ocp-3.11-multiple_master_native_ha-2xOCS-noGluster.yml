@@ -3,8 +3,8 @@ masters
 nodes
 etcd
 lb
-#glusterfs
-#glusterfs_registry
+glusterfs
+glusterfs_registry
 
 [masters]
 rh7-ocp3-mst01.matrix.lab openshift_public_hostname=rh7-ocp3-mst01.matrix.lab
@@ -15,23 +15,23 @@ rh7-ocp3-mst03.matrix.lab openshift_public_hostname=rh7-ocp3-mst03.matrix.lab
 # 4.5. Deploying Red Hat Openshift Container Storage in Converged mode for Applications with Registry, Logging, and Metrics
 #  I have found that without "openshift_public_hostname=" the nodes will fail dealing with CSRs.
 [nodes]
-rh7-ocp3-mst01.matrix.lab openshift_public_hostname=rh7-ocp3-mst01.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-master'
-rh7-ocp3-mst02.matrix.lab openshift_public_hostname=rh7-ocp3-mst02.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-master'
-rh7-ocp3-mst03.matrix.lab openshift_public_hostname=rh7-ocp3-mst03.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-master'
-rh7-ocp3-inf01.matrix.lab openshift_public_hostname=rh7-ocp3-inf01.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
-rh7-ocp3-inf02.matrix.lab openshift_public_hostname=rh7-ocp3-inf02.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
-rh7-ocp3-inf03.matrix.lab openshift_public_hostname=rh7-ocp3-inf03.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
-rh7-ocp3-app01.matrix.lab openshift_public_hostname=rh7-ocp3-app01.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
-rh7-ocp3-app02.matrix.lab openshift_public_hostname=rh7-ocp3-app02.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
-rh7-ocp3-app03.matrix.lab openshift_public_hostname=rh7-ocp3-app03.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3-ocs01.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
-rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3-ocs02.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
-rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3-ocs03.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
-rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3-ocs04.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-infra'
-rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3-ocs11.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3-ocs12.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3-ocs13.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
-rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3-ocs14.matrix.lab openshift_schedulable=true openshift_node_group_name='node-config-compute'
+rh7-ocp3-mst01.matrix.lab openshift_public_hostname=rh7-ocp3-mst01.matrix.lab openshift_node_group_name='node-config-master'
+rh7-ocp3-mst02.matrix.lab openshift_public_hostname=rh7-ocp3-mst02.matrix.lab openshift_node_group_name='node-config-master'
+rh7-ocp3-mst03.matrix.lab openshift_public_hostname=rh7-ocp3-mst03.matrix.lab openshift_node_group_name='node-config-master'
+rh7-ocp3-inf01.matrix.lab openshift_public_hostname=rh7-ocp3-inf01.matrix.lab openshift_node_group_name='node-config-infra'
+rh7-ocp3-inf02.matrix.lab openshift_public_hostname=rh7-ocp3-inf02.matrix.lab openshift_node_group_name='node-config-infra'
+rh7-ocp3-inf03.matrix.lab openshift_public_hostname=rh7-ocp3-inf03.matrix.lab openshift_node_group_name='node-config-infra'
+rh7-ocp3-app01.matrix.lab openshift_public_hostname=rh7-ocp3-app01.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-app02.matrix.lab openshift_public_hostname=rh7-ocp3-app02.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-app03.matrix.lab openshift_public_hostname=rh7-ocp3-app03.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3-ocs01.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3-ocs02.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3-ocs03.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3-ocs04.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3-ocs11.matrix.lab openshift_node_group_name='node-config-infra'
+rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3-ocs12.matrix.lab openshift_node_group_name='node-config-infra'
+rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3-ocs13.matrix.lab openshift_node_group_name='node-config-infra'
+rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3-ocs14.matrix.lab openshift_node_group_name='node-config-infra'
 
 [etcd]
 rh7-ocp3-mst01.matrix.lab openshift_public_hostname=rh7-ocp3-mst01.matrix.lab
@@ -55,20 +55,23 @@ rh7-ocp3-mst.matrix.lab  openshift_public_hostname=rh7-ocp3-mst.matrix.lab
 #rh7-ocp3-ocs13.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'
 #rh7-ocp3-ocs14.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'
 
-##################################################################################33
+##################################################################################
 ## Global Cluster Configuration - BEGIN
-##################################################################################33
+##################################################################################
 [OSEv3:vars]
 ansible_ssh_user=mansible
 ansible_become=true
 debug_level=2
 openshift_release=v3.11
-#openshift_pkg_version=-3.11.154
-#openshift_image_tag=v3.11.154
+openshift_pkg_version=-3.11.154
+openshift_image_tag=v3.11.154
 openshift_deployment_type=openshift-enterprise
 openshift_install_examples=true
 openshift_master_cluster_method=native
 os_firewall_use_firewalld=True 
+openshift_clock_enabled=true
+openshift_restart_nodes_serial=1
+os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
 
 # Cluster Image Source (registry) configuration
 oreg_url=registry.redhat.io/openshift3/ose-${component}:${version}
@@ -80,14 +83,9 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 openshift_master_htpasswd_users={'ocpadmin': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauvNj0', 'morpheus': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauvNj0'}
 
 # Enable service catalog
-#openshift_enable_service_catalog=true
+openshift_enable_service_catalog=true
 # Enable template service broker (requires service catalog to be enabled, above)
-#template_service_broker_install=true
-# enable ntp on masters to ensure proper failover
-#openshift_clock_enabled=true
-
-#openshift_restart_nodes_serial=1
-#os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
+template_service_broker_install=true
 
 ###########
 ## HOSTNAME DEFINITIONS
@@ -103,7 +101,7 @@ openshift_master_default_subdomain=ocp3-mwn.linuxrevolution.com
 
 # Cluster Console Hostname (note: different than the "webconsole" hostname)
 openshift_console_install=true
-#openshift_console_hostname=cluster-console.ocp3-mwn.linuxrevolution.com
+openshift_console_hostname=cluster-console.ocp3-mwn.linuxrevolution.com
 openshift_logging_kibana_hostname=logging.ocp3-mwn.linuxrevolution.com
 openshift_metrics_hawkular_hostname=hawkular.ocp3-mwn.linuxrevolution.com
 

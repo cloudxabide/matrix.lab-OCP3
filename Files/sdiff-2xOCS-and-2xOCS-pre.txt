@@ -1,15 +1,17 @@
 [glusterfs]						      |	#[glusterfs]
-rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3
-rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3
-rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3
-rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3
+rh7-ocp3-ocs01.matrix.lab glusterfs_zone=1 glusterfs_devices= |	#rh7-ocp3-ocs01.matrix.lab glusterfs_zone=1 glusterfs_devices
+rh7-ocp3-ocs02.matrix.lab glusterfs_zone=2 glusterfs_devices= |	#rh7-ocp3-ocs02.matrix.lab glusterfs_zone=2 glusterfs_devices
+rh7-ocp3-ocs03.matrix.lab glusterfs_zone=3 glusterfs_devices= |	#rh7-ocp3-ocs03.matrix.lab glusterfs_zone=3 glusterfs_devices
+rh7-ocp3-ocs04.matrix.lab glusterfs_zone=1 glusterfs_devices= |	#rh7-ocp3-ocs04.matrix.lab glusterfs_zone=1 glusterfs_devices
 [glusterfs_registry]					      |	#[glusterfs_registry]
-rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3
-rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3
-rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3
-rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3
-glusterfs						      |	#glusterfs
-glusterfs_registry					      |	#glusterfs_registry
+rh7-ocp3-ocs11.matrix.lab glusterfs_zone=1 glusterfs_devices= |	#rh7-ocp3-ocs11.matrix.lab glusterfs_zone=1 glusterfs_devices
+rh7-ocp3-ocs12.matrix.lab glusterfs_zone=2 glusterfs_devices= |	#rh7-ocp3-ocs12.matrix.lab glusterfs_zone=2 glusterfs_devices
+rh7-ocp3-ocs13.matrix.lab glusterfs_zone=3 glusterfs_devices= |	#rh7-ocp3-ocs13.matrix.lab glusterfs_zone=3 glusterfs_devices
+rh7-ocp3-ocs14.matrix.lab glusterfs_zone=1 glusterfs_devices= |	#rh7-ocp3-ocs14.matrix.lab glusterfs_zone=1 glusterfs_devices
+openshift_storage_glusterfs_image="registry.redhat.io/rhgs3/r |	#openshift_storage_glusterfs_image="registry.redhat.io/rhgs3/
+openshift_storage_glusterfs_block_image="registry.redhat.io/r |	#openshift_storage_glusterfs_block_image="registry.redhat.io/
+openshift_storage_glusterfs_heketi_image="registry.redhat.io/ |	#openshift_storage_glusterfs_heketi_image="registry.redhat.io
+openshift_master_dynamic_provisioning_enabled=true	      |	#openshift_master_dynamic_provisioning_enabled=true
 openshift_storage_glusterfs_registry_namespace=infra-storage  |	#openshift_storage_glusterfs_registry_namespace=infra-storage
 openshift_storage_glusterfs_registry_storageclass=false	      |	#openshift_storage_glusterfs_registry_storageclass=false
 openshift_storage_glusterfs_registry_block_deploy=true	      |	#openshift_storage_glusterfs_registry_block_deploy=true
