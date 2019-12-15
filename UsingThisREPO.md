@@ -64,7 +64,7 @@ nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 0
 # Run deploy_cluster with Gluster resources removed (will succeed)
 nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} playbooks/deploy_cluster.yml -vvv | tee 03-ocp_deploy_cluster_noGluster-`date +%F`.logs &
 # Run deploy_cluster with Gluster present again (will succeed)
-nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} playbooks/openshift-glusterfs/config.yml -vvv | tee 03-ocp_deploy_cluster-noGluster-`date +%F`.logs &
+nohup ansible-playbook -i ${INVENTORY} playbooks/openshift-glusterfs/config.yml -vvv | tee 04-ocp_deploy_cluster-`date +%F`.logs &
 
 # NOTE:  this is where things become unclear.... do I just run the full inventory, or do I have to run the remaining playbooks manually/individually
 # Run deploy_cluster with full inventory (will succeed)
