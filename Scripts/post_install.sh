@@ -133,7 +133,11 @@ case `dmidecode -s system-manufacturer` in
     tuned-adm profile balanced
   ;;
 esac 
- 
+
+# Update SELinux booleans
+sudo setsebool -P virt_sandbox_use_fusefs on 
+sudo setsebool -P virt_use_fusefs on 
+
 #  Update Host and reboot
 echo "NOTE:  update and reboot"
 yum -y update && shutdown now -r
