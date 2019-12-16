@@ -1,9 +1,9 @@
-[glusterfs]						      |	#[glusterfs]
+[glusterfs_registry]					      |	#[glusterfs_registry]
 rh7-ocp3-ocs01.matrix.lab glusterfs_zone=1 glusterfs_devices= |	#rh7-ocp3-ocs01.matrix.lab glusterfs_zone=1 glusterfs_devices
 rh7-ocp3-ocs02.matrix.lab glusterfs_zone=2 glusterfs_devices= |	#rh7-ocp3-ocs02.matrix.lab glusterfs_zone=2 glusterfs_devices
 rh7-ocp3-ocs03.matrix.lab glusterfs_zone=3 glusterfs_devices= |	#rh7-ocp3-ocs03.matrix.lab glusterfs_zone=3 glusterfs_devices
 rh7-ocp3-ocs04.matrix.lab glusterfs_zone=1 glusterfs_devices= |	#rh7-ocp3-ocs04.matrix.lab glusterfs_zone=1 glusterfs_devices
-[glusterfs_registry]					      |	#[glusterfs_registry]
+[glusterfs]						      |	#[glusterfs]
 rh7-ocp3-ocs11.matrix.lab glusterfs_zone=1 glusterfs_devices= |	#rh7-ocp3-ocs11.matrix.lab glusterfs_zone=1 glusterfs_devices
 rh7-ocp3-ocs12.matrix.lab glusterfs_zone=2 glusterfs_devices= |	#rh7-ocp3-ocs12.matrix.lab glusterfs_zone=2 glusterfs_devices
 rh7-ocp3-ocs13.matrix.lab glusterfs_zone=3 glusterfs_devices= |	#rh7-ocp3-ocs13.matrix.lab glusterfs_zone=3 glusterfs_devices
