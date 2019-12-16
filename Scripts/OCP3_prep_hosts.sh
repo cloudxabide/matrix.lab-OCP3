@@ -92,12 +92,14 @@ do
   for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'` 
   do 
     COUNT=`ssh $HOST "last | grep boo |wc -l"`
-    echo "$COUNT"
+    if [ $? -ne 0 ]; then ERROR=$((ERROR+1)) ; fi
     if [ $COUNT -ne 2 ]; then ERROR=$((ERROR+1)) ; fi
+    echo "$COUNT"
     echo "ERROR: $ERROR"
   done
   if [ $ERROR != 0 ]; then while [ $COUNTER -gt 0 ]; do echo -ne "Check again in (seconds): $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; fi
 done
+echo "NOTE:  ALL hosts have rebooted (twice)"
 
 # Switch the connections to the mansible user 
 [ -f ~/.ssh/config.bak ] && mv ~/.ssh/config.bak ~/.ssh/config
@@ -179,7 +181,7 @@ done
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo df -h /var/lib/docker"; echo "#########################"; done
 
 # Reboot the Guests
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; shutdown now -r"; echo "#########################"; done
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo shutdown now -r"; echo "#########################"; done
 
 exit 0
 

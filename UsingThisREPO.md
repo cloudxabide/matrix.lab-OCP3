@@ -56,17 +56,17 @@ INVENTORY_NOGLUSTER="${HOME}/ocp-3.11-multiple_master_native_ha-2xOCS-noGluster.
 cd /usr/share/ansible/openshift-ansible
 ansible all --list-hosts -i ${INVENTORY}
 # Run preReqs with full inventory (will succeed)
-nohup ansible-playbook -i ${INVENTORY} playbooks/prerequisites.yml -vvv | tee 01-ocp_prerequisites-`date +%F`.logs &
+nohup ansible-playbook -i ${INVENTORY} playbooks/prerequisites.yml -vvv | tee 01-pbs-prerequisites-`date +%F`.logs &
 # Run deploy_cluster with full inventory (will fail with "Task: Check for GlusterFS cluster health / Task: Check for GlusterFS cluster health)
-nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 02-ocp_deploy_cluster-`date +%F`.logs &
+nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 02-pbs-deploy_cluster-`date +%F`.logs &
 # Run deploy_cluster with Gluster resources removed (will succeed)
-nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} playbooks/deploy_cluster.yml -vvv | tee 03-ocp_deploy_cluster_noGluster-`date +%F`.logs &
+nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} playbooks/deploy_cluster.yml -vvv | tee 03-pbs-deploy_cluster_noGluster-`date +%F`.logs &
 # Run deploy_cluster with Gluster present again (will succeed)
 nohup ansible-playbook -i ${INVENTORY} playbooks/openshift-glusterfs/config.yml -vvv | tee 04-ocp_deploy_cluster-`date +%F`.logs &
 
-# NOTE:  this is where things become unclear.... do I just run the full inventory, or do I have to run the remaining playbooks manually/individually
+# Everything to this point *should* have worked, the remaining steps may still be elusive
 # Run deploy_cluster with full inventory (will succeed)
-nohup ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml playbooks/deploy_cluster.yml -vvv | tee 05-ocp_deploy_cluster-noGluster-`date +%F`.logs &
+nohup ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml playbooks/deploy_cluster.yml -vvv | tee 05-ocp_deploy_cluster-`date +%F`.logs &
 ```
 
 Example of how OCP3 *should* be deployed

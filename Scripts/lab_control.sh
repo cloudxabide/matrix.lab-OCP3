@@ -30,6 +30,7 @@ do
   ssh -l root -t $HYPERVISOR << EOF
   (which git) || yum -y install git
   [ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; cd ~/matrix.lab/Scripts; } || { cd ~/matrix.lab/Scripts; git pull; }
+  chcon -Rvv -t httpd_sys_content_t /var/www/html/*
 EOF
 done
 }
