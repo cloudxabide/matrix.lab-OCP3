@@ -166,12 +166,12 @@ esac
 #  CLEAN THIS SUDO STUFF UP, IF NEEDED
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
 do
-  ssh -t $HOST << EOF
+  ssh -l root -t $HOST << EOF
     uname -n
-    sudo wget http://${WEBSERVER}/Scripts/docker_setup.sh
+    sudo curl http://${WEBSERVER}/Scripts/docker_setup.sh > /root/docker_setup.sh
     echo "sudo yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION"
     sudo yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION
-    sudo sh ./docker_setup.sh
+    sudo sh /root/docker_setup.sh
 EOF
   echo
 done
