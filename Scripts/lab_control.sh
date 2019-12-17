@@ -82,6 +82,8 @@ for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do echo "Delete 
 }
 
 if [ $# -ne 1 ]; then usage; fi
+echo "##################### ######################"
+echo "conntected to `hostname` at `date`"
 
 case $1 in 
   start) start_VMS ;;
@@ -94,5 +96,6 @@ case $1 in
   deletesnapshot) delete_snapshot_VMS ;;
   *) usage ;;
 esac
+echo 
 
 exit 0
