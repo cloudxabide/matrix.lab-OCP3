@@ -53,6 +53,18 @@ done
 # ssh rh7-ocp3-bst01.matrix.lab "tail -f /root/install_OCP3.sh.log"
 ```
 
+### Shutdown VMs and Create Snapshots
+```
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo shutdown now -h"; echo "#########################"; done
+
+HYPERVISORS="apoc neo trinity morpheus"
+for HOST in $HYPERVISORS; do ssh -t $HOST "matrix.lab/Scripts/lab_control.sh snapshot"; done
+
+```
+
+```
+
+
 ### Deploy OCP3 Software on nodes (Ansible Playbooks)
 This part requires a bit more interactive participation yet.  The process depends on what YOU are trying to do - the following is a faily complex way of calling what *should* be a simple process (there is something wrong with how Gluster is deployed right now)
 ```
@@ -60,12 +72,15 @@ cp ${HOME}/matrix.lab/Files/*2xOCS*.yml ${HOME}
 sed -i -e 's/<rhnuser>/yo/g' ${HOME}/*OCS*yml
 sed -i -e 's/<rhnpass>/moreyo/g' ${HOME}/*OCS*yml
 
-INVENTORY="${HOME}/ocp-3.11-multiple_master_native_ha-2xOCS.yml"
-INVENTORY_NOGLUSTER="${HOME}/ocp-3.11-multiple_master_native_ha-2xOCS-noGluster.yml"
+BASE="${HOME}/ocp-3.11-multiple_master_native_ha-2xOCS"
+INVENTORY="${BASe}.yml"
+INVENTORY_NOGLUSTER="${BASE}-noGluster.yml"
+rm ~/openshift-ansible.log
 cd /usr/share/ansible/openshift-ansible
 ansible all --list-hosts -i ${INVENTORY}
 # Run preReqs with full inventory (will succeed)
 nohup ansible-playbook -i ${INVENTORY} playbooks/prerequisites.yml -vvv | tee 01-pbs-prerequisites-`date +%F`.logs &
+#####################
 # Run deploy_cluster with full inventory (will fail with "Task: Check for GlusterFS cluster health / Task: Check for GlusterFS cluster health)
 nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 02-pbs-deploy_cluster-`date +%F`.logs &
 # Run deploy_cluster with Gluster resources removed (will succeed)
