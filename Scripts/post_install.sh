@@ -1,5 +1,7 @@
 #!/bin/bash
 
+WEBSERVER="10.10.10.10"
+
 #set -o errexit
 readonly LOG_FILE="/root/post_install.sh.log"
 echo "Output being redirected to log file - to see output:"
