@@ -73,7 +73,11 @@ start_VMS() {
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh start $HOST; done
 }
 
-snapshot_VMS(){
+create_snapshot_VMS(){
+for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`; do virsh snapshot-create-as --domain $HOST --name "post-install-snap" --description "post_install.sh has been run"; done
+}
+
+delete_snapshot_VMS(){
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
 }
 
@@ -86,7 +90,8 @@ case $1 in
   teardown) teardown_VMS ;;
   update) update ;;
   gitpull) get_to_gittin ;;
-  snapshot) snapshot_VMS ;;
+  createsnapshot) create_snapshot_VMS ;;
+  deletesnapshot) delete_snapshot_VMS ;;
   *) usage ;;
 esac
 
