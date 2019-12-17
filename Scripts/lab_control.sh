@@ -74,11 +74,11 @@ for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh start $
 }
 
 create_snapshot_VMS(){
-for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`; do virsh snapshot-create-as --domain $HOST --name "post-install-snap" --description "post_install.sh has been run"; done
+for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`; do echo "Create Snapshot for $HOST"; virsh snapshot-create-as --domain $HOST --name "post-install-snap" --description "post_install.sh has been run"; done
 }
 
 delete_snapshot_VMS(){
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do echo "Delete Snapshot for $HOST"; virsh snapshot-delete $HOST post-install-snap; done
 }
 
 if [ $# -ne 1 ]; then usage; fi
