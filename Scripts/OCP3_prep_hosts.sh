@@ -171,6 +171,7 @@ do
     sudo curl http://${WEBSERVER}/Scripts/docker_setup.sh > /root/docker_setup.sh
     echo "sudo yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION"
     sudo yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION
+    # Let the installer deal with Docker (sh /root/docker_setup.sh)
 EOF
   echo
 done
