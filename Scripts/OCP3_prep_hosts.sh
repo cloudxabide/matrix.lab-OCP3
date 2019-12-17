@@ -29,7 +29,7 @@ PASSWORD="Passw0rd"
 #set -o errexit
 readonly LOG_FILE="/root/install_OCP3.sh.log"
 echo "Output being redirected to log file - to see output:"
-echo "tail -f $LOG_FILE"
+echo "ssh `hostname` \"tail -f $LOG_FILE\" "
 
 touch $LOG_FILE
 exec 1>$LOG_FILE 
