@@ -12,7 +12,6 @@ ps -ef | grep post_instaill.sh | grep -v grep && { echo "ERROR: script is alread
 touch $LOG_FILE
 exec 1>$LOG_FILE 
 exec 2>&1 
-WEBSERVER="10.10.10.10"
 
 PWD=`pwd`
 DATE=`date +%Y%m%d`
@@ -36,28 +35,45 @@ echo "NOTE: This script will update host and REBOOT host"
 echo "  Press CTRL-C to quit (you have ${SLEEPYTIME} seconds)"
 while [ $SLEEPYTIME -gt 0 ]; do echo -ne "Will proceed in:  $SLEEPYTIME\033[0K\r"; sleep 1; : $((SLEEPYTIME--)); done
 
-# Register the system if not already (exit if the config file is not present) - I need to get an activation key and use vault for this 
-export rhnuser=$(curl -s ${WEBSERVER}/OS/.rhninfo | grep rhnuser | cut -f2 -d\=)
-export rhnpass=$(curl -s ${WEBSERVER}/OS/.rhninfo | grep rhnpass | cut -f2 -d\=)
-## OLD WAY - I don't like having the file sitting on the systems (getting stale, more easily obtained)
-#[ ! -f ./rhninfo ] && { echo "grabbing RHN config"; wget ${WEBSERVER}/OS/.rhninfo || { echo "ERROR: could not retrieve RHN config"; exit 9;} }
-#. ./.rhninfo || exit 9
+# Determine whether we are using Satellite or RHN and update the subscription, if needed
+CAPSHOSTNAME=`hostname -s | tr [a-z] [A-Z]`
+USE_SATELLITE=`curl -s ${WEBSERVER}/Scripts/.myconfig | grep -w $CAPSHOSTNAME | awk -F: '{ print $12 }'`
+ENVIRONMENTALS="${HOME}/environmentals.txt"
+curl -s ${WEBSERVER}/Scripts/environmentals.txt > $ENVIRONMENTALS && . ${ENVIRONMENTALS}
 
-subscription-manager status || subscription-manager register --auto-attach --force --username="${rhnuser}" --password="${rhnpass}"
+case $USE_SATELLITE in
+  0)
+    export rhnuser=$(curl -s ${WEBSERVER}/OS/.rhninfo | grep rhnuser | cut -f2 -d\=)
+    export rhnpass=$(curl -s ${WEBSERVER}/OS/.rhninfo | grep rhnpass | cut -f2 -d\=)
+    subscription-manager status || subscription-manager register --auto-attach --force --username="${rhnuser}" --password="${rhnpass}"
+  ;;
+  *)
+    # THIS ABSOLUTELY NEEDS CLEANUP (I'll deal with this later)
+    yum -y localinstall http://${SATELLITE}.${DOMAIN}/pub/katello-ca-consumer-latest.noarch.rpm
+    subscription-manager register --org="${ORGANIZATION}" --environment="Library" --username='admin' --password='Passw0rd' --release=7Server  --auto-attach --force
+    yum -y install katello-agent
+    katello-package-upload
+  ;;
+esac
 
 # Repo/Channel Management
 # subscription-manager facts --list  | grep distribution.version: | awk '{ print $2 }' <<== Alternate to gather "version"
 case `cut -f5 -d\: /etc/system-release-cpe` in
   7.*)
     echo "NOTE:  detected EL7"
-    subscription-manager repos --disable="*" --enable rhel-7-server-rpms
+    [ $USE_SATELLITE == 1 ] && EXTRAS="--enable rhel-7-server-satellite-tools-6.5-rpms "
+    subscription-manager repos --disable="*" --enable rhel-7-server-rpms $EXTRAS
     #subscription-manager release --set=7.6
   ;;
   8.*)
     echo "NOTE:  detected EL8"
-    subscription-manager repos --disable="*" --enable=rhel-8-for-x86_64-baseos-rpms  
+    [ $USE_SATELLITE == 1 ] && EXTRAS="--enable satellite-tools-6.5-for-rhel-8-x86_64-rpms"
+    subscription-manager repos --disable="*" --enable=rhel-8-for-x86_64-baseos-rpms $EXTRAS
   ;;
 esac
+
+# If we are using Satellite, add katello
+[ $USE_SATELLITE == 1 ] && { yum -y install katello-agent; katello-package-upload; }
 
 # Install deltarpm to (hopefully) minimize the bandwith
 yum -y install deltarpm
