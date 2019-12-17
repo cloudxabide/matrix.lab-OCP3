@@ -73,6 +73,10 @@ start_VMS() {
 for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh start $HOST; done
 }
 
+snapshot_VMS(){
+for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
+}
+
 if [ $# -ne 1 ]; then usage; fi
 
 case $1 in 
@@ -82,6 +86,7 @@ case $1 in
   teardown) teardown_VMS ;;
   update) update ;;
   gitpull) get_to_gittin ;;
+  snapshot) snapshot_VMS ;;
   *) usage ;;
 esac
 
