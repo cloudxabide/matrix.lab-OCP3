@@ -82,9 +82,8 @@ do
   while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done
 done
 
-# Make sure they have all rebooted
-# TODO: Introduce logic to determine if they *have* rebooted
-SLEEPYTIME=15; ERROR=1
+# Make sure they have all rebooted (recheck every 30 seconds)
+SLEEPYTIME=30; ERROR=1
 while [ $ERROR -gt 0 ]
 do 
   COUNTER=$SLEEPYTIME
@@ -182,6 +181,8 @@ for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ 
 
 # Reboot the Guests
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo shutdown now -r"; echo "#########################"; done
+
+echo "Script ${0} has completed at `date`"
 
 exit 0
 
