@@ -1,0 +1,3 @@
+DOMAIN="matrix.lab"
+SATELLITE="rh7-sat6-srv01"
+WEBSERVER="10.10.10.10"
