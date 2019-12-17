@@ -95,7 +95,7 @@ hammer product list --organization="${ORGANIZATION}" > ~/hammer_product_list.out
 PRODUCT='Red Hat Enterprise Linux Server'
 hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
 #REPOS="3815 2463 2472 2456 2476"
-REPOS="2472 2456"
+REPOS="2472 2456 3030"
 for REPO in $REPOS
 do
   echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
