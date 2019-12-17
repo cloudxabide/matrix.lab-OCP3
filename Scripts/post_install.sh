@@ -40,6 +40,7 @@ while [ $SLEEPYTIME -gt 0 ]; do echo -ne "Will proceed in:  $SLEEPYTIME\033[0K\r
 # Determine whether we are using Satellite or RHN and update the subscription, if needed
 CAPSHOSTNAME=`hostname -s | tr [a-z] [A-Z]`
 USE_SATELLITE=`curl -s ${WEBSERVER}/Scripts/.myconfig | grep -w $CAPSHOSTNAME | awk -F: '{ print $12 }'`
+WEBSERVER=10.10.10.10; USE_SATELLITE=1
 ENVIRONMENTALS="${HOME}/environmentals.txt"
 curl -s ${WEBSERVER}/Scripts/environmentals.txt > $ENVIRONMENTALS && . ${ENVIRONMENTALS}
 
@@ -51,10 +52,9 @@ case $USE_SATELLITE in
   ;;
   *)
     # THIS ABSOLUTELY NEEDS CLEANUP (I'll deal with this later)
+    yum clean all; subscription-manager clean
     yum -y localinstall http://${SATELLITE}.${DOMAIN}/pub/katello-ca-consumer-latest.noarch.rpm
     subscription-manager register --org="${ORGANIZATION}" --environment="Library" --username='admin' --password='Passw0rd' --release=7Server  --auto-attach --force
-    yum -y install katello-agent
-    katello-package-upload
   ;;
 esac
 
