@@ -100,6 +100,6 @@ ssh rh7-ocp3-bst01.matrix.lab
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo subscription-manager unregister"; echo ; done
 
 HYPERVISORS="apoc neo trinity morpheus"
-for HOST in $HYPERVISORS; do ssh -t $HOST "matrix.lab/Scripts/lab_control.sh teardown &"; done
+for HOST in $HYPERVISORS; do ssh -t $HOST "matrix.lab/Scripts/lab_control.sh teardown "; done
 ```
 
