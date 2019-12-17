@@ -72,9 +72,10 @@ cp ${HOME}/matrix.lab/Files/*2xOCS*.yml ${HOME}
 sed -i -e 's/<rhnuser>/yo/g' ${HOME}/*OCS*yml
 sed -i -e 's/<rhnpass>/moreyo/g' ${HOME}/*OCS*yml
 
-BASE="${HOME}/ocp-3.11-multiple_master_native_ha-2xOCS"
-INVENTORY="${BASe}.yml"
+BASE="${HOME}/ocp-3.11-multiple_master_native_ha-2xOCS-node_groups"
+INVENTORY="${BASE}.yml"
 INVENTORY_NOGLUSTER="${BASE}-noGluster.yml"
+ls $INVENTORY $INVENTORY_NOGLUSTER
 rm ~/openshift-ansible.log
 cd /usr/share/ansible/openshift-ansible
 ansible all --list-hosts -i ${INVENTORY}
@@ -86,11 +87,11 @@ nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 0
 # Run deploy_cluster with Gluster resources removed (will succeed)
 nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} playbooks/deploy_cluster.yml -vvv | tee 03-pbs-deploy_cluster_noGluster-`date +%F`.logs &
 # Run deploy_cluster with Gluster present again (will succeed)
-nohup ansible-playbook -i ${INVENTORY} playbooks/openshift-glusterfs/config.yml -vvv | tee 04-ocp_deploy_cluster-`date +%F`.logs &
+nohup ansible-playbook -i ${INVENTORY} playbooks/openshift-glusterfs/config.yml -vvv | tee 04-ocp_deploy_glusterfs-`date +%F`.logs &
 
 # Everything to this point *should* have worked, the remaining steps may still be elusive
 # Run deploy_cluster with full inventory (will succeed)
-nohup ansible-playbook -i ~/ocp-3.11-multiple_master_native_ha-2xOCS.yml playbooks/deploy_cluster.yml -vvv | tee 05-ocp_deploy_cluster-`date +%F`.logs &
+nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 05-ocp_deploy_cluster-`date +%F`.logs &
 ```
 
 Example of how OCP3 *should* be deployed
