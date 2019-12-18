@@ -143,6 +143,7 @@ esac
 # Go update all the hosts with the correct/appropriate Repos
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
 do
+  echo "Update REPOs on: $HOST"
   ssh -t $HOST << EOF
     uname -n
     sudo  $OCP_REPOS_MGMT &

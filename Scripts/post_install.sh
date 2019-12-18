@@ -39,8 +39,8 @@ while [ $SLEEPYTIME -gt 0 ]; do echo -ne "Will proceed in:  $SLEEPYTIME\033[0K\r
 
 # Determine whether we are using Satellite or RHN and update the subscription, if needed
 CAPSHOSTNAME=`hostname -s | tr [a-z] [A-Z]`
-USE_SATELLITE=`curl -s ${WEBSERVER}/Scripts/.myconfig | grep -w $CAPSHOSTNAME | awk -F: '{ print $12 }'`
 WEBSERVER=10.10.10.10; USE_SATELLITE=1
+USE_SATELLITE=`curl -s ${WEBSERVER}/Scripts/.myconfig | grep -w $CAPSHOSTNAME | awk -F: '{ print $12 }'`
 ENVIRONMENTALS="${HOME}/environmentals.txt"
 curl -s ${WEBSERVER}/Scripts/environmentals.txt > $ENVIRONMENTALS && . ${ENVIRONMENTALS}
 
@@ -77,9 +77,6 @@ esac
 # If we are using Satellite, add katello
 [ $USE_SATELLITE == 1 ] && { yum -y install katello-agent; katello-package-upload; }
 
-# Install deltarpm to (hopefully) minimize the bandwith
-yum -y install deltarpm
-
 #########################
 ## USER MANAGEMENT
 #########################
@@ -87,7 +84,7 @@ yum -y install deltarpm
 [ ! -f /root/.ssh/id_rsa ] && echo | ssh-keygen -trsa -b2048 -N ''
 
 # Add a local Docker group
-groupadd docker 1001
+groupadd -g 1001 docker 
 
 # Add local group/user for Ansible and allow sudo NOPASSWD: ALL
 id -u mansible &>/dev/null || useradd -u2001 -c "My Ansible" -p '$6$MIxbq9WNh2oCmaqT$10PxCiJVStBELFM.AKTV3RqRUmqGryrpIStH5wl6YNpAtaQw.Nc/lkk0FT9RdnKlEJEuB81af6GWoBnPFKqIh.' mansible 
@@ -105,6 +102,9 @@ sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sud
 #########################
 ## MONITORING AND SYSTEM MANAGEMENT
 #########################
+# Install deltarpm to (hopefully) minimize the bandwith
+yum -y install deltarpm
+
 # Enable Cockpit (AFAIK this will be universally applied)
 # Manage Cockpit
 yum -y install cockpit
