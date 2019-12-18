@@ -92,6 +92,28 @@ hammer organization add-domain --domain="${DOMAIN}" --name="${ORGANIZATION}"
 hammer product list --organization="${ORGANIZATION}" > ~/hammer_product_list.out
 
 ######################
+# RHEL 8 (Work In Progress)
+PRODUCT='Red Hat Enterprise Linux for x86_64'
+hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
+REPOS="7416 7441"
+for REPO in $REPOS
+do
+  echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
+  echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever='8Server' --product=\"${PRODUCT}\" --id=\"${REPO}\" "
+  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever='8Server' --product="${PRODUCT}" --id="${REPO}"
+  echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever='8.1' --product=\"${PRODUCT}\" --id=\"${REPO}\" "
+  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever='8.1' --product="${PRODUCT}" --id="${REPO}"
+done
+
+REPOS="8693" # Satellite Tools 6.5 for RHEL 8
+for REPO in $REPOS
+do
+  echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
+  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --product="${PRODUCT}" --id="${REPO}"
+done
+
+######################
+# RHEL 6/7
 PRODUCT='Red Hat Enterprise Linux Server'
 hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
 #REPOS="3815 2463 2472 2456 2476"
