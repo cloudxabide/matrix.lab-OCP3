@@ -1,4 +1,5 @@
 su - morpheus
+
 echo | openssl s_client -connect rh7-ocp3-mst.matrix.lab:8443 -servername rh7-ocp3-mst.matrix.lab | sed -n /BEGIN/,/END/p > rh7-ocp3-mst.matrix.lab.pem
 oc login --certificate-authority=rh7-ocp3-mst.matrix.lab.pem --username=morpheus --password=Passw0rd4769 --server=rh7-ocp3-mst.matrix.lab:8443
 

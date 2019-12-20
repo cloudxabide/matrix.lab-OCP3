@@ -59,13 +59,12 @@ rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3-ocs14.matrix.lab op
 ##################################################################################
 [OSEv3:vars]
 # Custom Node Groups (and standard groups)
-openshift_node_groups=[{'name': 'node-config-master', 'labels': ['node-role.kubernetes.io/master=true']}, {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true']}, {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true']}, {'name': 'node-config-app-storage', 'labels': ['node-role.kubernetes.io/app-storage=true']}, {'name': 'node-config-infra-storage', 'labels': ['node-role.kubernetes.io/infra-storage=true']}] 
-ansible_ssh_user=mansible
+openshift_node_groups=[{'name': 'node-config-master', 'labels': ['node-role.kubernetes.io/master=true']}, {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true']}, {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true']}, {'name': 'node-config-app-storage', 'labels': ['node-role.kubernetes.io/app-storage=true']}, {'name': 'node-config-infra-storage', 'labels': ['node-role.kubernetes.io/infra-storage=true']}]
 ansible_become=true
 debug_level=2
 openshift_release=v3.11
-#openshift_pkg_version=-3.11.154
-#openshift_image_tag=v3.11.154
+openshift_pkg_version=-3.11.154
+openshift_image_tag=v3.11.154
 openshift_deployment_type=openshift-enterprise
 openshift_install_examples=true
 openshift_master_cluster_method=native
@@ -106,6 +105,11 @@ openshift_console_hostname=cluster-console.ocp3-mwn.linuxrevolution.com
 openshift_logging_kibana_hostname=logging.ocp3-mwn.linuxrevolution.com
 openshift_logging_kibana_ops_hostname=kibana-ops.ocp3-mwn.linuxrevolution.com
 openshift_metrics_hawkular_hostname=hawkular.ocp3-mwn.linuxrevolution.com
+
+##################################################################################33
+## Lab Specific Modifications - BEGIN
+##################################################################################33
+openshift_disable_check=memory_availability,disk_availability
 
 ##################################################################################33
 ##################################################################################33
@@ -189,8 +193,3 @@ openshift_cluster_monitoring_operator_prometheus_storage_capacity=12Gi
 openshift_cluster_monitoring_operator_alertmanager_storage_capacity=2Gi
 openshift_cluster_monitoring_operator_prometheus_storage_class_name='glusterfs-registry-block'
 openshift_cluster_monitoring_operator_alertmanager_storage_class_name='glusterfs-registry-block'
-
-##################################################################################33
-## Lab Specific Modifications - BEGIN 
-##################################################################################33
-openshift_disable_check=memory_availability,disk_availability

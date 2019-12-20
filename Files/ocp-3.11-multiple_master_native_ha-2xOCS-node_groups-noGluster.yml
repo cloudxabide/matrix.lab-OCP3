@@ -64,8 +64,8 @@ ansible_ssh_user=mansible
 ansible_become=true
 debug_level=2
 openshift_release=v3.11
-#openshift_pkg_version=-3.11.154
-#openshift_image_tag=v3.11.154
+openshift_pkg_version=-3.11.154
+openshift_image_tag=v3.11.154
 openshift_deployment_type=openshift-enterprise
 openshift_install_examples=true
 openshift_master_cluster_method=native
@@ -84,9 +84,9 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 openshift_master_htpasswd_users={'ocpadmin': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauvNj0', 'morpheus': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauvNj0'}
 
 # Enable service catalog
-openshift_enable_service_catalog=true
+#openshift_enable_service_catalog=true
 # Enable template service broker (requires service catalog to be enabled, above)
-template_service_broker_install=true
+#template_service_broker_install=true
 
 ###########
 ## HOSTNAME DEFINITIONS
@@ -108,6 +108,11 @@ openshift_logging_kibana_ops_hostname=kibana-ops.ocp3-mwn.linuxrevolution.com
 openshift_metrics_hawkular_hostname=hawkular.ocp3-mwn.linuxrevolution.com
 
 ##################################################################################33
+## Lab Specific Modifications - BEGIN
+##################################################################################33
+openshift_disable_check=memory_availability,disk_availability
+
+##################################################################################33
 ##################################################################################33
 ## STORAGE (general) - BEGIN
 ##################################################################################33
@@ -122,7 +127,7 @@ openshift_metrics_hawkular_hostname=hawkular.ocp3-mwn.linuxrevolution.com
 # Container image to use for heketi pods
 #openshift_storage_glusterfs_heketi_image="registry.redhat.io/rhgs3/rhgs-volmanager-rhel7:v3.11"
 
-openshift_master_dynamic_provisioning_enabled=true
+#openshift_master_dynamic_provisioning_enabled=true
 
 ##################################################################################33
 ## infra-storage - BEGIN
@@ -189,8 +194,3 @@ openshift_master_dynamic_provisioning_enabled=true
 #openshift_cluster_monitoring_operator_alertmanager_storage_capacity=2Gi
 #openshift_cluster_monitoring_operator_prometheus_storage_class_name='glusterfs-registry-block'
 #openshift_cluster_monitoring_operator_alertmanager_storage_class_name='glusterfs-registry-block'
-
-##################################################################################33
-## Lab Specific Modifications - BEGIN 
-##################################################################################33
-openshift_disable_check=memory_availability,disk_availability

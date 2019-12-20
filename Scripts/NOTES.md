@@ -141,7 +141,7 @@ for HOST in `virsh list --all | grep OCP | grep "shut off" | awk '{ print $2 }'`
 Discovered this as I had put the plain-text password in my inventory.. Ugh.
 This is how you update the htpasswd on the masters
 ```
-# for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print $3 }'`; do ssh $HOST  "sudo htpasswd -b /etc/origin/master/htpasswd ocpadmin Passw0rd"; done
+# for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print $3 }'`; do ssh $HOST.matrix.lab  "sudo htpasswd -b /etc/origin/master/htpasswd ocpadmin Passw0rd"; done
 ```
 
 ## Update Memory settings on the VMs

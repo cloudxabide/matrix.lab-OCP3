@@ -59,11 +59,7 @@ for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ 
 
 HYPERVISORS="apoc neo trinity morpheus"
 for HOST in $HYPERVISORS; do ssh -t $HOST "matrix.lab/Scripts/lab_control.sh snapshot"; done
-
 ```
-
-```
-
 
 ### Deploy OCP3 Software on nodes (Ansible Playbooks)
 This part requires a bit more interactive participation yet.  The process depends on what YOU are trying to do - the following is a faily complex way of calling what *should* be a simple process (there is something wrong with how Gluster is deployed right now)
@@ -82,16 +78,23 @@ ansible all --list-hosts -i ${INVENTORY}
 # Run preReqs with full inventory (will succeed)
 nohup ansible-playbook -i ${INVENTORY} playbooks/prerequisites.yml -vvv | tee 01-pbs-prerequisites-`date +%F`.logs &
 #####################
-# Run deploy_cluster with full inventory (will fail with "Task: Check for GlusterFS cluster health / Task: Check for GlusterFS cluster health)
-nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 02-pbs-deploy_cluster-`date +%F`.logs &
 # Run deploy_cluster with Gluster resources removed (will succeed)
-nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} playbooks/deploy_cluster.yml -vvv | tee 03-pbs-deploy_cluster_noGluster-`date +%F`.logs &
-# Run deploy_cluster with Gluster present again (will succeed)
-nohup ansible-playbook -i ${INVENTORY} playbooks/openshift-glusterfs/config.yml -vvv | tee 04-ocp_deploy_glusterfs-`date +%F`.logs &
+nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} playbooks/deploy_cluster.yml -vvv | tee 02-pbs-deploy_cluster_noGluster-`date +%F`.logs &
+
+
+# Run deploy_cluster with Gluster present again (will succeed), the a health check
+nohup ansible-playbook -i ${INVENTORY} playbooks/openshift-glusterfs/config.yml -vvv | tee 03-pbs_deploy_glusterfs-`date +%F`.logs &
+nohup ansible-playbook -i ${INVENTORY} playbooks/openshift-checks/health.yml -vvv | tee 04-pbs-healthcheck-`date +%F`.logs &
+
+#### I *THINK* we are done now.
 
 # Everything to this point *should* have worked, the remaining steps may still be elusive
 # Run deploy_cluster with full inventory (will succeed)
-nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 05-ocp_deploy_cluster-`date +%F`.logs &
+nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 05-pbs_deploy_cluster-`date +%F`.logs &
+
+# This *WAS* Step 2 - I don't think it is advisable to run
+# Run deploy_cluster with full inventory (will fail with "Task: Check for GlusterFS cluster health / Task: Check for GlusterFS cluster health)
+nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 02-pbs-deploy_cluster-`date +%F`.logs &
 ```
 
 Example of how OCP3 *should* be deployed
