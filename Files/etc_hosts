@@ -19,6 +19,7 @@
 10.10.10.120 rh7-sat6-srv01.matrix.lab rh7-sat6-srv01
 10.10.10.121 rh7-ipa-srv01.matrix.lab rh7-ipa-srv01
 10.10.10.122 rh7-ipa-srv02.matrix.lab rh7-ipa-srv02
+# If you update the following, be sure to update ../Scripts/.myconfig to match
 # OCP3 Guests (entries with a "#" ANYwhere will exclude them from cluster)
 10.10.10.170 rh7-ocp3-mst.matrix.lab rh7-ocp3-mst
 10.10.10.171 rh7-ocp3-mst01.matrix.lab rh7-ocp3-mst01

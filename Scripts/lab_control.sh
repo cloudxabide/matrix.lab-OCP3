@@ -41,7 +41,7 @@ build_VMS() {
 SLEEPYTIME=200;
 HYPERVISOR=`hostname -s`
 echo "Deploying VMs"
-for GUEST in `grep -v \# .myconfig | grep  $HYPERVISOR | awk -F: '{ print $1 }'`
+for GUEST in `grep -v \# .myconfig | grep $HYPERVISOR | awk -F: '{ print $1 }'`
 do
   echo "./build_KVM.sh $GUEST"
   COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done;

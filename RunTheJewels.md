@@ -7,7 +7,7 @@ Once the Bastion build is complte, ssh to it, clone this repo, run the post_inst
 ```
 # SSH to ZION, Clone this repo, build the Bastion
 ssh root@zion.matrix.lab
-[ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; cd ~/matrix.lab/Scripts; } || { cd ~/matrix.lab/Scripts; git pull; }"
+[ ! -d ~/matrix.lab ] && { cd; git clone https://github.com/cloudxabide/matrix.lab; cd ~/matrix.lab/Scripts; } || { cd ~/matrix.lab/Scripts; git pull; }
 ./build_KVM.sh RH7-OCP3-BST01
 
 virsh start RH7-OCP3-BST01
