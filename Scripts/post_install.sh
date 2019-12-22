@@ -55,7 +55,7 @@ case $USE_SATELLITE in
     yum clean all; subscription-manager clean
     yum -y localinstall http://${SATELLITE}.${DOMAIN}/pub/katello-ca-consumer-latest.noarch.rpm
     # I temp created this registration method (2019-12)
-    subscription-manager register --org="${ORGANIZATION}" --activation-key="ak-ocp3" --location="${LOCATION}" --username='admin' --password='Passw0rd' --force
+    subscription-manager register --org="${ORGANIZATION}" --activationkey="ak-ocp3" --username='admin' --password='Passw0rd' --force
   ;;
 esac
 
