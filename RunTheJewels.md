@@ -30,7 +30,10 @@ cd matrix.lab/Scripts
 HYPERVISORS="apoc neo trinity morpheus"
 for HYPERVISOR in $HYPERVISORS
 do
-  ssh -l root -t $HYPERVISOR "cd ~/matrix.lab/Scripts; nohup ./lab_control.sh build &"
+  ssh -l root -t $HYPERVISOR << EOF
+    cd ~/matrix.lab/Scripts 
+    nohup ./lab_control.sh build &
+EOF
 done
 ```
 ### Start the OCP3 guests
