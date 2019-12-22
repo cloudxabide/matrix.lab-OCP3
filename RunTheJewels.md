@@ -48,7 +48,7 @@ done
 
 ### Prepare nodes for OCP3 Software
 ```
-./OCP3_prep.sh
+./OCP3_prep_hosts.sh
 # If you want to see it's progress, check out
 # ssh rh7-ocp3-bst01.matrix.lab "tail -f /root/install_OCP3.sh.log"
 ```
