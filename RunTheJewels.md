@@ -111,7 +111,7 @@ for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print
 ```
 
 ### Teardown
-- Unregister from RHN
+- Unregister from RHN (or Satellite)
 - power off VMs, remove their storage, undefine VMs, remove "storage info" in /etc
 
 ```
