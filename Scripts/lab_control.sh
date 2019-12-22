@@ -38,13 +38,16 @@ done
 
 ##################################### ##########################################
 build_VMS() {
-SLEEPYTIME=200;
 HYPERVISOR=`hostname -s`
 echo "Deploying VMs"
 for GUEST in `grep -v \# .myconfig | grep $HYPERVISOR | awk -F: '{ print $1 }'`
 do
+  SLEEPYTIME=200
   echo "./build_KVM.sh $GUEST"
-  COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done;
+  # build_KVM.sh will exit with a 9 if the guest already exists.  If so, set the wait timer to 5.
+  ./build_KVM.sh $GUEST; if [ $? -eq "9" ]; then SLEEPYTIME=5; fi
+  COUNTER=${SLEEPYTIME}; 
+  while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done;
 done
 }
 
