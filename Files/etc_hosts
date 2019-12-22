@@ -31,10 +31,10 @@
 10.10.10.182 rh7-ocp3-app02.matrix.lab rh7-ocp3-app02
 10.10.10.183 rh7-ocp3-app03.matrix.lab rh7-ocp3-app03
 10.10.10.189 rh7-ocp3-bst01.matrix.lab rh7-ocp3-bst01
-10.10.10.191 rh7-ocp3-ocs01.matrix.lab rh7-ocp3-ocs01
-10.10.10.192 rh7-ocp3-ocs02.matrix.lab rh7-ocp3-ocs02
-10.10.10.193 rh7-ocp3-ocs03.matrix.lab rh7-ocp3-ocs03
-10.10.10.194 rh7-ocp3-ocs04.matrix.lab rh7-ocp3-ocs04
+10.10.10.191 rh7-ocp3-ocs01.matrix.lab rh7-ocp3-ocs01 #
+10.10.10.192 rh7-ocp3-ocs02.matrix.lab rh7-ocp3-ocs02 #
+10.10.10.193 rh7-ocp3-ocs03.matrix.lab rh7-ocp3-ocs03 #
+10.10.10.194 rh7-ocp3-ocs04.matrix.lab rh7-ocp3-ocs04 #
 10.10.10.196 rh7-ocp3-ocs11.matrix.lab rh7-ocp3-ocs11
 10.10.10.197 rh7-ocp3-ocs12.matrix.lab rh7-ocp3-ocs12
 10.10.10.198 rh7-ocp3-ocs13.matrix.lab rh7-ocp3-ocs13
