@@ -39,7 +39,7 @@ while [ $SLEEPYTIME -gt 0 ]; do echo -ne "Will proceed in:  $SLEEPYTIME\033[0K\r
 
 # Determine whether we are using Satellite or RHN and update the subscription, if needed
 CAPSHOSTNAME=`hostname -s | tr [a-z] [A-Z]`
-# WEBSERVER=10.10.10.10; USE_SATELLITE=1
+ WEBSERVER=10.10.10.10; USE_SATELLITE=1
 USE_SATELLITE=`curl -s ${WEBSERVER}/Scripts/.myconfig | grep -w $CAPSHOSTNAME | awk -F: '{ print $12 }'`
 ENVIRONMENTALS="${HOME}/environmentals.txt"
 curl -s ${WEBSERVER}/Scripts/environmentals.txt > $ENVIRONMENTALS && . ${ENVIRONMENTALS}
@@ -55,7 +55,8 @@ case $USE_SATELLITE in
     yum clean all; subscription-manager clean
     yum -y localinstall http://${SATELLITE}.${DOMAIN}/pub/katello-ca-consumer-latest.noarch.rpm
     # I temp created this registration method (2019-12)
-    subscription-manager register --org="${ORGANIZATION}" --activationkey="ak-ocp3" --username='admin' --password='Passw0rd' --force
+    #subscription-manager register --org="${ORGANIZATION}"  --username='admin' --password='Passw0rd' --auto-attach --force
+    subscription-manager register --org="${ORGANIZATION}" --activationkey="ak-ocp3" --force
   ;;
 esac
 
