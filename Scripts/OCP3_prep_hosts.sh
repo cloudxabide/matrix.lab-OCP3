@@ -27,7 +27,7 @@ WEBSERVER=10.10.10.10
 PASSWORD="Passw0rd"
 
 #set -o errexit
-readonly LOG_FILE="/root/install_OCP3.sh.log"
+readonly LOG_FILE="/root/OCP3_prep_hosts.sh.log"
 echo "Output being redirected to log file - to see output:"
 echo "ssh `hostname` \"tail -f $LOG_FILE\" "
 
@@ -93,7 +93,7 @@ do
     COUNT=`ssh $HOST "last | grep boo |wc -l"`
     if [ $? -ne 0 ]; then ERROR=$((ERROR+1)) ; fi
     if [ $COUNT -ne 2 ]; then ERROR=$((ERROR+1)) ; fi
-    echo "$COUNT"
+    echo "(reboots): $COUNT"
     echo "ERROR: $ERROR"
   done
   if [ $ERROR != 0 ]; then while [ $COUNTER -gt 0 ]; do echo -ne "Check again in (seconds): $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; fi
@@ -108,8 +108,8 @@ Host *.matrix.lab
 EOF
 chmod 0600 ~/.ssh/config
 
-# WAIT ABOUT 5 MINUTES TO ALLOW VMS TO REBOOT (This needs to be tested if it's to be truly "automated")
-SLEEPYTIME=300; COUNTER=$SLEEPYTIME
+# WAIT ABOUT 30 SECOND TO ALLOW VMS TO FINISH BOOTING 
+SLEEPYTIME=30; COUNTER=$SLEEPYTIME
 while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done
 
 # Now, distribute the keys to the mansible user
@@ -186,4 +186,3 @@ for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ 
 echo "Script ${0} has completed at `date`"
 
 exit 0
-
