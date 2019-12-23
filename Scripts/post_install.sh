@@ -158,6 +158,9 @@ esac
 sudo setsebool -P virt_sandbox_use_fusefs on 
 sudo setsebool -P virt_use_fusefs on 
 
+# Update Sysctl Settings
+echo vm.max_map_count=262144 > /etc/sysctl.d/98-memory.conf
+
 #  Update Host and reboot
 echo "NOTE:  update and reboot"
 yum -y update && shutdown now -r
