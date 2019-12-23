@@ -1,0 +1,190 @@
+[OSEv3:children]
+masters
+etcd
+lb
+glusterfs
+glusterfs_registry
+nodes
+
+[masters]
+rh7-ocp3-mst01.matrix.lab openshift_public_hostname=rh7-ocp3-mst01.matrix.lab
+rh7-ocp3-mst02.matrix.lab openshift_public_hostname=rh7-ocp3-mst02.matrix.lab
+rh7-ocp3-mst03.matrix.lab openshift_public_hostname=rh7-ocp3-mst03.matrix.lab
+
+[etcd]
+rh7-ocp3-mst01.matrix.lab openshift_public_hostname=rh7-ocp3-mst01.matrix.lab
+rh7-ocp3-mst02.matrix.lab openshift_public_hostname=rh7-ocp3-mst02.matrix.lab
+rh7-ocp3-mst03.matrix.lab openshift_public_hostname=rh7-ocp3-mst03.matrix.lab
+
+[lb]
+rh7-ocp3-mst.matrix.lab  openshift_public_hostname=rh7-ocp3-mst.matrix.lab
+
+# 280GB - infra-storage (running on the "infra" nodes - update .myconfig)
+#[glusterfs_registry]
+#rh7-ocp3-inf01.matrix.lab openshift_public_hostname=rh7-ocp3-inf01.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]' 
+#rh7-ocp3-inf02.matrix.lab openshift_public_hostname=rh7-ocp3-inf02.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]' 
+#rh7-ocp3-inf03.matrix.lab openshift_public_hostname=rh7-ocp3-inf03.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]' 
+# 120GB - apps-storage
+#[glusterfs]
+#rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3-ocs11.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'  
+#rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3-ocs12.matrix.lab glusterfs_zone=2 glusterfs_devices='["/dev/vdc"]'  
+#rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3-ocs13.matrix.lab glusterfs_zone=3 glusterfs_devices='["/dev/vdc"]'  
+#rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3-ocs14.matrix.lab glusterfs_zone=1 glusterfs_devices='["/dev/vdc"]'  
+
+# https://access.redhat.com/documentation/en-us/red_hat_openshift_container_storage/3.11/html/deployment_guide/chap-documentation-deploy-cns
+# 4.5. Deploying Red Hat Openshift Container Storage in Converged mode for Applications with Registry, Logging, and Metrics
+#  I have found that without "openshift_public_hostname=" the nodes will fail dealing with CSRs.
+[nodes]
+rh7-ocp3-mst01.matrix.lab openshift_public_hostname=rh7-ocp3-mst01.matrix.lab openshift_node_group_name='node-config-master'
+rh7-ocp3-mst02.matrix.lab openshift_public_hostname=rh7-ocp3-mst02.matrix.lab openshift_node_group_name='node-config-master'
+rh7-ocp3-mst03.matrix.lab openshift_public_hostname=rh7-ocp3-mst03.matrix.lab openshift_node_group_name='node-config-master'
+rh7-ocp3-inf01.matrix.lab openshift_public_hostname=rh7-ocp3-inf01.matrix.lab openshift_node_group_name='node-config-infra'
+rh7-ocp3-inf02.matrix.lab openshift_public_hostname=rh7-ocp3-inf02.matrix.lab openshift_node_group_name='node-config-infra'
+rh7-ocp3-inf03.matrix.lab openshift_public_hostname=rh7-ocp3-inf03.matrix.lab openshift_node_group_name='node-config-infra'
+rh7-ocp3-app01.matrix.lab openshift_public_hostname=rh7-ocp3-app01.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-app02.matrix.lab openshift_public_hostname=rh7-ocp3-app02.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-app03.matrix.lab openshift_public_hostname=rh7-ocp3-app03.matrix.lab openshift_node_group_name='node-config-compute'
+rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3-ocs11.matrix.lab openshift_schedulable=True openshift_node_group_name='node-config-app-storage'
+rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3-ocs12.matrix.lab openshift_schedulable=True openshift_node_group_name='node-config-app-storage'
+rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3-ocs13.matrix.lab openshift_schedulable=True openshift_node_group_name='node-config-app-storage'
+rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3-ocs14.matrix.lab openshift_schedulable=True openshift_node_group_name='node-config-app-storage'
+
+##################################################################################
+## Global Cluster Configuration - BEGIN
+##################################################################################
+[OSEv3:vars]
+# Custom Node Groups (and standard groups)
+openshift_node_groups=[{'name': 'node-config-master', 'labels': ['node-role.kubernetes.io/master=true']}, {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true', 'node-role.kubernetes.io/infra-storage=true']}, {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true']}, {'name': 'node-config-app-storage', 'labels': ['node-role.kubernetes.io/app-storage=true']}]
+ansible_become=true
+debug_level=2
+openshift_release=v3.11
+openshift_pkg_version=-3.11.154
+openshift_image_tag=v3.11.154
+openshift_deployment_type=openshift-enterprise
+openshift_install_examples=true
+openshift_master_cluster_method=native
+os_firewall_use_firewalld=True 
+openshift_clock_enabled=true
+openshift_restart_nodes_serial=1
+os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
+
+# Cluster Image Source (registry) configuration
+oreg_url=registry.redhat.io/openshift3/ose-${component}:${version}
+oreg_auth_user="<rhnuser>" 
+oreg_auth_password="<rhnpass>"
+
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
+# Use a hashed/crypted password in the next field
+openshift_master_htpasswd_users={'ocpadmin': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauvNj0', 'morpheus': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauvNj0'}
+
+# Enable service catalog
+openshift_enable_service_catalog=true
+# Enable template service broker (requires service catalog to be enabled, above)
+template_service_broker_install=true
+
+###########
+## HOSTNAME DEFINITIONS
+###########
+# The Internal Hostname (node to master communication) (Trying .matrix.lab to see if it allows external access)
+openshift_master_cluster_hostname=rh7-ocp3-mst.matrix.lab
+
+# The External Hostname (webconsole)
+openshift_master_cluster_public_hostname=ocp3-console.linuxrevolution.com
+
+# The default subdomain for new apps (*.cloudapps.domain.com)
+openshift_master_default_subdomain=ocp3-mwn.linuxrevolution.com
+
+# Cluster Console Hostname (note: different than the "webconsole" hostname)
+openshift_console_install=true
+openshift_console_hostname=cluster-console.ocp3-mwn.linuxrevolution.com
+openshift_logging_kibana_hostname=logging.ocp3-mwn.linuxrevolution.com
+openshift_logging_kibana_ops_hostname=kibana-ops.ocp3-mwn.linuxrevolution.com
+openshift_metrics_hawkular_hostname=hawkular.ocp3-mwn.linuxrevolution.com
+
+##################################################################################33
+## Lab Specific Modifications - BEGIN
+##################################################################################33
+openshift_disable_check=memory_availability,disk_availability
+
+##################################################################################33
+##################################################################################33
+## STORAGE (general) - BEGIN
+##################################################################################33
+##################################################################################33
+## Storage Container Images
+# Container image to use for glusterfs pods
+#openshift_storage_glusterfs_image="registry.redhat.io/rhgs3/rhgs-server-rhel7:v3.11"
+
+# Container image to use for glusterblock-provisioner pod
+#openshift_storage_glusterfs_block_image="registry.redhat.io/rhgs3/rhgs-gluster-block-prov-rhel7:v3.11"
+
+# Container image to use for heketi pods
+#openshift_storage_glusterfs_heketi_image="registry.redhat.io/rhgs3/rhgs-volmanager-rhel7:v3.11"
+
+#openshift_master_dynamic_provisioning_enabled=true
+
+##################################################################################33
+## infra-storage - BEGIN
+# OCS storage for OpenShift infrastructure (registry,logging,metrics,prometheus)
+#openshift_storage_glusterfs_registry_namespace=infra-storage
+#openshift_storage_glusterfs_registry_storageclass=false
+#openshift_storage_glusterfs_registry_block_deploy=true
+#openshift_storage_glusterfs_registry_block_host_vol_create=true
+#openshift_storage_glusterfs_registry_block_host_vol_size=280
+#openshift_storage_glusterfs_registry_block_storageclass=true
+#openshift_storage_glusterfs_registry_block_storageclass_default=false
+
+## app-storage - BEGIN
+# OCS Storage for Hosted Applications
+#openshift_storage_glusterfs_namespace=app-storage
+#openshift_storage_glusterfs_storageclass=true
+#openshift_storage_glusterfs_storageclass_default=false
+#openshift_storage_glusterfs_block_deploy=false
+#openshift_storage_glusterfs_block_host_vol_create=false
+#openshift_storage_glusterfs_block_host_vol_size=120
+#openshift_storage_glusterfs_block_storageclass=true
+#openshift_storage_glusterfs_block_storageclass_default=false
+
+##################################################################################33
+# registry
+#openshift_hosted_registry_storage_kind=glusterfs
+#openshift_hosted_registry_storage_volume_size=17Gi
+#openshift_hosted_registry_selector="node-role.kubernetes.io/infra=true"
+
+# logging - Apps
+#openshift_logging_install_logging=true
+#openshift_logging_es_pvc_dynamic=true
+#openshift_logging_es_pvc_size=15Gi
+#openshift_logging_es_cluster_size=3
+#openshift_logging_es_pvc_storage_class_name='glusterfs-registry-block'
+#openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra":"true"}
+#openshift_logging_curator_nodeselector={"node-role.kubernetes.io/infra":"true"}
+#openshift_logging_es_nodeselector={"node-role.kubernetes.io/infra":"true"}
+
+# logging - Ops
+#openshift_logging_es_ops_cluster_size=3
+#openshift_logging_es_ops_nodeselector={"node-role.kubernetes.io/infra":"true"}
+#openshift_logging_es_ops_pvc_dynamic=true
+#openshift_logging_es_ops_pvc_size=20Gi
+#openshift_logging_kibana_ops_nodeselector={"node-role.kubernetes.io/infra":"true"}
+#openshift_logging_use_ops=false
+
+# metrics
+#openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra":"true"}
+#openshift_metrics_cassandra_pvc_storage_class_name='glusterfs-registry-block'
+#openshift_metrics_cassandra_storage_type=pv
+#openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra":"true"}
+#openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra":"true"}
+#openshift_metrics_install_metrics=true
+#openshift_metrics_storage_kind=dynamic
+#openshift_metrics_storage_volume_size=13Gi
+
+# prometheous operator
+#openshift_cluster_monitoring_operator_install=true
+#openshift_cluster_monitoring_operator_node_selector={"node-role.kubernetes.io/infra":"true"}
+#openshift_cluster_monitoring_operator_prometheus_storage_enabled=true
+#openshift_cluster_monitoring_operator_alertmanager_storage_enabled=true
+#openshift_cluster_monitoring_operator_prometheus_storage_capacity=12Gi
+#openshift_cluster_monitoring_operator_alertmanager_storage_capacity=2Gi
+#openshift_cluster_monitoring_operator_prometheus_storage_class_name='glusterfs-registry-block'
+#openshift_cluster_monitoring_operator_alertmanager_storage_class_name='glusterfs-registry-block'
