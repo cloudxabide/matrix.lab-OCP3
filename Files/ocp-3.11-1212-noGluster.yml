@@ -2,8 +2,8 @@
 masters
 etcd
 lb
-glusterfs
-glusterfs_registry
+#glusterfs
+#glusterfs_registry
 nodes
 
 [masters]
