@@ -3,7 +3,7 @@
 BASE="${HOME}/ocp-3.11-1212"
 INVENTORY="${BASE}.yml"
 LOGDIR="`date +%s`/"; mkdir ~/$LOGDIR
-PLAYBOOKS="${PLAYBOOKS}"
+PLAYBOOKS="/usr/share/ansible/openshift-ansible/playbooks/"
 
 COUNTER=1
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-checks/pre-install.yml -vvv | tee ${LOGDIR}${COUNTER}-openshift-checks_pre-install-`date +%F`.logs; COUNTER=$((COUNTER+1)) 
