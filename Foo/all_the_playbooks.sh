@@ -2,10 +2,10 @@
 # for FILE in `grep failed=1 * | awk -F: '{ print $1 }' | sort -u`; do echo "$FILE"; grep "plays in" $FILE; echo;  done
 BASE="${HOME}/ocp-3.11-multiple_master_native_ha-2xOCS-node_groups"
 INVENTORY="${BASE}.yml"
-LOGDIR="`date +%s`/"; mkdir ~/$LOGDIR; cd ~/$LOGDIR
+LOGDIR="`date +%s`/"; mkdir ~/$LOGDIR
 PLAYBOOKS="${PLAYBOOKS}"
 
-COUNTER=
+COUNTER=1
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-checks/pre-install.yml -vvv | tee ${LOGDIR}${COUNTER}-openshift-checks_pre-install-`date +%F`.logs; COUNTER=$((COUNTER+1)) 
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-node/bootstrap.yml -vvv | tee ${LOGDIR}${COUNTER}-openshift-node_bootstrap-`date +%F`.logs; COUNTER=$((COUNTER+1)) 
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-etcd/config.yml -vvv | tee ${LOGDIR}${COUNTER}-openshift-etcd-`date +%F`.logs; COUNTER=$((COUNTER+1)) 
