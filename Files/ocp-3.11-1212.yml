@@ -135,8 +135,6 @@ openshift_storage_glusterfs_registry_block_deploy=true
 openshift_storage_glusterfs_registry_block_host_vol_size=100
 openshift_storage_glusterfs_registry_block_storageclass=true
 openshift_storage_glusterfs_registry_block_storageclass_default=false
-#openshift_storage_glusterfs_registry_storageclass=false
-#openshift_storage_glusterfs_registry_block_host_vol_create=true
 openshift_storage_glusterfs_registry_timeout=900
 openshift_storage_glusterfs_registry_wipe=true
 
@@ -149,7 +147,6 @@ openshift_storage_glusterfs_block_deploy=true
 openshift_storage_glusterfs_block_host_vol_size=100
 openshift_storage_glusterfs_block_storageclass=true
 openshift_storage_glusterfs_block_storageclass_default=false
-#openshift_storage_glusterfs_block_host_vol_create=false
 openshift_storage_glusterfs_wipe=true
 openshift_storage_glusterfs_timeout=900
 
@@ -170,7 +167,6 @@ openshift_logging_elasticsearch_storage_type=pvc
 openshift_logging_es_pvc_storage_class_name='glusterfs-registry-block'
 openshift_logging_es_pvc_prefix=es-loggin-app
 openshift_logging_es_cluster_size=3
-#openshift_logging_es_pvc_dynamic=true
 
 # logging - EFK/Ops
 openshift_logging_es_ops_cluster_size=3
@@ -189,7 +185,6 @@ openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_storage_kind=dynamic
 openshift_metrics_storage_volume_size=10Gi
 openshift_metrics_cassandra_pvc_storage_class_name="glusterfs-registry-block"
-#openshift_metrics_cassandra_storage_type=pv
 
 # prometheous operator
 openshift_cluster_monitoring_operator_install=true
@@ -200,3 +195,11 @@ openshift_cluster_monitoring_operator_prometheus_storage_enabled=true
 openshift_cluster_monitoring_operator_alertmanager_storage_enabled=true
 openshift_cluster_monitoring_operator_prometheus_storage_capacity=12Gi
 openshift_cluster_monitoring_operator_alertmanager_storage_capacity=2Gi
+
+
+# REMOVED OPTIONS (NEED TO TEST)
+#openshift_storage_glusterfs_registry_storageclass=false
+#openshift_storage_glusterfs_registry_block_host_vol_create=true
+#openshift_metrics_cassandra_storage_type=pv
+#openshift_logging_es_pvc_dynamic=true
+#openshift_storage_glusterfs_block_host_vol_create=false
