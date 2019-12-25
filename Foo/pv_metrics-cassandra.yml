@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+  - kubernetes.io/pv-protection
+  name: metrics-cassandra
+spec:
+  storageClassName: glusterfs-registry-block
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  glusterfs:
+    endpoints: gluster.org-glusterblock-infra-storage
+    path: metrics-cassandra
+  persistentVolumeReclaimPolicy: Retain
+
