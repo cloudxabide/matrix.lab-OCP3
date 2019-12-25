@@ -31,9 +31,13 @@ HYPERVISORS="apoc neo trinity morpheus"
 for HYPERVISOR in $HYPERVISORS
 do
   ssh -l root -t $HYPERVISOR << EOF
-    cd ~/matrix.lab/Scripts 
-    nohup ./lab_control.sh build &
+    cd ~/matrix.lab/Scripts; nohup ./lab_control.sh build &
 EOF
+done
+
+for HYPERVISOR in $HYPERVISORS
+do
+  ssh -l root -t $HYPERVISOR "uname -n; virsh list --all"
 done
 ```
 ### Start the OCP3 guests
@@ -43,8 +47,7 @@ HYPERVISORS="apoc neo trinity morpheus"
 for HYPERVISOR in $HYPERVISORS    
 do
   ssh -l root -t $HYPERVISOR << EOF
-    cd ~/matrix.lab/Scripts
-    nohup ./lab_control.sh start &
+    cd ~/matrix.lab/Scripts; nohup ./lab_control.sh start &
 EOF
 done
 ```
@@ -71,22 +74,32 @@ cp ${HOME}/matrix.lab/Files/*2xOCS*.yml ${HOME}
 sed -i -e 's/<rhnuser>/yo/g' ${HOME}/*OCS*yml
 sed -i -e 's/<rhnpass>/moreyo/g' ${HOME}/*OCS*yml
 
-BASE="${HOME}/ocp-3.11-multiple_master_native_ha-2xOCS-node_groups"
+BASE="${HOME}/ocp-3.11-1212"
 INVENTORY="${BASE}.yml"
 INVENTORY_NOGLUSTER="${BASE}-noGluster.yml"
-ls $INVENTORY $INVENTORY_NOGLUSTER
+grep oreg $INVENTORY $INVENTORY_NOGLUSTER
+
 rm ~/openshift-ansible.log
 cd /usr/share/ansible/openshift-ansible
 ansible all --list-hosts -i ${INVENTORY}
 # Run preReqs with full inventory (will succeed)
 nohup ansible-playbook -i ${INVENTORY} playbooks/prerequisites.yml -vvv | tee 01-pbs-prerequisites-`date +%F`.logs &
 #####################
-# Run deploy_cluster with Gluster resources removed (will succeed)
+# https://docs.okd.io/3.11/install_config/persistent_storage/persistent_storage_glusterfs.html#install-example-full
+# Run deploy_cluster with resources removed (Gluster, logging, metrics) (will succeed)
 nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} playbooks/deploy_cluster.yml -vvv | tee 02-pbs-deploy_cluster_noGluster-`date +%F`.logs &
-
 
 # Run deploy_cluster with Gluster present again (will succeed), the a health check
 nohup ansible-playbook -i ${INVENTORY} playbooks/openshift-glusterfs/config.yml -vvv | tee 03-pbs_deploy_glusterfs-`date +%F`.logs &
+
+# http://people.redhat.com/jrivera/openshift-docs_preview/openshift-origin/glusterfs-review/install_config/persistent_storage/persistent_storage_glusterfs.html#install-example-full
+nohup ansible-playbook -i ${INVENTORY} playbooks/openshift-logging/config.yml -vvv | tee ocp_manual_install-02a-`date +%F`.logs
+nohup ansible-playbook -i ${INVENTORY} playbooks/openshift-metrics/config.yml -vvv | tee ocp_manual_install-02b-`date +%F`.logs
+nohup ansible-playbook -i ${INVENTORY} playbooks/metrics-server/config.yml -vvv | tee ocp_manual_install-02c-`date +%F`.logs
+
+
+
+
 nohup ansible-playbook -i ${INVENTORY} playbooks/openshift-checks/health.yml -vvv | tee 04-pbs-healthcheck-`date +%F`.logs &
 
 #### I *THINK* we are done now.
