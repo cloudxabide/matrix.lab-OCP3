@@ -1,6 +1,6 @@
 #!/bin/bash
 # for FILE in `grep failed=1 * | awk -F: '{ print $1 }' | sort -u`; do echo "$FILE"; grep "plays in" $FILE; echo;  done
-BASE="${HOME}/ocp-3.11-multiple_master_native_ha-2xOCS-node_groups"
+BASE="${HOME}/ocp-3.11-1212"
 INVENTORY="${BASE}.yml"
 LOGDIR="`date +%s`/"; mkdir ~/$LOGDIR
 PLAYBOOKS="${PLAYBOOKS}"
