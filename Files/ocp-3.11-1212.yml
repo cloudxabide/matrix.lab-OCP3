@@ -63,10 +63,16 @@ openshift_image_tag=v3.11.154
 openshift_deployment_type=openshift-enterprise
 openshift_install_examples=true
 openshift_master_cluster_method=native
+
 os_firewall_use_firewalld=True 
 openshift_clock_enabled=true
 openshift_restart_nodes_serial=1
-os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
+
+#os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant' # legacy plugin
+os_sdn_network_plugin_name='redhat/openshift-ovs-networkpolicy'
+osm_default_node_selector='node-role.kubernetes.io/compute=true'
+osm_cluster_network_cidr=10.128.0.0/14
+openshift_portal_net=172.30.0.0/16
 
 # Cluster Image Source (registry) configuration
 oreg_url=registry.redhat.io/openshift3/ose-${component}:${version}
@@ -131,7 +137,9 @@ openshift_storageclass_default=false
 ## infra-storage - BEGIN
 # OCS storage for OpenShift infrastructure (registry,logging,metrics,prometheus)
 openshift_storage_glusterfs_registry_namespace=infra-storage
+openshift_storage_glusterfs_registry_storageclass=false
 openshift_storage_glusterfs_registry_block_deploy=true
+openshift_storage_glusterfs_registry_block_host_vol_create=true
 openshift_storage_glusterfs_registry_block_host_vol_size=100
 openshift_storage_glusterfs_registry_block_storageclass=true
 openshift_storage_glusterfs_registry_block_storageclass_default=false
@@ -145,6 +153,7 @@ openshift_storage_glusterfs_storageclass=true
 openshift_storage_glusterfs_storageclass_default=false
 openshift_storage_glusterfs_block_deploy=true
 openshift_storage_glusterfs_block_host_vol_size=100
+openshift_storage_glusterfs_block_host_vol_create=true
 openshift_storage_glusterfs_block_storageclass=true
 openshift_storage_glusterfs_block_storageclass_default=false
 openshift_storage_glusterfs_wipe=true
@@ -156,17 +165,20 @@ openshift_hosted_registry_storage_kind=glusterfs
 openshift_hosted_registry_storage_volume_size=12Gi
 openshift_hosted_registry_selector="node-role.kubernetes.io/infra=true"
 
+# logging - General
+openshift_logging_storage_kind=dynamic
+openshift_logging_elasticsearch_storage_type=pvc
+
 # logging - EFK/Apps
 openshift_logging_install_logging=true
+openshift_logging_es_pvc_dynamic=true
 openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_logging_curator_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_logging_es_nodeselector={"node-role.kubernetes.io/infra":"true"}
-openshift_logging_storage_kind=dynamic
 openshift_logging_es_pvc_size=10Gi
-openshift_logging_elasticsearch_storage_type=pvc
-openshift_logging_es_pvc_storage_class_name='glusterfs-registry-block'
-openshift_logging_es_pvc_prefix=es-loggin-app
 openshift_logging_es_cluster_size=3
+openshift_logging_es_pvc_storage_class_name='glusterfs-registry-block'
+openshift_logging_es_pvc_prefix=es-logging-app
 
 # logging - EFK/Ops
 openshift_logging_es_ops_cluster_size=3
@@ -179,26 +191,24 @@ openshift_logging_use_ops=false
 
 # metrics
 openshift_metrics_install_metrics=true
+openshift_metrics_storage_kind=dynamic
 openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra":"true"}
-openshift_metrics_storage_kind=dynamic
 openshift_metrics_storage_volume_size=10Gi
 openshift_metrics_cassandra_pvc_storage_class_name="glusterfs-registry-block"
+openshift_metrics_cassandra_pvc_prefix=metrics
+openshift_metrics_cassandra_pvc_storage_class_name=glusterfs-storage-infra-block
+openshift_metrics_cassandra_storage_type=dynamic
 
 # prometheous operator
 openshift_cluster_monitoring_operator_install=true
 openshift_cluster_monitoring_operator_node_selector={"node-role.kubernetes.io/infra":"true"}
-openshift_cluster_monitoring_operator_prometheus_storage_class_name="glusterfs-registry-block"
-openshift_cluster_monitoring_operator_alertmanager_storage_class_name="glusterfs-registry-block"
+openshift_cluster_monitoring_operator_prometheus_storage_class_name='glusterfs-registry-block'
+openshift_cluster_monitoring_operator_alertmanager_storage_class_name='glusterfs-registry-block'
 openshift_cluster_monitoring_operator_prometheus_storage_enabled=true
 openshift_cluster_monitoring_operator_alertmanager_storage_enabled=true
 openshift_cluster_monitoring_operator_prometheus_storage_capacity=12Gi
 openshift_cluster_monitoring_operator_alertmanager_storage_capacity=2Gi
 
 # REMOVED OPTIONS (NEED TO TEST)
-#openshift_storage_glusterfs_registry_storageclass=false
-#openshift_storage_glusterfs_registry_block_host_vol_create=true
-#openshift_metrics_cassandra_storage_type=pv
-#openshift_logging_es_pvc_dynamic=true
-#openshift_storage_glusterfs_block_host_vol_create=false
