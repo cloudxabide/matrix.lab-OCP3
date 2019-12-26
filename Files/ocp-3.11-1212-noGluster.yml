@@ -56,16 +56,18 @@ rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3-ocs14.matrix.lab op
 ansible_ssh_user=mansible
 ansible_become=true
 debug_level=2
+openshift_deployment_type=openshift-enterprise
+openshift_master_cluster_method=native
 openshift_release=v3.11
 #openshift_pkg_version=-3.11.154
 #openshift_image_tag=v3.11.154
-openshift_deployment_type=openshift-enterprise
-openshift_install_examples=true
-openshift_master_cluster_method=native
 
-os_firewall_use_firewalld=True 
+
 openshift_clock_enabled=true
 openshift_restart_nodes_serial=1
+
+# Networking 
+os_firewall_use_firewalld=True 
 
 os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant' 
 #os_sdn_network_plugin_name='redhat/openshift-ovs-networkpolicy'
@@ -76,7 +78,7 @@ openshift_portal_net=172.30.0.0/16
 
 # Cluster Image Source (registry) configuration
 oreg_url=registry.redhat.io/openshift3/ose-${component}:${version}
-oreg_auth_user="<rhnuser>" 
+oreg_auth_user="<rhnuser>"
 oreg_auth_password="<rhnpass>"
 
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
@@ -87,6 +89,8 @@ openshift_master_htpasswd_users={'ocpadmin': '$apr1$wUwgxS41$PuLxOncAvKfmJWueauv
 openshift_enable_service_catalog=true
 # Enable template service broker (requires service catalog to be enabled, above)
 template_service_broker_install=true
+# Install the OCP examples
+openshift_install_examples=true
 
 openshift_registry_selector="role=infra" 
 
@@ -108,9 +112,9 @@ openshift_master_default_subdomain=ocp3-mwn.linuxrevolution.com
 # Cluster Console Hostname (note: different than the "webconsole" hostname)
 openshift_console_install=true
 openshift_console_hostname=cluster-console.ocp3-mwn.linuxrevolution.com
-openshift_logging_kibana_hostname=logging.ocp3-mwn.linuxrevolution.com
-openshift_logging_kibana_ops_hostname=kibana-ops.ocp3-mwn.linuxrevolution.com
-openshift_metrics_hawkular_hostname=hawkular.ocp3-mwn.linuxrevolution.com
+#openshift_logging_kibana_hostname=logging.ocp3-mwn.linuxrevolution.com
+#openshift_logging_kibana_ops_hostname=kibana-ops.ocp3-mwn.linuxrevolution.com
+#openshift_metrics_hawkular_hostname=hawkular.ocp3-mwn.linuxrevolution.com
 
 ##################################################################################33
 ## Lab Specific Modifications - BEGIN

@@ -9,6 +9,9 @@ rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs11.
 rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3
 rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3
 rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3
+openshift_logging_kibana_hostname=logging.ocp3-mwn.linuxrevol |	#openshift_logging_kibana_hostname=logging.ocp3-mwn.linuxrevo
+openshift_logging_kibana_ops_hostname=kibana-ops.ocp3-mwn.lin |	#openshift_logging_kibana_ops_hostname=kibana-ops.ocp3-mwn.li
+openshift_metrics_hawkular_hostname=hawkular.ocp3-mwn.linuxre |	#openshift_metrics_hawkular_hostname=hawkular.ocp3-mwn.linuxr
 openshift_storage_glusterfs_image="registry.redhat.io/rhgs3/r |	#openshift_storage_glusterfs_image="registry.redhat.io/rhgs3/
 openshift_storage_glusterfs_block_image="registry.redhat.io/r |	#openshift_storage_glusterfs_block_image="registry.redhat.io/
 openshift_storage_glusterfs_heketi_image="registry.redhat.io/ |	#openshift_storage_glusterfs_heketi_image="registry.redhat.io
