@@ -55,7 +55,7 @@ done
 ### Prepare nodes for OCP3 Software
 ```
 ./OCP3_prep_hosts.sh
-# If you want to see it's progress, check out
+# If you want to see it's progress, do the following: 
 # ssh rh7-ocp3-bst01.matrix.lab "tail -f /root/install_OCP3.sh.log"
 ```
 
@@ -77,32 +77,38 @@ sed -i -e 's/<rhnpass>/moreyo/g' ${HOME}/*OCS*yml
 BASE="${HOME}/ocp-3.11-1212"
 INVENTORY="${BASE}.yml"
 INVENTORY_NOGLUSTER="${BASE}-noGluster.yml"
+LOGDATE=`date +%Y%m%d-%H%M`; LOGDIR=${HOME}/${LOGDATE}; mkdir -p $LOGDIR; cd $LOGDIR
 grep oreg $INVENTORY $INVENTORY_NOGLUSTER
-
+PLAYBOOKS="/usr/share/ansible/openshift-ansible/playbooks/"
 rm ~/openshift-ansible.log
-cd /usr/share/ansible/openshift-ansible
+#find /usr/share/ansible/openshift-ansible/ -name "config.retry" -exec rm {} \;
+cd ${PLAYBOOKS}
+
+# cd /usr/share/ansible/openshift-ansible
 ansible all --list-hosts -i ${INVENTORY}
 # Run preReqs with full inventory (will succeed)
-nohup ansible-playbook -i ${INVENTORY} playbooks/prerequisites.yml -vvv | tee 01-pbs-prerequisites-`date +%F`.logs &
+nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}prerequisites.yml -vvv | tee ${LOGDIR}/01-pbs-prerequisites-`date +%F`.logs &
 #####################
 # https://docs.okd.io/3.11/install_config/persistent_storage/persistent_storage_glusterfs.html#install-example-full
 # Run deploy_cluster with resources removed (Gluster, logging, metrics) (will succeed)
-nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} playbooks/deploy_cluster.yml -vvv | tee 02-pbs-deploy_cluster_noGluster-`date +%F`.logs &
+nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} ${PLAYBOOKS}deploy_cluster.yml -vvv | tee ${LOGDIR}/02-pbs-deploy_cluster_noGluster-`date +%F`.logs &
 
 # Run deploy_cluster with Gluster present again (will succeed), the a health check
-nohup ansible-playbook -i ${INVENTORY} playbooks/openshift-glusterfs/config.yml -vvv | tee 03-pbs_deploy_glusterfs-`date +%F`.logs &
-
-# http://people.redhat.com/jrivera/openshift-docs_preview/openshift-origin/glusterfs-review/install_config/persistent_storage/persistent_storage_glusterfs.html#install-example-full
-nohup ansible-playbook -i ${INVENTORY} playbooks/openshift-logging/config.yml -vvv | tee ocp_manual_install-02a-`date +%F`.logs
-nohup ansible-playbook -i ${INVENTORY} playbooks/openshift-metrics/config.yml -vvv | tee ocp_manual_install-02b-`date +%F`.logs
-nohup ansible-playbook -i ${INVENTORY} playbooks/metrics-server/config.yml -vvv | tee ocp_manual_install-02c-`date +%F`.logs
-
-
-
-
-nohup ansible-playbook -i ${INVENTORY} playbooks/openshift-checks/health.yml -vvv | tee 04-pbs-healthcheck-`date +%F`.logs &
+nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-glusterfs/config.yml -vvv | tee ${LOGDIR}/03-pbs_deploy_glusterfs-`date +%F`.logs &
 
 #### I *THINK* we are done now.
+sh ~/matrix.lab/Foo/all_the_playbooks.sh
+
+nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-checks/health.yml -vvv | tee ${LOGDIR}/05-pbs-healthcheck-`date +%F`.logs &
+
+#################################################################
+# THE FOLLOWING DOES NOT SEEM TO WORK
+# http://people.redhat.com/jrivera/openshift-docs_preview/openshift-origin/glusterfs-review/install_config/persistent_storage/persistent_storage_glusterfs.html#install-example-full
+nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-logging/config.yml -vvv | tee ${LOGDIR}/04a-pbs_openshift-logging-`date +%F`.logs
+nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-metrics/config.yml -vvv | tee ${LOGDIR}/04b-pbs_openshift-metrics-`date +%F`.logs
+nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}metrics-server/config.yml -vvv | tee ${LOGDIR}/04c-pbs_metrics-server-`date +%F`.logs
+
+
 
 # Everything to this point *should* have worked, the remaining steps may still be elusive
 # Run deploy_cluster with full inventory (will succeed)

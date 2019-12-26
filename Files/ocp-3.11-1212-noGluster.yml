@@ -53,13 +53,12 @@ rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3-ocs14.matrix.lab op
 ## Global Cluster Configuration - BEGIN
 ##################################################################################
 [OSEv3:vars]
-# Custom Node Groups (and standard groups)
-openshift_node_groups=[{'name': 'node-config-master', 'labels': ['node-role.kubernetes.io/master=true']}, {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true', 'node-role.kubernetes.io/infra-storage=true']}, {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true']}, {'name': 'node-config-app-storage', 'labels': ['node-role.kubernetes.io/app-storage=true']}]
+ansible_ssh_user=mansible
 ansible_become=true
 debug_level=2
 openshift_release=v3.11
-openshift_pkg_version=-3.11.154
-openshift_image_tag=v3.11.154
+#openshift_pkg_version=-3.11.154
+#openshift_image_tag=v3.11.154
 openshift_deployment_type=openshift-enterprise
 openshift_install_examples=true
 openshift_master_cluster_method=native
@@ -68,8 +67,9 @@ os_firewall_use_firewalld=True
 openshift_clock_enabled=true
 openshift_restart_nodes_serial=1
 
-#os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant' # legacy plugin
-os_sdn_network_plugin_name='redhat/openshift-ovs-networkpolicy'
+os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant' 
+#os_sdn_network_plugin_name='redhat/openshift-ovs-networkpolicy'
+
 osm_default_node_selector='node-role.kubernetes.io/compute=true'
 osm_cluster_network_cidr=10.128.0.0/14
 openshift_portal_net=172.30.0.0/16
@@ -89,6 +89,9 @@ openshift_enable_service_catalog=true
 template_service_broker_install=true
 
 openshift_registry_selector="role=infra" 
+
+# Custom Node Groups (and standard groups)
+openshift_node_groups=[{'name': 'node-config-master', 'labels': ['node-role.kubernetes.io/master=true']}, {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true', 'node-role.kubernetes.io/infra-storage=true']}, {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true']}, {'name': 'node-config-app-storage', 'labels': ['node-role.kubernetes.io/app-storage=true']}]
 
 ###########
 ## HOSTNAME DEFINITIONS

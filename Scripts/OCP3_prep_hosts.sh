@@ -96,7 +96,7 @@ do
     echo "(reboots): $COUNT"
     echo "ERROR Count: $ERROR"
   done
-  if [ $ERROR != 0 ]; then while [ $COUNTER -gt 0 ]; do echo -ne "Check again in (seconds): $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; fi
+  if [ $ERROR != 0 ]; then echo "Error found."; while [ $COUNTER -gt 0 ]; do echo -ne "Check again in (seconds): $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; fi
 done
 echo "NOTE:  ALL hosts have rebooted (twice)"
 
@@ -131,12 +131,13 @@ for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ 
 ## NOTE: 
 ######################################################################3
 # Update the Repos on the hosts dependent on which version of OCP
+#  NOTE:  we no longer --disable="*" as it *should* have been done earlier (and will remove the satellite repo, if present)
 case $OCP_VERSION in
   3.9)
-    OCP_REPOS_MGMT='subscription-manager repos --disable="*" --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-3.9-rpms" --enable="rhel-7-fast-datapath-rpms"  --enable="rhel-7-server-ansible-2.4-rpms"'
+    OCP_REPOS_MGMT='subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-3.9-rpms" --enable="rhel-7-fast-datapath-rpms"  --enable="rhel-7-server-ansible-2.4-rpms"'
   ;;
   *)
-    OCP_REPOS_MGMT='subscription-manager repos --disable="*" --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-3.11-rpms" --enable="rhel-7-server-ansible-2.6-rpms"'
+    OCP_REPOS_MGMT='subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-3.11-rpms" --enable="rhel-7-server-ansible-2.6-rpms"'
   ;;
 esac
 
