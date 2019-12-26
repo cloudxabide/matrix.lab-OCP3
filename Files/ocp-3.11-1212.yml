@@ -219,3 +219,4 @@ openshift_cluster_monitoring_operator_prometheus_storage_capacity=12Gi
 openshift_cluster_monitoring_operator_alertmanager_storage_capacity=2Gi
 
 # REMOVED OPTIONS (NEED TO TEST)
+
