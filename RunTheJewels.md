@@ -77,7 +77,7 @@ sed -i -e 's/<rhnpass>/moreyo/g' ${HOME}/*OCS*yml
 BASE="${HOME}/ocp-3.11-1212"
 INVENTORY="${BASE}.yml"
 INVENTORY_NOGLUSTER="${BASE}-noGluster.yml"
-LOGDATE=`date +%Y%m%d-%H%M`; LOGDIR=${HOME}/${LOGDATE}; mkdir -p $LOGDIR; cd $LOGDIR
+LOGDATE=`date +%Y%m%d`; LOGDIR=${HOME}/${LOGDATE}; mkdir -p $LOGDIR; cd $LOGDIR
 grep oreg $INVENTORY $INVENTORY_NOGLUSTER
 PLAYBOOKS="/usr/share/ansible/openshift-ansible/playbooks/"
 rm ~/openshift-ansible.log
