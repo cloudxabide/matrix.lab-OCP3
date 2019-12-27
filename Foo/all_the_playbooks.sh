@@ -2,7 +2,7 @@
 # for FILE in `grep failed=1 * | awk -F: '{ print $1 }' | sort -u`; do echo "$FILE"; grep "plays in" $FILE; echo;  done
 BASE="${HOME}/ocp-3.11-1212"
 INVENTORY="${BASE}.yml"
-LOGDIR="`date +%s`/"; mkdir ~/$LOGDIR
+LOGDATE=`date +%Y%m%d`; LOGDIR="${HOME}/${LOGDATE}/"; mkdir -p $LOGDIR; cd $LOGDIR
 PLAYBOOKS="/usr/share/ansible/openshift-ansible/playbooks/"
 
 COUNTER=1

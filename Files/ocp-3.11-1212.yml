@@ -62,7 +62,6 @@ openshift_release=v3.11
 #openshift_pkg_version=-3.11.154
 #openshift_image_tag=v3.11.154
 
-
 openshift_clock_enabled=true
 openshift_restart_nodes_serial=1
 
