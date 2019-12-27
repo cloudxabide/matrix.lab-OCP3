@@ -61,13 +61,13 @@ done
 } 
 ##################################### ##########################################
 teardown_VMS() {
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh destroy $HOST; done
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rm -f /var/lib/libvirt/images/$HOST/*; done
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do rmdir /var/lib/libvirt/images/$HOST; done
-for HOST in `virsh list --all | grep OCP | awk '{ print $2 }'`; do virsh undefine  $HOST; done
+for HOST in `virsh list --all | grep OCP | egrep -v 'BST' | awk '{ print $2 }'`; do virsh snapshot-delete $HOST post-install-snap; done
+for HOST in `virsh list --all | grep OCP | egrep -v 'BST' | awk '{ print $2 }'`; do virsh destroy $HOST; done
+for HOST in `virsh list --all | grep OCP | egrep -v 'BST' | awk '{ print $2 }'`; do rm -f /var/lib/libvirt/images/$HOST/*; done
+for HOST in `virsh list --all | grep OCP | egrep -v 'BST' | awk '{ print $2 }'`; do rmdir /var/lib/libvirt/images/$HOST; done
+for HOST in `virsh list --all | grep OCP | egrep -v 'BST' | awk '{ print $2 }'`; do virsh undefine  $HOST; done
 # I don't recommend you do the following unless you REALLY know it's going to do what you want
-find /etc/ -name "*OCP3*" -exec rm {} \; 
+find /etc/libvirt/storage/ -name "*OCP3*" ! -name "*BST*" -exec rm {} \; 
 systemctl restart libvirtd
 }
 
