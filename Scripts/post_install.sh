@@ -39,7 +39,7 @@ while [ $SLEEPYTIME -gt 0 ]; do echo -ne "Will proceed in:  $SLEEPYTIME\033[0K\r
 
 # Determine whether we are using Satellite or RHN and update the subscription, if needed
 CAPSHOSTNAME=`hostname -s | tr [a-z] [A-Z]`
- WEBSERVER=10.10.10.10; USE_SATELLITE=1
+# WEBSERVER=10.10.10.10; USE_SATELLITE=1
 USE_SATELLITE=`curl -s ${WEBSERVER}/Scripts/.myconfig | grep -w $CAPSHOSTNAME | awk -F: '{ print $12 }'`
 ENVIRONMENTALS="${HOME}/environmentals.txt"
 curl -s ${WEBSERVER}/Scripts/environmentals.txt > $ENVIRONMENTALS && . ${ENVIRONMENTALS}
@@ -160,6 +160,12 @@ sudo setsebool -P virt_use_fusefs on
 
 # Update Sysctl Settings (I *believe* this should be part of the Ansible scripts)
 #echo vm.max_map_count=262144 > /etc/sysctl.d/98-memory.conf
+
+# THIS IS A TEMP THING AND I'LL work it in to kickstart
+syspurpose set role "Red Hat Enterprise Linux Server"; sleep 5
+syspurpose set sla "Self-Support"; sleep 5
+syspurpose set usage "Development/Test"
+insights-client --register
 
 #  Update Host and reboot
 echo "NOTE:  update and reboot"

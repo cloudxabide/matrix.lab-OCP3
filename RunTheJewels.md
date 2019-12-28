@@ -82,7 +82,7 @@ grep oreg $INVENTORY $INVENTORY_NOGLUSTER
 PLAYBOOKS="/usr/share/ansible/openshift-ansible/playbooks/"
 rm ~/openshift-ansible.log
 #find /usr/share/ansible/openshift-ansible/ -name "config.retry" -exec rm {} \;
-cd ${PLAYBOOKS}
+#cd ${PLAYBOOKS}
 
 # cd /usr/share/ansible/openshift-ansible
 ansible all --list-hosts -i ${INVENTORY}
@@ -96,7 +96,8 @@ nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} ${PLAYBOOKS}deploy_cluster.yml 
 # Run deploy_cluster with Gluster present again (will succeed), the a health check
 nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-glusterfs/config.yml -vvv | tee ${LOGDIR}/03-pbs_deploy_glusterfs-`date +%F`.logs &
 
-#### I *THINK* we are done now.
+# Go run Foo/all_the_playbooks.sh
+#  which have single digit numerical prefix and the name of the playbook in the log filename
 sh ~/matrix.lab/Foo/all_the_playbooks.sh
 
 nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-checks/health.yml -vvv | tee ${LOGDIR}/05-pbs-healthcheck-`date +%F`.logs &
@@ -107,8 +108,6 @@ nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-checks/health.yml -
 nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-logging/config.yml -vvv | tee ${LOGDIR}/04a-pbs_openshift-logging-`date +%F`.logs
 nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-metrics/config.yml -vvv | tee ${LOGDIR}/04b-pbs_openshift-metrics-`date +%F`.logs
 nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}metrics-server/config.yml -vvv | tee ${LOGDIR}/04c-pbs_metrics-server-`date +%F`.logs
-
-
 
 # Everything to this point *should* have worked, the remaining steps may still be elusive
 # Run deploy_cluster with full inventory (will succeed)
