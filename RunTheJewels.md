@@ -108,14 +108,13 @@ nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-checks/health.yml -
 nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-logging/config.yml -vvv | tee ${LOGDIR}/04a-pbs_openshift-logging-`date +%F`.logs
 nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-metrics/config.yml -vvv | tee ${LOGDIR}/04b-pbs_openshift-metrics-`date +%F`.logs
 nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}metrics-server/config.yml -vvv | tee ${LOGDIR}/04c-pbs_metrics-server-`date +%F`.logs
+#################################################################
+
 
 # Everything to this point *should* have worked, the remaining steps may still be elusive
-# Run deploy_cluster with full inventory (will succeed)
+# Run deploy_cluster with full inventory (will succeed) - or run "all_the_playbooks.sh"
 nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 05-pbs_deploy_cluster-`date +%F`.logs &
 
-# This *WAS* Step 2 - I don't think it is advisable to run
-# Run deploy_cluster with full inventory (will fail with "Task: Check for GlusterFS cluster health / Task: Check for GlusterFS cluster health)
-nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 02-pbs-deploy_cluster-`date +%F`.logs &
 ```
 
 Example of how OCP3 *should* be deployed
