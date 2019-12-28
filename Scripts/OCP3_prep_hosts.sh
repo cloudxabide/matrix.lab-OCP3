@@ -96,11 +96,12 @@ do
     echo "(reboots): $COUNT"
     echo "ERROR Count: $ERROR"
   done
-  if [ $ERROR != 0 ]; then echo "Error found."; while [ $COUNTER -gt 0 ]; do echo -ne "Check again in (seconds): $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; fi
+  if [ $ERROR != 0 ]; then echo "Error(s) found."; while [ $COUNTER -gt 0 ]; do echo -ne "Check again in (seconds): $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; fi
 done
 echo "NOTE:  ALL hosts have rebooted (twice)"
 
 # Switch the connections to the mansible user 
+echo "Check whether user:mansible is present in ssh config"
 [ -f ~/.ssh/config.bak ] && mv ~/.ssh/config.bak ~/.ssh/config
 (grep mansible ~/.ssh/config) || cat << EOF > ~/.ssh/config
 Host *.matrix.lab
