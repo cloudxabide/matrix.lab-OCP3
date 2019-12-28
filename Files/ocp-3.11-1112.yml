@@ -99,7 +99,7 @@ openshift_install_examples=true
 openshift_registry_selector={"node-role.kubernetes.io/infra":"true"}
 
 # Custom Node Groups (and standard groups)
-openshift_node_groups=[{'name': 'node-config-master', 'labels': ['node-role.kubernetes.io/master=true']}, {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true']}, {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true']}, {'name': 'node-config-infra-storage', 'labels': ['node-role.kubernetes.io/infra-storage=true']}] {'name': 'node-config-app-storage', 'labels': ['node-role.kubernetes.io/app-storage=true']}]
+openshift_node_groups=[{'name': 'node-config-master', 'labels': ['node-role.kubernetes.io/master=true']}, {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true']}, {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true']}, {'name': 'node-config-infra-storage', 'labels': ['node-role.kubernetes.io/infra-storage=true']}, {'name': 'node-config-app-storage', 'labels': ['node-role.kubernetes.io/app-storage=true']}]
 
 ###########
 ## HOSTNAME DEFINITIONS
