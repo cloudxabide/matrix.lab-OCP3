@@ -110,7 +110,6 @@ nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-metrics/config.yml 
 nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}metrics-server/config.yml -vvv | tee ${LOGDIR}/04c-pbs_metrics-server-`date +%F`.logs
 #################################################################
 
-
 # Everything to this point *should* have worked, the remaining steps may still be elusive
 # Run deploy_cluster with full inventory (will succeed) - or run "all_the_playbooks.sh"
 nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 05-pbs_deploy_cluster-`date +%F`.logs &
@@ -130,15 +129,37 @@ nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 0
 for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print $3 }'`; do ssh $HOST  "sudo htpasswd -b /etc/origin/master/htpasswd ocpadmin Passw0rd"; done
 ```
 
-### Teardown
+### Rebuild the Joint (Teardown to Deploy OCP)
 - Unregister from RHN (or Satellite)
 - power off VMs, remove their storage, undefine VMs, remove "storage info" in /etc
-
+- update the hosts from Git
+- build the VMs
+- start the VMs
 ```
 ssh rh7-ocp3-bst01.matrix.lab
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo subscription-manager unregister"; echo ; done
 
 HYPERVISORS="apoc neo trinity morpheus"
 for HOST in $HYPERVISORS; do ssh -t $HOST "matrix.lab/Scripts/lab_control.sh teardown "; done
+
+./lab_control.sh gitpull
+
+for HYPERVISOR in $HYPERVISORS
+do
+  ssh -l root -t $HYPERVISOR << EOF
+    cd ~/matrix.lab/Scripts; nohup ./lab_control.sh build &
+EOF
+done
+
+for HYPERVISOR in $HYPERVISORS
+do
+  ssh -l root -t $HYPERVISOR << EOF
+    cd ~/matrix.lab/Scripts; nohup ./lab_control.sh start &
+EOF
+done
+
+for HOST in $HYPERVISORS; do ssh -t $HOST "sudo virsh list --all | grep OCP"; done
+
+
 ```
 
