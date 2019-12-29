@@ -203,11 +203,12 @@ openshift_logging_use_ops=false
 # metrics
 openshift_metrics_install_metrics=true
 openshift_metrics_start_cluster=true
-openshift_metrics_storage_kind=dynamic
+# https://bugzilla.redhat.com/show_bug.cgi?id=1753330 (don't set kind=dynamic)
+openshift_metrics_storage_kind=pv
 openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra":"true"}
-openshift_metrics_storage_volume_size=11Gi
+openshift_metrics_storage_volume_size=20Gi
 openshift_metrics_cassandra_pvc_storage_class_name="glusterfs-registry-block"
 openshift_metrics_cassandra_pvc_prefix=metrics-cassandra
 openshift_metrics_cassandra_pvc_size=13Gi
