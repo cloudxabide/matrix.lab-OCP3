@@ -162,9 +162,11 @@ sudo setsebool -P virt_use_fusefs on
 #echo vm.max_map_count=262144 > /etc/sysctl.d/98-memory.conf
 
 # THIS IS A TEMP THING AND I'LL work it in to kickstart
-syspurpose set role "Red Hat Enterprise Linux Server"; sleep 5
+#syspurpose set role "Red Hat Enterprise Linux Server"; sleep 5
+#syspurpose set usage "Development/Test"
 syspurpose set sla "Self-Support"; sleep 5
-syspurpose set usage "Development/Test"
+syspurpose set role ""; sleep 5
+syspurpose set usage ""
 insights-client --register
 
 #  Update Host and reboot
