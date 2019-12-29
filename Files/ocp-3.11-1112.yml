@@ -96,7 +96,7 @@ template_service_broker_install=true
 # Install the OCP examples
 openshift_install_examples=true
 
-openshift_registry_selector={"node-role.kubernetes.io/infra":"true"}
+openshift_registry_selector='node-role.kubernetes.io/infra=true'
 
 # Custom Node Groups (and standard groups)
 openshift_node_groups=[{'name': 'node-config-master', 'labels': ['node-role.kubernetes.io/master=true']}, {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true']}, {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true']}, {'name': 'node-config-infra-storage', 'labels': ['node-role.kubernetes.io/infra-storage=true']}, {'name': 'node-config-app-storage', 'labels': ['node-role.kubernetes.io/app-storage=true']}]
@@ -201,18 +201,23 @@ openshift_logging_kibana_ops_nodeselector={"node-role.kubernetes.io/infra":"true
 openshift_logging_use_ops=false
 
 # metrics
+# https://docs.openshift.com/container-platform/3.11/install_config/cluster_metrics.html
 openshift_metrics_install_metrics=true
 openshift_metrics_start_cluster=true
+openshift_metrics_image_prefix=metrics
+openshift_metrics_duration=3
 # https://bugzilla.redhat.com/show_bug.cgi?id=1753330 (don't set kind=dynamic)
+# not sure this resolved anything
 openshift_metrics_storage_kind=pv
 openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_storage_volume_size=20Gi
-openshift_metrics_cassandra_pvc_storage_class_name="glusterfs-registry-block"
+openshift_metrics_cassandra_pvc_storage_class_name='glusterfs-registry-block'
 openshift_metrics_cassandra_pvc_prefix=metrics-cassandra
-openshift_metrics_cassandra_pvc_size=13Gi
-openshift_metrics_cassandra_pvc_storage_class_name=glusterfs-storage-infra-block
+# I am going to try omitting the following...
+#openshift_metrics_cassandra_pvc_size=13Gi
+openshift_metrics_cassandra_pvc_storage_class_name='glusterfs-storage-infra-block'
 openshift_metrics_cassandra_storage_type=dynamic
 
 # prometheous operator
