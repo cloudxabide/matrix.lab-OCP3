@@ -74,13 +74,14 @@ cp ${HOME}/matrix.lab/Files/*2xOCS*.yml ${HOME}
 sed -i -e 's/<rhnuser>/yo/g' ${HOME}/*OCS*yml
 sed -i -e 's/<rhnpass>/moreyo/g' ${HOME}/*OCS*yml
 
-BASE="${HOME}/ocp-3.11-1212"
+BASE="${HOME}/ocp-3.11-1112"
 INVENTORY="${BASE}.yml"
 INVENTORY_NOGLUSTER="${BASE}-noGluster.yml"
 LOGDATE=`date +%Y%m%d`; LOGDIR=${HOME}/${LOGDATE}; mkdir -p $LOGDIR; cd $LOGDIR
 grep oreg $INVENTORY $INVENTORY_NOGLUSTER
 PLAYBOOKS="/usr/share/ansible/openshift-ansible/playbooks/"
 rm ~/openshift-ansible.log
+
 #find /usr/share/ansible/openshift-ansible/ -name "config.retry" -exec rm {} \;
 #cd ${PLAYBOOKS}
 
@@ -137,12 +138,13 @@ for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print
 - start the VMs
 ```
 ssh rh7-ocp3-bst01.matrix.lab
+cd matrix.lab/Scripts; git pull
+./lab_control.sh gitpull
+
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo subscription-manager unregister"; echo ; done
 
 HYPERVISORS="apoc neo trinity morpheus"
-for HOST in $HYPERVISORS; do ssh -t $HOST "matrix.lab/Scripts/lab_control.sh teardown "; done
-
-./lab_control.sh gitpull
+for HOST in $HYPERVISORS; do ssh -t $HOST "matrix.lab/Scripts/lab_control.sh teardown"; done
 
 for HYPERVISOR in $HYPERVISORS
 do
@@ -159,7 +161,6 @@ EOF
 done
 
 for HOST in $HYPERVISORS; do ssh -t $HOST "sudo virsh list --all | grep OCP"; done
-
-
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo uptime"; done
 ```
 
