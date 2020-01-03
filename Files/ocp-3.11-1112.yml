@@ -176,7 +176,9 @@ openshift_hosted_registry_storage_kind=glusterfs
 openshift_hosted_registry_storage_volume_size=12Gi
 openshift_hosted_registry_selector="node-role.kubernetes.io/infra=true"
 
-# logging - General
+########################################################################################
+# logging - elasticsearch, fluentd, kibnana (-n openshift-logging)
+https://docs.openshift.com/container-platform/3.11/install_config/aggregate_logging.html
 openshift_logging_storage_kind=dynamic
 openshift_logging_elasticsearch_storage_type=pvc
 
@@ -199,9 +201,12 @@ openshift_logging_es_ops_pvc_prefix=es-logging-ops
 openshift_logging_es_ops_pvc_size=12Gi
 openshift_logging_kibana_ops_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_logging_use_ops=false
+########################################################################################
 
-# metrics
+########################################################################################
+# metrics - heapster, hawkular, casssandra (-n openshift-infra)
 # https://docs.openshift.com/container-platform/3.11/install_config/cluster_metrics.html
+# https://access.redhat.com/documentation/en-us/red_hat_openshift_container_storage/3.11/html/operations_guide/logging_metrics
 openshift_metrics_install_metrics=true
 openshift_metrics_start_cluster=true
 openshift_metrics_image_prefix=metrics
@@ -210,23 +215,26 @@ openshift_metrics_storage_kind=dynamic
 openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra":"true"}
-openshift_metrics_storage_volume_size=20Gi
+openshift_metrics_storage_volume_size=10Gi
 openshift_metrics_cassandra_pvc_storage_class_name='glusterfs-registry-block'
 openshift_metrics_cassandra_pvc_prefix=metrics-cassandra
-# I am going to try omitting the following...
-#openshift_metrics_cassandra_pvc_size=13Gi
-openshift_metrics_cassandra_pvc_storage_class_name='glusterfs-storage-infra-block'
+openshift_metrics_cassandra_pvc_size=10Gi
+openshift_metrics_cassandra_pvc_storage_class_name='glusterfs-registry-block'
 openshift_metrics_cassandra_storage_type=dynamic
+########################################################################################
 
-# prometheous operator
+########################################################################################
+# monitoring - prometheous operator (-n openshift-monitoring)
+# https://docs.openshift.com/container-platform/3.11/install_config/prometheus_cluster_monitoring.html 
 openshift_cluster_monitoring_operator_install=true
 openshift_cluster_monitoring_operator_node_selector={"node-role.kubernetes.io/infra":"true"}
 openshift_cluster_monitoring_operator_prometheus_storage_class_name='glusterfs-registry-block'
 openshift_cluster_monitoring_operator_alertmanager_storage_class_name='glusterfs-registry-block'
 openshift_cluster_monitoring_operator_prometheus_storage_enabled=true
 openshift_cluster_monitoring_operator_alertmanager_storage_enabled=true
-openshift_cluster_monitoring_operator_prometheus_storage_capacity=13Gi
+openshift_cluster_monitoring_operator_prometheus_storage_capacity=15Gi
 openshift_cluster_monitoring_operator_alertmanager_storage_capacity=2Gi
+########################################################################################
 
-# REMOVED OPTIONS (NEED TO TEST)
-
+# REMOVED OPTIONS (Keeping them in the inventory, but commented out)
+# example_configuration_value=blah
