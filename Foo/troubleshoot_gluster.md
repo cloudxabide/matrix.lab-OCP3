@@ -53,60 +53,8 @@ spec:
 
 ```
 
-
-
 ## Metrics Storage
 Again, not sure why this is not ALL handled by the Ansible playbooks
-
-First, create the PV "metrics-1"
-```
-
-echo "apiVersion: v1
-kind: PersistentVolume
-metadata:
-  finalizers:
-  - kubernetes.io/pv-protection
-  name: metrics-1
-  labels:
-    metrics-infra: hawkular-cassandra
-spec:
-  storageClassName: glusterfs-registry-block
-  accessModes:
-  - ReadWriteOnce
-  capacity:
-    storage: 7Gi
-  glusterfs:
-    endpoints: gluster.org-glusterblock-infra-storage
-    path: metrics-1
-  persistentVolumeReclaimPolicy: Retain" | oc create -f -
-```
-
-Then, create the PVC "metrics-cassandra-1"
-```
-echo "apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"labels":{"metrics-infra":"hawkular-cassandra"},"name":"metrics-cassandra-1","namespace":"openshift-infra"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"7Gi"}}}}
-  finalizers:
-  - kubernetes.io/pvc-protection
-  labels:
-    metrics-infra: hawkular-cassandra
-  name: metrics-cassandra-1
-  namespace: openshift-infra
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 7Gi
-  storageClassName: glusterfs-registry-block
-  volumeName: metrics-1" | oc create -f -
-```
-
-Create the endpoints (in the openshift-logging namespace)  
-This is still a work in progress.  Ugh  
 
 You need to figure out the pod name for "glusterblock-registry-provisioner-dc"
 ```
@@ -124,8 +72,59 @@ subsets:
   - ip: 10.10.10.177
   ports:
   - port: 1
-    protocol: TCP" | oc create -f -  
+    protocol: TCP" | oc create -f -
 ```
+
+Next, create the PV "metrics-1"
+```
+
+echo "apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+  - kubernetes.io/pv-protection
+  name: metrics-1
+  labels:
+    metrics-infra: hawkular-cassandra
+spec:
+  storageClassName: glusterfs-registry-block
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  glusterfs:
+    endpoints: gluster.org-glusterblock-infra-storage
+    path: metrics-1
+  persistentVolumeReclaimPolicy: Retain" | oc create -f -
+```
+
+Then, create the PVC "metrics-cassandra-1"
+```
+echo "apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"labels":{"metrics-infra":"hawkular-cassandra"},"name":"metrics-cassandra-1","namespace":"openshift-infra"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"10Gi"}}}}
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    metrics-infra: hawkular-cassandra
+  name: metrics-cassandra-1
+  namespace: openshift-infra
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: glusterfs-registry-block
+  volumeName: metrics-1" | oc create -f -
+```
+
+Create the endpoints (in the openshift-logging namespace)  
+This is still a work in progress.  Ugh  
+
 
 ## Endpoints
 For some reason I have found endpoints defined... with no endpoints???
@@ -139,6 +138,20 @@ subsets:
   - ip: 10.10.10.175
   - ip: 10.10.10.176
   - ip: 10.10.10.177
+  ports:
+  - port: 1
+    protocol: TCP
+```
+
+```
+# oc edit endpoints gluster.org-glusterblock-app-storage -n app-storage
+
+subsets:
+- addresses:
+  - ip: 10.10.10.196
+  - ip: 10.10.10.197
+  - ip: 10.10.10.198
+  - ip: 10.10.10.199
   ports:
   - port: 1
     protocol: TCP

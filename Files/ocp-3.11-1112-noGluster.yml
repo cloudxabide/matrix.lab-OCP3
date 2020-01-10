@@ -178,7 +178,7 @@ openshift_master_dynamic_provisioning_enabled=true
 
 ########################################################################################
 # logging - elasticsearch, fluentd, kibnana (-n openshift-logging)
-https://docs.openshift.com/container-platform/3.11/install_config/aggregate_logging.html
+# https://docs.openshift.com/container-platform/3.11/install_config/aggregate_logging.html
 #openshift_logging_storage_kind=dynamic
 #openshift_logging_elasticsearch_storage_type=pvc
 
