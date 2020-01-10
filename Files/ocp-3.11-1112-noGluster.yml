@@ -48,11 +48,11 @@ rh7-ocp3-app03.matrix.lab openshift_public_hostname=rh7-ocp3-app03.matrix.lab op
 rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3-ocs01.matrix.lab openshift_schedulable=True openshift_node_group_name='node-config-infra-storage'
 rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3-ocs02.matrix.lab openshift_schedulable=True openshift_node_group_name='node-config-infra-storage'
 rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3-ocs03.matrix.lab openshift_schedulable=True openshift_node_group_name='node-config-infra-storage'
-rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3-ocs04.matrix.lab openshift_schedulable=True openshift_node_group_name='node-config-infra-storage'
+#rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3-ocs04.matrix.lab openshift_schedulable=True openshift_node_group_name='node-config-infra-storage'
 rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3-ocs01.matrix.lab openshift_schedulable=True openshift_node_group_name='node-config-app-storage'
 rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3-ocs12.matrix.lab openshift_schedulable=True openshift_node_group_name='node-config-app-storage'
 rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3-ocs13.matrix.lab openshift_schedulable=True openshift_node_group_name='node-config-app-storage'
-rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3-ocs14.matrix.lab openshift_schedulable=True openshift_node_group_name='node-config-app-storage'
+#rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3-ocs14.matrix.lab openshift_schedulable=True openshift_node_group_name='node-config-app-storage'
 
 ##################################################################################
 ## Global Cluster Configuration - BEGIN

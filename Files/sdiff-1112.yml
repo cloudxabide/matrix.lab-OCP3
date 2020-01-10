@@ -4,12 +4,10 @@ glusterfs_registry					      |	#glusterfs_registry
 rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs01.matrix.lab openshift_public_hostname=rh7-ocp3
 rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs02.matrix.lab openshift_public_hostname=rh7-ocp3
 rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs03.matrix.lab openshift_public_hostname=rh7-ocp3
-rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs04.matrix.lab openshift_public_hostname=rh7-ocp3
 [glusterfs]						      |	#[glusterfs]
 rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs11.matrix.lab openshift_public_hostname=rh7-ocp3
 rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs12.matrix.lab openshift_public_hostname=rh7-ocp3
 rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs13.matrix.lab openshift_public_hostname=rh7-ocp3
-rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3- |	#rh7-ocp3-ocs14.matrix.lab openshift_public_hostname=rh7-ocp3
 openshift_logging_kibana_hostname=logging.ocp3-mwn.linuxrevol |	#openshift_logging_kibana_hostname=logging.ocp3-mwn.linuxrevo
 openshift_logging_kibana_ops_hostname=kibana-ops.ocp3-mwn.lin |	#openshift_logging_kibana_ops_hostname=kibana-ops.ocp3-mwn.li
 openshift_metrics_hawkular_hostname=hawkular.ocp3-mwn.linuxre |	#openshift_metrics_hawkular_hostname=hawkular.ocp3-mwn.linuxr

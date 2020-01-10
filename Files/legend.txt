@@ -2,4 +2,4 @@
 # multi-master:infra-storage-nodes:app-storage-nodes:Gluster Clusters:
 # "{infra,app}-storage-nodes" -- 0 = not present, 1 = dedicated nodes, 2 = shared nodes
 1:2:1:2
-
+1:1:1:2
