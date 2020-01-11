@@ -64,7 +64,7 @@ metadata:
   annotations:
     control-plane.alpha.kubernetes.io/leader: '{"holderIdentity":"glusterblock-registry-provisioner-dc-1-gdpsx_fac4f0fb-2912-11ea-ac75-0a580a830203","leaseDurationSeconds":15,"acquireTime":"2019-12-28T01:40:08Z","renewTime":"2019-12-28T04:48:59Z","leaderTransitions":0}'
   name: gluster.org-glusterblock-infra-storage
-  namespace: openshift-logging
+  namespace: openshift-infra
 subsets:
 - addresses:
   - ip: 10.10.10.175
@@ -91,7 +91,7 @@ spec:
   accessModes:
   - ReadWriteOnce
   capacity:
-    storage: 10Gi
+    storage: 12Gi
   glusterfs:
     endpoints: gluster.org-glusterblock-infra-storage
     path: metrics-1
@@ -105,7 +105,7 @@ kind: PersistentVolumeClaim
 metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"labels":{"metrics-infra":"hawkular-cassandra"},"name":"metrics-cassandra-1","namespace":"openshift-infra"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"10Gi"}}}}
+      {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"labels":{"metrics-infra":"hawkular-cassandra"},"name":"metrics-cassandra-1","namespace":"openshift-infra"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"12Gi"}}}}
   finalizers:
   - kubernetes.io/pvc-protection
   labels:
@@ -117,7 +117,7 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
+      storage: 12Gi
   storageClassName: glusterfs-registry-block
   volumeName: metrics-1" | oc create -f -
 ```

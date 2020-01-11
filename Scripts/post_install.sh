@@ -137,7 +137,7 @@ firewall-cmd --reload
 yum -y install sysstat pcp
 systemctl enable sysstat --now
 
-#  Configure tuned
+#  Configure Parameters (tuned, repos) based on hardware type 
 $(which yum) -y install tuned
 case `dmidecode -s system-manufacturer` in
   'Red Hat'|'oVirt')

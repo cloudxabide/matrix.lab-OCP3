@@ -94,7 +94,7 @@ nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}prerequisites.yml -vvv | tee 
 # Run deploy_cluster with resources removed (Gluster, logging, metrics) (will succeed)
 nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} ${PLAYBOOKS}deploy_cluster.yml -vvv | tee ${LOGDIR}/02-pbs-deploy_cluster_noGluster-`date +%F`.logs &
 
-# Run deploy_cluster with Gluster present again (will succeed), the a health check
+# Run deploy_cluster with Gluster present again (will succeed), then a health check
 nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-glusterfs/config.yml -vvv | tee ${LOGDIR}/03-pbs_deploy_glusterfs-`date +%F`.logs &
 
 # Go run Foo/all_the_playbooks.sh
@@ -110,10 +110,6 @@ nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-logging/config.yml 
 nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-metrics/config.yml -vvv | tee ${LOGDIR}/04b-pbs_openshift-metrics-`date +%F`.logs
 nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}metrics-server/config.yml -vvv | tee ${LOGDIR}/04c-pbs_metrics-server-`date +%F`.logs
 #################################################################
-
-# Everything to this point *should* have worked, the remaining steps may still be elusive
-# Run deploy_cluster with full inventory (will succeed) - or run "all_the_playbooks.sh"
-nohup ansible-playbook -i ${INVENTORY} playbooks/deploy_cluster.yml -vvv | tee 05-pbs_deploy_cluster-`date +%F`.logs &
 
 ```
 
