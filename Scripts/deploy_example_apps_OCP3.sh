@@ -21,27 +21,10 @@ echo '{ "kind": "List", "apiVersion": "v1", "metadata": {}, "items": [ { "kind":
 At some point you will be able to browse to:  
 https://hexgl.ocp3-mwn.linuxrevolution.com/
 
+
 ## Update Cluster Admins
 ```
 oc adm policy add-cluster-role-to-user cluster-admin ocpadmin
 ```
 
 
-
-```
-cat << EOF > logging-es-0-pvc.yml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    logging-infra: support
-  name: logging-es-0
-  namespace: logging
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 512M
-  storageClassName: glusterfs-registry-block
-EOF
