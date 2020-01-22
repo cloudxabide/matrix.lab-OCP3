@@ -1,4 +1,6 @@
 #!/bin/bash
+# Reference:  https://docs.openshift.com/container-platform/3.11/install/running_install.html#advanced-retrying-installation
+
 # for FILE in `grep failed=1 * | awk -F: '{ print $1 }' | sort -u`; do echo "$FILE"; grep "plays in" $FILE; echo;  done
 BASE="${HOME}/ocp-3.11-1112"
 INVENTORY="${BASE}.yml"
