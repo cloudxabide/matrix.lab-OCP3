@@ -1,3 +1,4 @@
+# NOTE: This is a 2 x 3-node Gluster config (infra-storage, app-storage)
 [OSEv3:children]
 masters
 etcd
