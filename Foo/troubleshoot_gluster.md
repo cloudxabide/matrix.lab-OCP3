@@ -8,7 +8,7 @@ gluster peer status
 gluster volume info
 ```
 
-Create a PV
+Create a PV 
 ```
 echo "apiVersion: v1
 kind: PersistentVolume
@@ -100,6 +100,8 @@ spec:
 
 Then, create the PVC "metrics-cassandra-1"
 ```
+oc delete pvc/metrics-cassandra-1 -n openshift-infra
+
 echo "apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -122,6 +124,10 @@ spec:
   volumeName: metrics-1" | oc create -f -
 ```
 
+# Restart the pod
+```
+oc delete pod `oc get pod -n openshift-infra | grep ContainerCreating | awk '{ print $1 }'` -n openshift-infra
+```
 Create the endpoints (in the openshift-logging namespace)  
 This is still a work in progress.  Ugh  
 
@@ -135,9 +141,9 @@ oc edit endpoints <endpoint name>
 
 subsets:
 - addresses:
-  - ip: 10.10.10.175
-  - ip: 10.10.10.176
-  - ip: 10.10.10.177
+  - ip: 10.10.10.191
+  - ip: 10.10.10.192
+  - ip: 10.10.10.193
   ports:
   - port: 1
     protocol: TCP
@@ -156,3 +162,21 @@ subsets:
   - port: 1
     protocol: TCP
 ```
+
+oc delete endpoint gluster.org-glusterblock-infra-storage -n infra-storage
+echo "apiVersion: v1
+kind: Endpoints
+metadata:
+  annotations:
+    control-plane.alpha.kubernetes.io/leader: '{"holderIdentity":"glusterblock-registry-provisioner-dc-1-gdpsx_fac4f0fb-2912-11ea-ac75-0a580a830203","leaseDurationSeconds":15,"acquireTime":"2019-12-28T01:40:08Z","renewTime":"2019-12-28T04:48:59Z","leaderTransitions":0}'
+  name: gluster.org-glusterblock-infra-storage
+  namespace: infra-storage
+subsets:
+- addresses:
+  - ip: 10.10.10.191
+  - ip: 10.10.10.192
+  - ip: 10.10.10.193
+  ports:
+  - port: 1
+    protocol: TCP" | oc create -f -
+

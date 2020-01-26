@@ -53,6 +53,7 @@ done
 ```
 
 ### Prepare nodes for OCP3 Software
+Once you are certain all of the VMs have started, run the following:
 ```
 ./OCP3_prep_hosts.sh
 # If you want to see it's progress, do the following: 
@@ -112,6 +113,10 @@ nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}metrics-server/config.yml -vv
 #################################################################
 
 ```
+Once that is done.. I need to create endpoints and redeploy the logging pods after modifying the memory requirement oc edit dc -n openshift-logging 
+% s/16Gi/2Gi/g
+
+
 
 Example of how OCP3 *should* be deployed
 ```
@@ -160,3 +165,10 @@ for HOST in $HYPERVISORS; do ssh -t $HOST "sudo virsh list --all | grep OCP"; do
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo uptime"; done
 ```
 
+## OCP3 URLs
+https://ocp3-console.linuxrevolution.com:8443/console/   
+https://hawkular.ocp3-mwn.linuxrevolution.com  
+https://cluster-console.ocp3-mwn.linuxrevolution.com/  
+
+https://registry-console-default.ocp3-mwn.linuxrevolution.com/registry  
+https://docker-registry-default.ocp3-mwn.linuxrevolution.com/
