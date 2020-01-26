@@ -1,0 +1,405 @@
+[root@rh7-ocp3-mst01 ~]# oc get all --all-namespaces
+NAMESPACE                           NAME                                               READY     STATUS      RESTARTS   AGE
+app-storage                         pod/glusterblock-storage-provisioner-dc-1-fxph7    1/1       Running     1          1d
+app-storage                         pod/glusterfs-storage-kpnw8                        1/1       Running     0          1d
+app-storage                         pod/glusterfs-storage-wcvzj                        1/1       Running     0          1d
+app-storage                         pod/glusterfs-storage-ztdkj                        1/1       Running     0          1d
+app-storage                         pod/heketi-storage-1-97vz2                         1/1       Running     0          1d
+default                             pod/docker-registry-2-rz69m                        1/1       Running     0          1d
+default                             pod/registry-console-2-lvjr6                       1/1       Running     0          1d
+default                             pod/router-2-9t9ns                                 1/1       Running     0          1d
+default                             pod/router-2-nc2l9                                 1/1       Running     0          1d
+default                             pod/router-2-rclq8                                 1/1       Running     0          1d
+infra-storage                       pod/glusterblock-registry-provisioner-dc-1-h4jlw   1/1       Running     1          1d
+infra-storage                       pod/glusterfs-registry-5tj99                       1/1       Running     0          1d
+infra-storage                       pod/glusterfs-registry-8mkkc                       1/1       Running     0          1d
+infra-storage                       pod/glusterfs-registry-kxxhk                       1/1       Running     0          1d
+infra-storage                       pod/heketi-registry-1-j4whb                        1/1       Running     0          1d
+kube-service-catalog                pod/apiserver-9trnc                                1/1       Running     0          1d
+kube-service-catalog                pod/apiserver-q6x45                                1/1       Running     0          1d
+kube-service-catalog                pod/apiserver-xmpj7                                1/1       Running     0          1d
+kube-service-catalog                pod/controller-manager-9gg5x                       1/1       Running     0          1d
+kube-service-catalog                pod/controller-manager-gszrv                       1/1       Running     0          1d
+kube-service-catalog                pod/controller-manager-jfkzx                       1/1       Running     2          1d
+kube-system                         pod/master-api-rh7-ocp3-mst01.matrix.lab           1/1       Running     0          2d
+kube-system                         pod/master-api-rh7-ocp3-mst02.matrix.lab           1/1       Running     0          2d
+kube-system                         pod/master-api-rh7-ocp3-mst03.matrix.lab           1/1       Running     0          2d
+kube-system                         pod/master-controllers-rh7-ocp3-mst01.matrix.lab   1/1       Running     0          2d
+kube-system                         pod/master-controllers-rh7-ocp3-mst02.matrix.lab   1/1       Running     0          2d
+kube-system                         pod/master-controllers-rh7-ocp3-mst03.matrix.lab   1/1       Running     0          2d
+kube-system                         pod/master-etcd-rh7-ocp3-mst01.matrix.lab          1/1       Running     0          2d
+kube-system                         pod/master-etcd-rh7-ocp3-mst02.matrix.lab          1/1       Running     0          2d
+kube-system                         pod/master-etcd-rh7-ocp3-mst03.matrix.lab          1/1       Running     0          2d
+openshift-ansible-service-broker    pod/asb-1-27pgc                                    1/1       Running     0          1d
+openshift-console                   pod/console-58bc77f6f5-kcf8m                       1/1       Running     0          1d
+openshift-console                   pod/console-58bc77f6f5-tfspf                       1/1       Running     0          1h
+openshift-console                   pod/console-58bc77f6f5-tqspq                       1/1       Running     0          1d
+openshift-infra                     pod/hawkular-cassandra-1-44p8s                     1/1       Running     0          57m
+openshift-infra                     pod/hawkular-metrics-cmfpx                         1/1       Running     0          57m
+openshift-infra                     pod/hawkular-metrics-schema-xctxr                  0/1       Completed   1          58m
+openshift-infra                     pod/heapster-tqkqs                                 1/1       Running     0          57m
+openshift-logging                   pod/logging-es-data-master-bwqiivte-3-sksws        2/2       Running     0          25m
+openshift-logging                   pod/logging-es-data-master-lw48dkwh-2-nwn4b        2/2       Running     0          28m
+openshift-logging                   pod/logging-es-data-master-qse0y0p3-2-vpdnq        2/2       Running     0          28m
+openshift-logging                   pod/logging-fluentd-bsxd9                          1/1       Running     0          1d
+openshift-logging                   pod/logging-fluentd-chr4c                          1/1       Running     0          1d
+openshift-logging                   pod/logging-fluentd-d6mg4                          1/1       Running     0          1d
+openshift-logging                   pod/logging-fluentd-flc8j                          1/1       Running     0          1d
+openshift-logging                   pod/logging-fluentd-fln2z                          1/1       Running     0          1d
+openshift-logging                   pod/logging-fluentd-fxcfm                          1/1       Running     0          1d
+openshift-logging                   pod/logging-fluentd-jkdlw                          1/1       Running     0          1d
+openshift-logging                   pod/logging-fluentd-jsnr2                          1/1       Running     0          1d
+openshift-logging                   pod/logging-fluentd-klqgx                          1/1       Running     0          1d
+openshift-logging                   pod/logging-fluentd-p4kch                          1/1       Running     0          1d
+openshift-logging                   pod/logging-fluentd-pbg2c                          1/1       Running     0          1d
+openshift-logging                   pod/logging-fluentd-vfcm9                          1/1       Running     0          1d
+openshift-logging                   pod/logging-fluentd-vpf7d                          1/1       Running     0          1d
+openshift-logging                   pod/logging-fluentd-xtphw                          1/1       Running     0          1d
+openshift-logging                   pod/logging-fluentd-zd9fk                          1/1       Running     0          1d
+openshift-logging                   pod/logging-kibana-1-9rxp9                         2/2       Running     0          1d
+openshift-metrics-server            pod/metrics-server-5b5f8bcdc8-2l89m                1/1       Running     0          1d
+openshift-monitoring                pod/alertmanager-main-0                            3/3       Running     0          1d
+openshift-monitoring                pod/alertmanager-main-1                            3/3       Running     0          1d
+openshift-monitoring                pod/alertmanager-main-2                            3/3       Running     0          1d
+openshift-monitoring                pod/cluster-monitoring-operator-bb9669487-5vdzz    1/1       Running     0          1d
+openshift-monitoring                pod/grafana-6f8b8f5577-t6mcv                       2/2       Running     0          1d
+openshift-monitoring                pod/kube-state-metrics-7b8f7dfdff-b9szs            3/3       Running     0          1d
+openshift-monitoring                pod/node-exporter-282t2                            2/2       Running     0          1d
+openshift-monitoring                pod/node-exporter-4nbmp                            2/2       Running     0          1d
+openshift-monitoring                pod/node-exporter-5z2c8                            2/2       Running     0          1d
+openshift-monitoring                pod/node-exporter-8ggzx                            2/2       Running     0          1d
+openshift-monitoring                pod/node-exporter-8hfbn                            2/2       Running     0          1d
+openshift-monitoring                pod/node-exporter-8vnc9                            2/2       Running     0          1d
+openshift-monitoring                pod/node-exporter-clqnc                            2/2       Running     0          1d
+openshift-monitoring                pod/node-exporter-dt2vg                            2/2       Running     0          1d
+openshift-monitoring                pod/node-exporter-g2sdh                            2/2       Running     0          1d
+openshift-monitoring                pod/node-exporter-gtqtv                            2/2       Running     0          1d
+openshift-monitoring                pod/node-exporter-pwpgm                            2/2       Running     0          1d
+openshift-monitoring                pod/node-exporter-tk5tg                            2/2       Running     0          1d
+openshift-monitoring                pod/node-exporter-w4g5t                            2/2       Running     0          1d
+openshift-monitoring                pod/node-exporter-wbtq8                            2/2       Running     0          1d
+openshift-monitoring                pod/node-exporter-zw7t6                            2/2       Running     0          1d
+openshift-monitoring                pod/prometheus-k8s-0                               4/4       Running     1          12h
+openshift-monitoring                pod/prometheus-k8s-1                               4/4       Running     2          8h
+openshift-monitoring                pod/prometheus-operator-68d9c544f8-bpw4t           1/1       Running     0          1d
+openshift-node-problem-detector     pod/node-problem-detector-5dprp                    1/1       Running     0          1d
+openshift-node-problem-detector     pod/node-problem-detector-5t6pm                    1/1       Running     0          1d
+openshift-node-problem-detector     pod/node-problem-detector-8kxls                    1/1       Running     0          1d
+openshift-node-problem-detector     pod/node-problem-detector-8rf5f                    1/1       Running     0          1d
+openshift-node-problem-detector     pod/node-problem-detector-99cvv                    1/1       Running     0          1d
+openshift-node-problem-detector     pod/node-problem-detector-cx7zb                    1/1       Running     0          1d
+openshift-node-problem-detector     pod/node-problem-detector-dqf78                    1/1       Running     0          1d
+openshift-node-problem-detector     pod/node-problem-detector-ffxwh                    1/1       Running     0          1d
+openshift-node-problem-detector     pod/node-problem-detector-fjzzq                    1/1       Running     0          1d
+openshift-node-problem-detector     pod/node-problem-detector-fw6s4                    1/1       Running     0          1d
+openshift-node-problem-detector     pod/node-problem-detector-h8hfv                    1/1       Running     0          1d
+openshift-node-problem-detector     pod/node-problem-detector-mq9zc                    1/1       Running     0          1d
+openshift-node-problem-detector     pod/node-problem-detector-qlq2t                    1/1       Running     0          1d
+openshift-node-problem-detector     pod/node-problem-detector-qw7f7                    1/1       Running     0          1d
+openshift-node-problem-detector     pod/node-problem-detector-rczw9                    1/1       Running     0          1d
+openshift-node                      pod/sync-42rgb                                     1/1       Running     0          2d
+openshift-node                      pod/sync-58ctp                                     1/1       Running     0          2d
+openshift-node                      pod/sync-95ngq                                     1/1       Running     0          2d
+openshift-node                      pod/sync-bncmk                                     1/1       Running     0          2d
+openshift-node                      pod/sync-g4mwg                                     1/1       Running     0          2d
+openshift-node                      pod/sync-lwzwg                                     1/1       Running     0          2d
+openshift-node                      pod/sync-njsrt                                     1/1       Running     0          2d
+openshift-node                      pod/sync-nx89v                                     1/1       Running     0          2d
+openshift-node                      pod/sync-p7272                                     1/1       Running     0          2d
+openshift-node                      pod/sync-qk2h7                                     1/1       Running     0          2d
+openshift-node                      pod/sync-sr48v                                     1/1       Running     0          2d
+openshift-node                      pod/sync-xzspq                                     1/1       Running     0          2d
+openshift-node                      pod/sync-z6gcp                                     1/1       Running     0          2d
+openshift-node                      pod/sync-z99wg                                     1/1       Running     0          2d
+openshift-node                      pod/sync-zhsm9                                     1/1       Running     0          2d
+openshift-sdn                       pod/ovs-99kk9                                      1/1       Running     0          2d
+openshift-sdn                       pod/ovs-9rldz                                      1/1       Running     0          2d
+openshift-sdn                       pod/ovs-b7x72                                      1/1       Running     0          2d
+openshift-sdn                       pod/ovs-cc4gs                                      1/1       Running     0          2d
+openshift-sdn                       pod/ovs-fd9rp                                      1/1       Running     0          2d
+openshift-sdn                       pod/ovs-frbcj                                      1/1       Running     0          2d
+openshift-sdn                       pod/ovs-g5ngm                                      1/1       Running     0          2d
+openshift-sdn                       pod/ovs-hz6wd                                      1/1       Running     0          2d
+openshift-sdn                       pod/ovs-k5mkk                                      1/1       Running     0          2d
+openshift-sdn                       pod/ovs-knw4f                                      1/1       Running     0          2d
+openshift-sdn                       pod/ovs-scn8s                                      1/1       Running     0          2d
+openshift-sdn                       pod/ovs-tc9vq                                      1/1       Running     0          2d
+openshift-sdn                       pod/ovs-vlh9x                                      1/1       Running     0          2d
+openshift-sdn                       pod/ovs-wtndx                                      1/1       Running     0          2d
+openshift-sdn                       pod/ovs-zpnsz                                      1/1       Running     0          2d
+openshift-sdn                       pod/sdn-22nz4                                      1/1       Running     0          2d
+openshift-sdn                       pod/sdn-6txd2                                      1/1       Running     0          2d
+openshift-sdn                       pod/sdn-7djp7                                      1/1       Running     0          2d
+openshift-sdn                       pod/sdn-9gmjs                                      1/1       Running     0          2d
+openshift-sdn                       pod/sdn-blbqf                                      1/1       Running     0          2d
+openshift-sdn                       pod/sdn-d9ss7                                      1/1       Running     0          2d
+openshift-sdn                       pod/sdn-h6g5b                                      1/1       Running     0          2d
+openshift-sdn                       pod/sdn-h7lpg                                      1/1       Running     0          2d
+openshift-sdn                       pod/sdn-jnh4v                                      1/1       Running     0          2d
+openshift-sdn                       pod/sdn-mcnxl                                      1/1       Running     0          2d
+openshift-sdn                       pod/sdn-mg6sf                                      1/1       Running     0          2d
+openshift-sdn                       pod/sdn-nnsqt                                      1/1       Running     0          2d
+openshift-sdn                       pod/sdn-qjtkk                                      1/1       Running     0          2d
+openshift-sdn                       pod/sdn-spdrd                                      1/1       Running     0          2d
+openshift-sdn                       pod/sdn-zqjhz                                      1/1       Running     0          2d
+openshift-template-service-broker   pod/apiserver-c4n9m                                1/1       Running     0          1d
+openshift-template-service-broker   pod/apiserver-j64g4                                1/1       Running     0          1d
+openshift-template-service-broker   pod/apiserver-pktg5                                1/1       Running     0          1d
+openshift-web-console               pod/webconsole-77cc79865f-dnhxm                    1/1       Running     2          1h
+openshift-web-console               pod/webconsole-77cc79865f-fj77h                    1/1       Running     6          1d
+openshift-web-console               pod/webconsole-77cc79865f-nmbcc                    1/1       Running     6          1d
+operator-lifecycle-manager          pod/catalog-operator-b998cf7d9-8whg8               1/1       Running     0          1d
+operator-lifecycle-manager          pod/olm-operator-65598d48c4-gs69c                  1/1       Running     0          1d
+
+NAMESPACE                          NAME                                                           DESIRED   CURRENT   READY     AGE
+app-storage                        replicationcontroller/glusterblock-storage-provisioner-dc-1    1         1         1         1d
+app-storage                        replicationcontroller/heketi-storage-1                         1         1         1         1d
+default                            replicationcontroller/docker-registry-1                        0         0         0         2d
+default                            replicationcontroller/docker-registry-2                        1         1         1         1d
+default                            replicationcontroller/registry-console-1                       0         0         0         2d
+default                            replicationcontroller/registry-console-2                       1         1         1         1d
+default                            replicationcontroller/router-1                                 0         0         0         2d
+default                            replicationcontroller/router-2                                 3         3         3         1d
+infra-storage                      replicationcontroller/glusterblock-registry-provisioner-dc-1   1         1         1         1d
+infra-storage                      replicationcontroller/heketi-registry-1                        1         1         1         1d
+openshift-ansible-service-broker   replicationcontroller/asb-1                                    1         1         1         1d
+openshift-infra                    replicationcontroller/hawkular-cassandra-1                     1         1         1         58m
+openshift-infra                    replicationcontroller/hawkular-metrics                         1         1         1         58m
+openshift-infra                    replicationcontroller/heapster                                 1         1         1         58m
+openshift-logging                  replicationcontroller/logging-es-data-master-bwqiivte-3        1         1         1         25m
+openshift-logging                  replicationcontroller/logging-es-data-master-lw48dkwh-2        1         1         1         28m
+openshift-logging                  replicationcontroller/logging-es-data-master-qse0y0p3-2        1         1         1         28m
+openshift-logging                  replicationcontroller/logging-kibana-1                         1         1         1         1d
+
+NAMESPACE                           NAME                                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                               AGE
+app-storage                         service/heketi-db-storage-endpoints    ClusterIP   172.30.6.68      <none>        1/TCP                                 1d
+app-storage                         service/heketi-storage                 ClusterIP   172.30.117.127   <none>        8080/TCP                              1d
+default                             service/docker-registry                ClusterIP   172.30.112.91    <none>        5000/TCP                              2d
+default                             service/glusterfs-registry-endpoints   ClusterIP   172.30.184.197   <none>        1/TCP                                 1d
+default                             service/kubernetes                     ClusterIP   172.30.0.1       <none>        443/TCP,53/UDP,53/TCP                 2d
+default                             service/registry-console               ClusterIP   172.30.214.133   <none>        9000/TCP                              2d
+default                             service/router                         ClusterIP   172.30.49.90     <none>        80/TCP,443/TCP,1936/TCP               2d
+infra-storage                       service/heketi-db-registry-endpoints   ClusterIP   172.30.26.186    <none>        1/TCP                                 1d
+infra-storage                       service/heketi-registry                ClusterIP   172.30.202.214   <none>        8080/TCP                              1d
+kube-service-catalog                service/apiserver                      ClusterIP   172.30.159.34    <none>        443/TCP                               2d
+kube-service-catalog                service/controller-manager             ClusterIP   172.30.65.34     <none>        443/TCP                               2d
+kube-system                         service/kube-controllers               ClusterIP   None             <none>        8444/TCP                              2d
+kube-system                         service/kubelet                        ClusterIP   None             <none>        10250/TCP                             2d
+openshift-ansible-service-broker    service/asb                            ClusterIP   172.30.3.42      <none>        1338/TCP,1337/TCP                     2d
+openshift-console                   service/console                        ClusterIP   172.30.238.215   <none>        443/TCP                               2d
+openshift-infra                     service/hawkular-cassandra             ClusterIP   172.30.12.161    <none>        9042/TCP,9160/TCP,7000/TCP,7001/TCP   58m
+openshift-infra                     service/hawkular-cassandra-nodes       ClusterIP   None             <none>        9042/TCP,9160/TCP,7000/TCP,7001/TCP   58m
+openshift-infra                     service/hawkular-metrics               ClusterIP   172.30.118.174   <none>        443/TCP                               58m
+openshift-infra                     service/heapster                       ClusterIP   172.30.233.110   <none>        80/TCP                                58m
+openshift-logging                   service/logging-es                     ClusterIP   172.30.203.131   <none>        9200/TCP                              1d
+openshift-logging                   service/logging-es-cluster             ClusterIP   None             <none>        9300/TCP                              1d
+openshift-logging                   service/logging-es-prometheus          ClusterIP   172.30.22.81     <none>        443/TCP                               1d
+openshift-logging                   service/logging-kibana                 ClusterIP   172.30.8.44      <none>        443/TCP                               1d
+openshift-metrics-server            service/metrics-server                 ClusterIP   172.30.147.49    <none>        443/TCP                               1d
+openshift-monitoring                service/alertmanager-main              ClusterIP   172.30.25.208    <none>        9094/TCP                              2d
+openshift-monitoring                service/alertmanager-operated          ClusterIP   None             <none>        9093/TCP,6783/TCP                     2d
+openshift-monitoring                service/cluster-monitoring-operator    ClusterIP   None             <none>        8080/TCP                              2d
+openshift-monitoring                service/grafana                        ClusterIP   172.30.141.11    <none>        3000/TCP                              2d
+openshift-monitoring                service/kube-state-metrics             ClusterIP   None             <none>        8443/TCP,9443/TCP                     2d
+openshift-monitoring                service/node-exporter                  ClusterIP   None             <none>        9100/TCP                              2d
+openshift-monitoring                service/prometheus-k8s                 ClusterIP   172.30.67.144    <none>        9091/TCP                              2d
+openshift-monitoring                service/prometheus-operated            ClusterIP   None             <none>        9090/TCP                              2d
+openshift-monitoring                service/prometheus-operator            ClusterIP   None             <none>        8080/TCP                              2d
+openshift-template-service-broker   service/apiserver                      ClusterIP   172.30.199.165   <none>        443/TCP                               2d
+openshift-web-console               service/webconsole                     ClusterIP   172.30.199.177   <none>        443/TCP                               2d
+
+NAMESPACE                           NAME                                   DESIRED   CURRENT   READY     UP-TO-DATE   AVAILABLE   NODE SELECTOR                         AGE
+app-storage                         daemonset.apps/glusterfs-storage       3         3         3         3            3           glusterfs=storage-host                1d
+infra-storage                       daemonset.apps/glusterfs-registry      3         3         3         3            3           glusterfs=registry-host               1d
+kube-service-catalog                daemonset.apps/apiserver               3         3         3         3            3           node-role.kubernetes.io/master=true   2d
+kube-service-catalog                daemonset.apps/controller-manager      3         3         3         3            3           node-role.kubernetes.io/master=true   2d
+openshift-logging                   daemonset.apps/logging-fluentd         15        15        15        15           15          logging-infra-fluentd=true            1d
+openshift-monitoring                daemonset.apps/node-exporter           15        15        15        15           15          beta.kubernetes.io/os=linux           2d
+openshift-node-problem-detector     daemonset.apps/node-problem-detector   15        15        15        15           15          <none>                                1d
+openshift-node                      daemonset.apps/sync                    15        15        15        15           15          <none>                                2d
+openshift-sdn                       daemonset.apps/ovs                     15        15        15        0            15          <none>                                2d
+openshift-sdn                       daemonset.apps/sdn                     15        15        15        0            15          <none>                                2d
+openshift-template-service-broker   daemonset.apps/apiserver               3         3         3         3            3           node-role.kubernetes.io/master=true   2d
+
+NAMESPACE                    NAME                                          DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+openshift-console            deployment.apps/console                       3         3         3            3           2d
+openshift-metrics-server     deployment.apps/metrics-server                1         1         1            1           1d
+openshift-monitoring         deployment.apps/cluster-monitoring-operator   1         1         1            1           2d
+openshift-monitoring         deployment.apps/grafana                       1         1         1            1           2d
+openshift-monitoring         deployment.apps/kube-state-metrics            1         1         1            1           2d
+openshift-monitoring         deployment.apps/prometheus-operator           1         1         1            1           2d
+openshift-web-console        deployment.apps/webconsole                    3         3         3            3           2d
+operator-lifecycle-manager   deployment.apps/catalog-operator              1         1         1            1           1d
+operator-lifecycle-manager   deployment.apps/olm-operator                  1         1         1            1           1d
+
+NAMESPACE                    NAME                                                     DESIRED   CURRENT   READY     AGE
+openshift-console            replicaset.apps/console-58bc77f6f5                       3         3         3         1d
+openshift-console            replicaset.apps/console-5cb49fc6c7                       0         0         0         2d
+openshift-metrics-server     replicaset.apps/metrics-server-5b5f8bcdc8                1         1         1         1d
+openshift-monitoring         replicaset.apps/cluster-monitoring-operator-74fb8b6dcf   0         0         0         2d
+openshift-monitoring         replicaset.apps/cluster-monitoring-operator-bb9669487    1         1         1         1d
+openshift-monitoring         replicaset.apps/grafana-6f8b8f5577                       1         1         1         1d
+openshift-monitoring         replicaset.apps/grafana-857fc848bf                       0         0         0         2d
+openshift-monitoring         replicaset.apps/kube-state-metrics-75c4d6dc              0         0         0         2d
+openshift-monitoring         replicaset.apps/kube-state-metrics-7b8f7dfdff            1         1         1         1d
+openshift-monitoring         replicaset.apps/prometheus-operator-68d9c544f8           1         1         1         1d
+openshift-monitoring         replicaset.apps/prometheus-operator-7855c8646b           0         0         0         2d
+openshift-web-console        replicaset.apps/webconsole-77cc79865f                    3         3         3         1d
+openshift-web-console        replicaset.apps/webconsole-85494cdb8c                    0         0         0         2d
+operator-lifecycle-manager   replicaset.apps/catalog-operator-b998cf7d9               1         1         1         1d
+operator-lifecycle-manager   replicaset.apps/olm-operator-65598d48c4                  1         1         1         1d
+
+NAMESPACE              NAME                                 DESIRED   CURRENT   AGE
+openshift-monitoring   statefulset.apps/alertmanager-main   3         3         2d
+openshift-monitoring   statefulset.apps/prometheus-k8s      2         2         2d
+
+NAMESPACE           NAME                                   DESIRED   SUCCESSFUL   AGE
+openshift-infra     job.batch/hawkular-metrics-schema      1         1            58m
+openshift-logging   job.batch/logging-curator-1579944600   1         0            18h
+
+NAMESPACE           NAME                            SCHEDULE     SUSPEND   ACTIVE    LAST SCHEDULE   AGE
+openshift-logging   cronjob.batch/logging-curator   30 3 * * *   False     0         18h             1d
+
+NAMESPACE                          NAME                                                                      REVISION   DESIRED   CURRENT   TRIGGERED BY
+app-storage                        deploymentconfig.apps.openshift.io/glusterblock-storage-provisioner-dc    1          1         1         config
+app-storage                        deploymentconfig.apps.openshift.io/heketi-storage                         1          1         1         config
+default                            deploymentconfig.apps.openshift.io/docker-registry                        2          1         1         config
+default                            deploymentconfig.apps.openshift.io/registry-console                       2          1         1         config
+default                            deploymentconfig.apps.openshift.io/router                                 2          3         3         config
+infra-storage                      deploymentconfig.apps.openshift.io/glusterblock-registry-provisioner-dc   1          1         1         config
+infra-storage                      deploymentconfig.apps.openshift.io/heketi-registry                        1          1         1         config
+openshift-ansible-service-broker   deploymentconfig.apps.openshift.io/asb                                    1          1         1         config
+openshift-logging                  deploymentconfig.apps.openshift.io/logging-es-data-master-bwqiivte        3          1         1         
+openshift-logging                  deploymentconfig.apps.openshift.io/logging-es-data-master-lw48dkwh        2          1         1         
+openshift-logging                  deploymentconfig.apps.openshift.io/logging-es-data-master-qse0y0p3        2          1         1         
+openshift-logging                  deploymentconfig.apps.openshift.io/logging-kibana                         1          1         1         config
+
+NAMESPACE        NAME                                                                          DOCKER REPO                                                                               TAGS                              UPDATED
+openshift-node   imagestream.image.openshift.io/node                                           docker-registry.default.svc:5000/openshift-node/node                                      v3.11                             2 days ago
+openshift-sdn    imagestream.image.openshift.io/node                                           docker-registry.default.svc:5000/openshift-sdn/node                                       v3.11                             32 hours ago
+openshift        imagestream.image.openshift.io/apicurito-ui                                   docker-registry.default.svc:5000/openshift/apicurito-ui                                   1.3,1.4,1.5 + 1 more...           2 days ago
+openshift        imagestream.image.openshift.io/dotnet                                         docker-registry.default.svc:5000/openshift/dotnet                                         2.1,2.2,latest + 3 more...        2 days ago
+openshift        imagestream.image.openshift.io/dotnet-runtime                                 docker-registry.default.svc:5000/openshift/dotnet-runtime                                 2.0,2.1,2.2 + 1 more...           2 days ago
+openshift        imagestream.image.openshift.io/eap-cd-openshift                               docker-registry.default.svc:5000/openshift/eap-cd-openshift                               12,13,15.0 + 10 more...           2 days ago
+openshift        imagestream.image.openshift.io/fis-java-openshift                             docker-registry.default.svc:5000/openshift/fis-java-openshift                             1.0,2.0                           2 days ago
+openshift        imagestream.image.openshift.io/fis-karaf-openshift                            docker-registry.default.svc:5000/openshift/fis-karaf-openshift                            1.0,2.0                           2 days ago
+openshift        imagestream.image.openshift.io/fuse-apicurito-generator                       docker-registry.default.svc:5000/openshift/fuse-apicurito-generator                       1.3,1.4,1.5 + 1 more...           2 days ago
+openshift        imagestream.image.openshift.io/fuse7-console                                  docker-registry.default.svc:5000/openshift/fuse7-console                                  1.0,1.1,1.2 + 3 more...           2 days ago
+openshift        imagestream.image.openshift.io/fuse7-eap-openshift                            docker-registry.default.svc:5000/openshift/fuse7-eap-openshift                            1.4,1.5,1.0 + 3 more...           2 days ago
+openshift        imagestream.image.openshift.io/fuse7-java-openshift                           docker-registry.default.svc:5000/openshift/fuse7-java-openshift                           1.0,1.1,1.2 + 3 more...           2 days ago
+openshift        imagestream.image.openshift.io/fuse7-karaf-openshift                          docker-registry.default.svc:5000/openshift/fuse7-karaf-openshift                          1.0,1.1,1.2 + 3 more...           2 days ago
+openshift        imagestream.image.openshift.io/httpd                                          docker-registry.default.svc:5000/openshift/httpd                                          2.4,latest                        2 days ago
+openshift        imagestream.image.openshift.io/java                                           docker-registry.default.svc:5000/openshift/java                                           8,latest                          2 days ago
+openshift        imagestream.image.openshift.io/jboss-amq-62                                   docker-registry.default.svc:5000/openshift/jboss-amq-62                                   1.5,1.6,1.7 + 4 more...           2 days ago
+openshift        imagestream.image.openshift.io/jboss-amq-63                                   docker-registry.default.svc:5000/openshift/jboss-amq-63                                   1.0,1.1,1.2 + 1 more...           2 days ago
+openshift        imagestream.image.openshift.io/jboss-datagrid73-openshift                     docker-registry.default.svc:5000/openshift/jboss-datagrid73-openshift                     1.0                               2 days ago
+openshift        imagestream.image.openshift.io/jboss-datavirt63-driver-openshift              docker-registry.default.svc:5000/openshift/jboss-datavirt63-driver-openshift              1.1,1.0                           2 days ago
+openshift        imagestream.image.openshift.io/jboss-datavirt63-openshift                     docker-registry.default.svc:5000/openshift/jboss-datavirt63-openshift                     1.0,1.1,1.2 + 2 more...           2 days ago
+openshift        imagestream.image.openshift.io/jboss-decisionserver64-openshift               docker-registry.default.svc:5000/openshift/jboss-decisionserver64-openshift               1.0,1.1,1.2 + 4 more...           2 days ago
+openshift        imagestream.image.openshift.io/jboss-eap64-openshift                          docker-registry.default.svc:5000/openshift/jboss-eap64-openshift                          1.3,1.4,latest + 7 more...        2 days ago
+openshift        imagestream.image.openshift.io/jboss-eap70-openshift                          docker-registry.default.svc:5000/openshift/jboss-eap70-openshift                          1.3,1.4,1.5 + 2 more...           2 days ago
+openshift        imagestream.image.openshift.io/jboss-eap71-openshift                          docker-registry.default.svc:5000/openshift/jboss-eap71-openshift                          1.1,1.2,1.3 + 2 more...           2 days ago
+openshift        imagestream.image.openshift.io/jboss-eap72-openshift                          docker-registry.default.svc:5000/openshift/jboss-eap72-openshift                          1.0,latest                        2 days ago
+openshift        imagestream.image.openshift.io/jboss-fuse70-console                           docker-registry.default.svc:5000/openshift/jboss-fuse70-console                           1.0                               2 days ago
+openshift        imagestream.image.openshift.io/jboss-fuse70-eap-openshift                     docker-registry.default.svc:5000/openshift/jboss-fuse70-eap-openshift                     1.0                               2 days ago
+openshift        imagestream.image.openshift.io/jboss-fuse70-java-openshift                    docker-registry.default.svc:5000/openshift/jboss-fuse70-java-openshift                    1.0                               2 days ago
+openshift        imagestream.image.openshift.io/jboss-fuse70-karaf-openshift                   docker-registry.default.svc:5000/openshift/jboss-fuse70-karaf-openshift                   1.0                               2 days ago
+openshift        imagestream.image.openshift.io/jboss-processserver64-openshift                docker-registry.default.svc:5000/openshift/jboss-processserver64-openshift                1.0,1.1,1.2 + 4 more...           2 days ago
+openshift        imagestream.image.openshift.io/jboss-webserver30-tomcat7-openshift            docker-registry.default.svc:5000/openshift/jboss-webserver30-tomcat7-openshift            1.1,1.2,1.3                       2 days ago
+openshift        imagestream.image.openshift.io/jboss-webserver30-tomcat8-openshift            docker-registry.default.svc:5000/openshift/jboss-webserver30-tomcat8-openshift            1.1,1.2,1.3                       2 days ago
+openshift        imagestream.image.openshift.io/jboss-webserver31-tomcat7-openshift            docker-registry.default.svc:5000/openshift/jboss-webserver31-tomcat7-openshift            1.0,1.1,1.2                       2 days ago
+openshift        imagestream.image.openshift.io/jboss-webserver31-tomcat8-openshift            docker-registry.default.svc:5000/openshift/jboss-webserver31-tomcat8-openshift            1.2,1.0,1.1                       2 days ago
+openshift        imagestream.image.openshift.io/jenkins                                        docker-registry.default.svc:5000/openshift/jenkins                                        latest,1,2                        2 days ago
+openshift        imagestream.image.openshift.io/mariadb                                        docker-registry.default.svc:5000/openshift/mariadb                                        10.1,10.2,latest                  2 days ago
+openshift        imagestream.image.openshift.io/mongodb                                        docker-registry.default.svc:5000/openshift/mongodb                                        3.6,latest,2.4 + 3 more...        2 days ago
+openshift        imagestream.image.openshift.io/mysql                                          docker-registry.default.svc:5000/openshift/mysql                                          5.5,5.6,5.7 + 1 more...           2 days ago
+openshift        imagestream.image.openshift.io/nginx                                          docker-registry.default.svc:5000/openshift/nginx                                          1.10,1.12,1.8 + 1 more...         2 days ago
+openshift        imagestream.image.openshift.io/nodejs                                         docker-registry.default.svc:5000/openshift/nodejs                                         8-RHOAR,latest,0.10 + 4 more...   2 days ago
+openshift        imagestream.image.openshift.io/perl                                           docker-registry.default.svc:5000/openshift/perl                                           5.16,5.20,5.24 + 2 more...        2 days ago
+openshift        imagestream.image.openshift.io/php                                            docker-registry.default.svc:5000/openshift/php                                            5.6,7.0,7.1 + 2 more...           2 days ago
+openshift        imagestream.image.openshift.io/postgresql                                     docker-registry.default.svc:5000/openshift/postgresql                                     9.4,9.5,9.6 + 3 more...           2 days ago
+openshift        imagestream.image.openshift.io/python                                         docker-registry.default.svc:5000/openshift/python                                         2.7,3.3,3.4 + 3 more...           2 days ago
+openshift        imagestream.image.openshift.io/redhat-openjdk18-openshift                     docker-registry.default.svc:5000/openshift/redhat-openjdk18-openshift                     1.2,1.3,1.4 + 2 more...           2 days ago
+openshift        imagestream.image.openshift.io/redhat-sso70-openshift                         docker-registry.default.svc:5000/openshift/redhat-sso70-openshift                         1.3,1.4                           2 days ago
+openshift        imagestream.image.openshift.io/redhat-sso71-openshift                         docker-registry.default.svc:5000/openshift/redhat-sso71-openshift                         1.2,1.3,1.0 + 1 more...           2 days ago
+openshift        imagestream.image.openshift.io/redhat-sso72-openshift                         docker-registry.default.svc:5000/openshift/redhat-sso72-openshift                         1.0,1.1,1.2                       2 days ago
+openshift        imagestream.image.openshift.io/redis                                          docker-registry.default.svc:5000/openshift/redis                                          3.2,latest                        2 days ago
+openshift        imagestream.image.openshift.io/rhdm-controller-rhel8                          docker-registry.default.svc:5000/openshift/rhdm-controller-rhel8                          7.5.0                             2 days ago
+openshift        imagestream.image.openshift.io/rhdm-decisioncentral-rhel8                     docker-registry.default.svc:5000/openshift/rhdm-decisioncentral-rhel8                     7.5.0                             2 days ago
+openshift        imagestream.image.openshift.io/rhdm-kieserver-rhel8                           docker-registry.default.svc:5000/openshift/rhdm-kieserver-rhel8                           7.5.0                             2 days ago
+openshift        imagestream.image.openshift.io/rhdm-optaweb-employee-rostering-rhel8          docker-registry.default.svc:5000/openshift/rhdm-optaweb-employee-rostering-rhel8          7.5.0                             2 days ago
+openshift        imagestream.image.openshift.io/rhdm70-decisioncentral-openshift               docker-registry.default.svc:5000/openshift/rhdm70-decisioncentral-openshift               1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm70-kieserver-openshift                     docker-registry.default.svc:5000/openshift/rhdm70-kieserver-openshift                     1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm71-controller-openshift                    docker-registry.default.svc:5000/openshift/rhdm71-controller-openshift                    1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm71-decisioncentral-indexing-openshift      docker-registry.default.svc:5000/openshift/rhdm71-decisioncentral-indexing-openshift      1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm71-decisioncentral-openshift               docker-registry.default.svc:5000/openshift/rhdm71-decisioncentral-openshift               1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm71-kieserver-openshift                     docker-registry.default.svc:5000/openshift/rhdm71-kieserver-openshift                     1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm71-optaweb-employee-rostering-openshift    docker-registry.default.svc:5000/openshift/rhdm71-optaweb-employee-rostering-openshift    1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm72-controller-openshift                    docker-registry.default.svc:5000/openshift/rhdm72-controller-openshift                    1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm72-decisioncentral-indexing-openshift      docker-registry.default.svc:5000/openshift/rhdm72-decisioncentral-indexing-openshift      1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm72-decisioncentral-openshift               docker-registry.default.svc:5000/openshift/rhdm72-decisioncentral-openshift               1.1,1.0                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm72-kieserver-openshift                     docker-registry.default.svc:5000/openshift/rhdm72-kieserver-openshift                     1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm72-optaweb-employee-rostering-openshift    docker-registry.default.svc:5000/openshift/rhdm72-optaweb-employee-rostering-openshift    1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm73-controller-openshift                    docker-registry.default.svc:5000/openshift/rhdm73-controller-openshift                    1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm73-decisioncentral-indexing-openshift      docker-registry.default.svc:5000/openshift/rhdm73-decisioncentral-indexing-openshift      1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm73-decisioncentral-openshift               docker-registry.default.svc:5000/openshift/rhdm73-decisioncentral-openshift               1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm73-kieserver-openshift                     docker-registry.default.svc:5000/openshift/rhdm73-kieserver-openshift                     1.1,1.0                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm73-optaweb-employee-rostering-openshift    docker-registry.default.svc:5000/openshift/rhdm73-optaweb-employee-rostering-openshift    1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm74-controller-openshift                    docker-registry.default.svc:5000/openshift/rhdm74-controller-openshift                    1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm74-decisioncentral-openshift               docker-registry.default.svc:5000/openshift/rhdm74-decisioncentral-openshift               1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm74-kieserver-openshift                     docker-registry.default.svc:5000/openshift/rhdm74-kieserver-openshift                     1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhdm74-optaweb-employee-rostering-openshift    docker-registry.default.svc:5000/openshift/rhdm74-optaweb-employee-rostering-openshift    1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam-businesscentral-monitoring-rhel8         docker-registry.default.svc:5000/openshift/rhpam-businesscentral-monitoring-rhel8         7.5.0                             2 days ago
+openshift        imagestream.image.openshift.io/rhpam-businesscentral-rhel8                    docker-registry.default.svc:5000/openshift/rhpam-businesscentral-rhel8                    7.5.0                             2 days ago
+openshift        imagestream.image.openshift.io/rhpam-controller-rhel8                         docker-registry.default.svc:5000/openshift/rhpam-controller-rhel8                         7.5.0                             2 days ago
+openshift        imagestream.image.openshift.io/rhpam-kieserver-rhel8                          docker-registry.default.svc:5000/openshift/rhpam-kieserver-rhel8                          7.5.0                             2 days ago
+openshift        imagestream.image.openshift.io/rhpam-smartrouter-rhel8                        docker-registry.default.svc:5000/openshift/rhpam-smartrouter-rhel8                        7.5.0                             2 days ago
+openshift        imagestream.image.openshift.io/rhpam70-businesscentral-indexing-openshift     docker-registry.default.svc:5000/openshift/rhpam70-businesscentral-indexing-openshift     1.2,1.0,1.1                       2 days ago
+openshift        imagestream.image.openshift.io/rhpam70-businesscentral-monitoring-openshift   docker-registry.default.svc:5000/openshift/rhpam70-businesscentral-monitoring-openshift   1.0,1.1,1.2                       2 days ago
+openshift        imagestream.image.openshift.io/rhpam70-businesscentral-openshift              docker-registry.default.svc:5000/openshift/rhpam70-businesscentral-openshift              1.0,1.1,1.2                       2 days ago
+openshift        imagestream.image.openshift.io/rhpam70-controller-openshift                   docker-registry.default.svc:5000/openshift/rhpam70-controller-openshift                   1.0,1.1,1.2                       2 days ago
+openshift        imagestream.image.openshift.io/rhpam70-kieserver-openshift                    docker-registry.default.svc:5000/openshift/rhpam70-kieserver-openshift                    1.0,1.1,1.2                       2 days ago
+openshift        imagestream.image.openshift.io/rhpam70-smartrouter-openshift                  docker-registry.default.svc:5000/openshift/rhpam70-smartrouter-openshift                  1.0,1.1,1.2                       2 days ago
+openshift        imagestream.image.openshift.io/rhpam71-businesscentral-indexing-openshift     docker-registry.default.svc:5000/openshift/rhpam71-businesscentral-indexing-openshift     1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam71-businesscentral-monitoring-openshift   docker-registry.default.svc:5000/openshift/rhpam71-businesscentral-monitoring-openshift   1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam71-businesscentral-openshift              docker-registry.default.svc:5000/openshift/rhpam71-businesscentral-openshift              1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam71-controller-openshift                   docker-registry.default.svc:5000/openshift/rhpam71-controller-openshift                   1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam71-kieserver-openshift                    docker-registry.default.svc:5000/openshift/rhpam71-kieserver-openshift                    1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam71-smartrouter-openshift                  docker-registry.default.svc:5000/openshift/rhpam71-smartrouter-openshift                  1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam72-businesscentral-indexing-openshift     docker-registry.default.svc:5000/openshift/rhpam72-businesscentral-indexing-openshift     1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam72-businesscentral-monitoring-openshift   docker-registry.default.svc:5000/openshift/rhpam72-businesscentral-monitoring-openshift   1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam72-businesscentral-openshift              docker-registry.default.svc:5000/openshift/rhpam72-businesscentral-openshift              1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam72-controller-openshift                   docker-registry.default.svc:5000/openshift/rhpam72-controller-openshift                   1.1,1.0                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam72-kieserver-openshift                    docker-registry.default.svc:5000/openshift/rhpam72-kieserver-openshift                    1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam72-smartrouter-openshift                  docker-registry.default.svc:5000/openshift/rhpam72-smartrouter-openshift                  1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam73-businesscentral-indexing-openshift     docker-registry.default.svc:5000/openshift/rhpam73-businesscentral-indexing-openshift     1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam73-businesscentral-monitoring-openshift   docker-registry.default.svc:5000/openshift/rhpam73-businesscentral-monitoring-openshift   1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam73-businesscentral-openshift              docker-registry.default.svc:5000/openshift/rhpam73-businesscentral-openshift              1.1,1.0                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam73-controller-openshift                   docker-registry.default.svc:5000/openshift/rhpam73-controller-openshift                   1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam73-kieserver-openshift                    docker-registry.default.svc:5000/openshift/rhpam73-kieserver-openshift                    1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam73-smartrouter-openshift                  docker-registry.default.svc:5000/openshift/rhpam73-smartrouter-openshift                  1.1,1.0                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam74-businesscentral-monitoring-openshift   docker-registry.default.svc:5000/openshift/rhpam74-businesscentral-monitoring-openshift   1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam74-businesscentral-openshift              docker-registry.default.svc:5000/openshift/rhpam74-businesscentral-openshift              1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam74-controller-openshift                   docker-registry.default.svc:5000/openshift/rhpam74-controller-openshift                   1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam74-kieserver-openshift                    docker-registry.default.svc:5000/openshift/rhpam74-kieserver-openshift                    1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/rhpam74-smartrouter-openshift                  docker-registry.default.svc:5000/openshift/rhpam74-smartrouter-openshift                  1.0,1.1                           2 days ago
+openshift        imagestream.image.openshift.io/ruby                                           docker-registry.default.svc:5000/openshift/ruby                                           2.4,2.5,latest + 3 more...        2 days ago
+
+NAMESPACE                          NAME                                         HOST/PORT                                                                PATH      SERVICES            PORT      TERMINATION          WILDCARD
+app-storage                        route.route.openshift.io/heketi-storage      heketi-storage-app-storage.ocp3-mwn.linuxrevolution.com                            heketi-storage      <all>                          None
+default                            route.route.openshift.io/docker-registry     docker-registry-default.ocp3-mwn.linuxrevolution.com                               docker-registry     <all>     passthrough          None
+default                            route.route.openshift.io/registry-console    registry-console-default.ocp3-mwn.linuxrevolution.com                              registry-console    <all>     passthrough          None
+infra-storage                      route.route.openshift.io/heketi-registry     heketi-registry-infra-storage.ocp3-mwn.linuxrevolution.com                         heketi-registry     <all>                          None
+kube-service-catalog               route.route.openshift.io/apiserver           apiserver-kube-service-catalog.ocp3-mwn.linuxrevolution.com                        apiserver           secure    passthrough          None
+openshift-ansible-service-broker   route.route.openshift.io/asb-1338            asb-1338-openshift-ansible-service-broker.ocp3-mwn.linuxrevolution.com             asb                 1338      reencrypt            None
+openshift-console                  route.route.openshift.io/console             cluster-console.ocp3-mwn.linuxrevolution.com                                       console             https     reencrypt/Redirect   None
+openshift-infra                    route.route.openshift.io/hawkular-metrics    hawkular.ocp3-mwn.linuxrevolution.com                                              hawkular-metrics    <all>     reencrypt            None
+openshift-logging                  route.route.openshift.io/logging-kibana      logging.ocp3-mwn.linuxrevolution.com                                               logging-kibana      <all>     reencrypt/Redirect   None
+openshift-monitoring               route.route.openshift.io/alertmanager-main   alertmanager-main-openshift-monitoring.ocp3-mwn.linuxrevolution.com                alertmanager-main   web       reencrypt            None
+openshift-monitoring               route.route.openshift.io/grafana             grafana-openshift-monitoring.ocp3-mwn.linuxrevolution.com                          grafana             https     reencrypt            None
+openshift-monitoring               route.route.openshift.io/prometheus-k8s      prometheus-k8s-openshift-monitoring.ocp3-mwn.linuxrevolution.com                   prometheus-k8s      web       reencrypt            None
+
+NAMESPACE                    NAME                                                     NAME                  TYPE       PUBLISHER   AGE
+operator-lifecycle-manager   catalogsource.operators.coreos.com/certified-operators   Certified Operators   internal   Red Hat     1d
+operator-lifecycle-manager   catalogsource.operators.coreos.com/rh-operators          Red Hat Operators     internal   Red Hat     1d
+
