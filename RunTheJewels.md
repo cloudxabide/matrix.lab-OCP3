@@ -170,7 +170,10 @@ https://ocp3-console.linuxrevolution.com:8443/console/
 https://hawkular.ocp3-mwn.linuxrevolution.com  
 https://cluster-console.ocp3-mwn.linuxrevolution.com/  
 https://logging.ocp3-mwn.linuxrevolution.com/app/kibana
-https://prometheus-k8s-openshift-monitoring.ocp3-mwn.linuxrevolution.com/
 
+### Monitoring
+https://prometheus-k8s-openshift-monitoring.ocp3-mwn.linuxrevolution.com/
+https://grafana-openshift-monitoring.ocp3-mwn.linuxrevolution.com
+https://alertmanager-main-openshift-monitoring.ocp3-mwn.linuxrevolution.com
 https://registry-console-default.ocp3-mwn.linuxrevolution.com/registry  
 https://docker-registry-default.ocp3-mwn.linuxrevolution.com/
