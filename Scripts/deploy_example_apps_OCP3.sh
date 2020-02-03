@@ -11,7 +11,7 @@ oc login --certificate-authority=rh7-ocp3-mst.matrix.lab.pem --username=`whoami`
 ## Create Your Project and Deploy App
 ```
 # HexGL is a HTML5 video game resembling WipeOut from back in the day (Hack the Planet!)
-MYPROJ="hexgl1"
+MYPROJ="hexgl"
 oc new-project $MYPROJ
 oc new-app php:5.6~https://github.com/cloudxabide/HexGL.git
 # Create a secure route (hexgl.ocp3-mwn.linuxrevolution.com)
@@ -22,7 +22,6 @@ echo '{ "kind": "List", "apiVersion": "v1", "metadata": {}, "items": [ { "kind":
 
 At some point you will be able to browse to:  
 https://hexgl.ocp3-mwn.linuxrevolution.com/
-
 
 ## Update Cluster Admins
 ```
