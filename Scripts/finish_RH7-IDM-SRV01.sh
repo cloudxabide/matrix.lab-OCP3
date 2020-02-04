@@ -229,6 +229,13 @@ ipa dnsrecord-add 10.10.10.in-addr.arpa 197  --ptr-rec rh7-ocp3-ocs12.matrix.lab
 ipa dnsrecord-add 10.10.10.in-addr.arpa 198  --ptr-rec rh7-ocp3-ocs13.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 199  --ptr-rec rh7-ocp3-ocs14.matrix.lab.
 
+#### IF I am running Masters and Infra on the same proxy
+ipa dnsrecord-add cloudapps.matrix.lab '*' --a-rec 10.10.10.170
+ipa dnsrecord-add ocp3-mwn.matrix.lab '*' --a-rec 10.10.10.170 
+ipa dnsrecord-add ocp3-mwn.linuxrevolution.com '*' --a-rec 10.10.10.170
+####
+
+
 # OCP "standard" tertiary domain (*.cloudapps.company.com)
 ipa dnszone-add cloudapps.matrix.lab --admin-email=root@matrix.lab --minimum=3000 --dynamic-update=true
 ipa dnsrecord-add cloudapps.matrix.lab '*' --a-rec 10.10.10.175 
