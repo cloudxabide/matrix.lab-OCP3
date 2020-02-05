@@ -184,3 +184,16 @@ subsets:
   - port: 1
     protocol: TCP" | oc create -f -
 
+
+## Haproxy Testing 
+### Check Routes
+- https://docs.openshift.com/container-platform/3.9/rest_api/oapi/v1.Route.html
+```
+ENDPOINT="rh7-ocp3-mst01.matrix.lab"
+oc login -u ocpadmin -p Passw0rd --insecure-skip-tls-verify --server=https://$ENDPOINT:8443
+TOKEN=`oc whoami -t`
+curl -k -H "Authorization: Bearer $TOKEN" \
+  -H 'Accept: application/json' \
+  https://$ENDPOINT:8443/oapi/v1/route 
+
+```
