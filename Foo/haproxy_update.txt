@@ -2,10 +2,25 @@
 
 This exists if you'd like to use your single HAproxy node to frontend both the Master (API) and the Infra (Router) Nodes
 
+## Quick and Dirty
+```
+wget -O /etc/haproxy/haproxy.cfg https://raw.githubusercontent.com/cloudxabide/matrix.lab/master/Files/etc_haproxy_haproxy.cfg
+restorecon -Fvv /etc/haproxy/haproxy.cfg
+systemctl restart haproxy.service 
+systemctl status haproxy.service 
+firewall-cmd --permanent --add-port=443/tcp
+firewall-cmd --permanent --add-port=80/tcp
+firewall-cmd --reload
+
+```
+
+
+## Slow and ... Clean?
 Update the following file  
 /etc/haproxy/haproxy.cfg
 
 ```
+==================================================
 frontend  atomic-openshift-api *:8443
     default_backend atomic-openshift-api
     mode tcp
@@ -41,4 +56,7 @@ backend atomic-openshift-routers-80
     server      master0 10.10.10.175:80 check
     server      master1 10.10.10.176:80 check
     server      master2 10.10.10.177:80 check
+==================================================
+systemctl restart haproxy.service 
+
 ```
