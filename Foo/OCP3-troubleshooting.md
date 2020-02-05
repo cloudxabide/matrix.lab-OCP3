@@ -38,16 +38,11 @@ https://docs.openshift.com/container-platform/3.11/install/running_install.html#
 https://docs.openshift.com/container-platform/3.11/admin_guide/manage_nodes.html#marking-nodes-as-unschedulable-or-schedulable
 [root@rh7-ocp3-mst01 ~]# oc adm manage-node rh7-ocp3-app01.matrix.lab rh7-ocp3-app02.matrix.lab rh7-ocp3-app03.matrix.lab --schedulable=true
 
-
-
 ```
 echo | openssl s_client -connect rh7-ocp3-mst.matrix.lab:8443 -servername rh7-ocp3-mst.matrix.lab | sed -n /BEGIN/,/END/p > rh7-ocp3-mst.matrix.lab.pem
 oc login --certificate-authority=rh7-ocp3-mst.matrix.lab.pem --user morpheus --server=rh7-ocp3-mst.matrix.lab:8443
-oc login --certificate-authority=rh7-ocp3-mst.matrix.lab.pem --username=morpheus --password=Passw0rd4769 --server=rh7-ocp3-mst.matrix.lab:8443
+oc login --certificate-authority=rh7-ocp3-mst.matrix.lab.pem --username=morpheus --password=Passw0rd --server=rh7-ocp3-mst.matrix.lab:8443
 ```
-
-
-
 
 # I'm not positive, but this needs to be further vetted
 ```

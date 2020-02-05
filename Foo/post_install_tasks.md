@@ -1,59 +1,59 @@
 
+## Update Cluster Permissions and Roles
 
-```
-oc project infra-storage
-oc get pods 
-oc rsh glusterfs-registry-9xsrb
-gluster peer status
-gluster volume info
-```
 
-Create a PV 
+### Update the User(s) login credentials
 ```
-echo "apiVersion: v1
-kind: PersistentVolume
-metadata:
-  finalizers:
-  - kubernetes.io/pv-protection
-  name: pv-es-logging-app-1
-spec:
-  storageClassName: glusterfs-registry-block
-  accessModes:
-  - ReadWriteOnce
-  capacity:
-    storage: 9Gi
-  glusterfs:
-    endpoints: gluster.org-glusterblock-infra-storage
-    path: pv-es-logging-app-1
-  persistentVolumeReclaimPolicy: Retain" | oc create -f -
-
+for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print $3 }'`; do ssh $HOST  "sudo htpasswd -b /etc/origin/master/htpasswd ocpadmin Passw0rd"; done
+for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print $3 }'`; do ssh $HOST  "sudo htpasswd -b /etc/origin/master/htpasswd morpheus Passw0rd"; done
 ```
 
-Create a PVC
+### Elevate "ocpadmin" user to Cluster Admin
 ```
-echo "apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  annotations:
-    volume.beta.kubernetes.io/storage-provisioner: gluster.org/glusterblock-infra-storage
-  finalizers:
-  - kubernetes.io/pvc-protection
-  labels:
-    logging-infra: support
-  name: es-logging-app-0
-  namespace: openshift-logging
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 9Gi
-  storageClassName: glusterfs-registry-block
-  volumeName: pv-es-logging-app-0" | oc create -f -
+oadm policy add-cluster-role-to-user cluster-admin ocpadmin
+```
+
+## Update Storage 
+### Update Endpoints (infra-storage)
+```
+oc edit endpoints gluster.org-glusterblock-infra-storage -n infra-storage
+
+=========================
+subsets:
+- addresses:
+  - ip: 10.10.10.191
+  - ip: 10.10.10.192
+  - ip: 10.10.10.193
+  ports:
+  - port: 1
+    protocol: TCP
+=========================
+```
+
+### Create Endpoints (app-storage)
+```
+
+oc edit endpoints gluster.org-glusterblock-app-storage -n app-storage
+=========================
+subsets:
+- addresses:
+  - ip: 10.10.10.196
+  - ip: 10.10.10.197
+  - ip: 10.10.10.198
+  ports:
+  - port: 1
+    protocol: TCP
+=========================
 
 ```
 
-## Metrics Storage
+## Fix Prometheus
+### Update Prometheus DC to reduce memory requirements
+create endpoints and redeploy the logging pods after modifying the memory requirement  
+oc edit dc -n openshift-logging
+% s/16Gi/2Gi/g
+
+### Metrics Storage
 Again, not sure why this is not ALL handled by the Ansible playbooks
 
 You need to figure out the pod name for "glusterblock-registry-provisioner-dc"
@@ -128,46 +128,13 @@ spec:
   volumeName: metrics-1" | oc create -f -
 ```
 
-# Restart the pod
-```
-oc delete pod `oc get pod -n openshift-infra | grep ContainerCreating | awk '{ print $1 }'` -n openshift-infra
-```
-Create the endpoints (in the openshift-logging namespace)  
-This is still a work in progress.  Ugh  
 
 
-## Endpoints
-For some reason I have found endpoints defined... with no endpoints???
-
-add the following to the endpoint
-```
-oc edit endpoints <endpoint name>
-
-subset:
-- addresses:
-  - ip: 10.10.10.191
-  - ip: 10.10.10.192
-  - ip: 10.10.10.193
-  ports:
-  - port: 1
-    protocol: TCP
-```
-
-```
-# oc edit endpoints gluster.org-glusterblock-app-storage -n app-storage
-
-subsets:
-- addresses:
-  - ip: 10.10.10.196
-  - ip: 10.10.10.197
-  - ip: 10.10.10.198
-  - ip: 10.10.10.199
-  ports:
-  - port: 1
-    protocol: TCP
-```
+## Update Storage 
+### Create Endpoints (infra-storage)
 
 oc delete endpoint gluster.org-glusterblock-infra-storage -n infra-storage
+
 echo "apiVersion: v1
 kind: Endpoints
 metadata:
@@ -182,5 +149,4 @@ subsets:
   - ip: 10.10.10.193
   ports:
   - port: 1
-    protocol: TCP" | oc create -f -
 
