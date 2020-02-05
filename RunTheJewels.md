@@ -99,7 +99,10 @@ nohup ansible-playbook -i ${INVENTORY_NOGLUSTER} ${PLAYBOOKS}deploy_cluster.yml 
 # Run deploy_cluster with Gluster present again (will succeed), then a health check
 nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-glusterfs/config.yml -vvv | tee ${LOGDIR}/03-pbs_deploy_glusterfs-`date +%F`.logs &
 
-# Update the Storage Endpoints using ~/Fool/post_install_tasks.md
+# Update the HAproxy Node (if you need to)
+# ~/Foo/haproxy_update.txt
+
+# Update the Storage Endpoints using ~/Foo/post_install_tasks.md
 # then return here
 
 # run Foo/all_the_playbooks.sh
