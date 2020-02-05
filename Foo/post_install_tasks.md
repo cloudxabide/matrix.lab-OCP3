@@ -1,6 +1,9 @@
+# Post Install Tasks
+
+## Update Haproxy 
+If you opt to use the LB managed/created by the OCP install for your Infra Nodes, review [../Foo/haproxy_update.txt](../Foo/haproxy_update.txt)
 
 ## Update Cluster Permissions and Roles
-
 
 ### Update the User(s) login credentials
 ```
@@ -52,6 +55,7 @@ subsets:
 create endpoints and redeploy the logging pods after modifying the memory requirement  
 oc edit dc -n openshift-logging
 % s/16Gi/2Gi/g
+for DC in `oc get dc | grep "logging-es" | awk '{ print $1 }'`; do oc rollout latest $DC; done
 
 ### Metrics Storage
 Again, not sure why this is not ALL handled by the Ansible playbooks
@@ -61,23 +65,6 @@ You need to figure out the pod name for "glusterblock-registry-provisioner-dc"
 oc get pods --all-namespaces | grep provisioner
 ```
 
-```
-echo "apiVersion: v1
-kind: Endpoints
-metadata:
-  annotations:
-    control-plane.alpha.kubernetes.io/leader: '{"holderIdentity":"glusterblock-registry-provisioner-dc-1-gdpsx_fac4f0fb-2912-11ea-ac75-0a580a830203","leaseDurationSeconds":15,"acquireTime":"2019-12-28T01:40:08Z","renewTime":"2019-12-28T04:48:59Z","leaderTransitions":0}'
-  name: gluster.org-glusterblock-infra-storage
-  namespace: openshift-infra
-subsets:
-- addresses:
-  - ip: 10.10.10.175
-  - ip: 10.10.10.176
-  - ip: 10.10.10.177
-  ports:
-  - port: 1
-    protocol: TCP" | oc create -f -
-```
 
 Next, create the PV "metrics-1"
 ```
