@@ -39,6 +39,8 @@ FreeNAS (not a Red Hat Product, not even running Linux - but, customers have it 
 | Hostname | Purpose                  | Model, Proc, Mem Size                               | IP (public) | IP (storage) | Price (approx)
 | :--------|:------------------------:| ---------------------------------------------------:|:-----------:|:------------:|:--------------|
 | ZION     | Red Hat Enterprise Linux | NUC5i5RYB, Core(TM) i5-5250U CPU, 15G               | 10.10.10.10 | 172.16.10.10 | $900
+| NEO      | Red Hat Enterprise Linux | HP ProLiant ML30 Gen9, Xeon(R) CPU E3-1220 v5 , 31G | 10.10.10.11 | 172.16.10.11 | $1200
+| TRINITY  | Red Hat Enterprise Linux | HP ProLiant ML30 Gen9, Xeon(R) CPU E3-1220 v5 , 31G | 10.10.10.12 | 172.16.10.12 | $1200
 | MORPHEUS | Red Hat Enterprise Linux | HP ProLiant ML30 Gen9, Xeon(R) CPU E3-1220 v6 , 62G | 10.10.10.13 | 172.16.10.13 | $1200
 | SATI     | Red Hat Enterprise Linux | NUC7i7BNB, Core(TM) i7-7567U CPU , 7.5G             | 10.10.10.17 | 172.16.10.17 | $900
 | APOC     | Red Hat Enterprise Linux | ASUS X99-PRO/USB 3.1, Xeon(R) CPU E5-2630 v3 , 94G  | 10.10.10.18 | 172.16.10.18 | $800
@@ -46,8 +48,6 @@ FreeNAS (not a Red Hat Product, not even running Linux - but, customers have it 
 ## PHYSICAL HOSTS (Idle)
 | Hostname | Purpose                  | Model, Proc, Mem Size                               | IP (public) | IP (storage) | Price (approx)
 | :--------|:------------------------:| ---------------------------------------------------:|:-----------:|:------------:|:--------------|
-| NEO      | Red Hat Virtualization   | HP ProLiant ML30 Gen9, Xeon(R) CPU E3-1220 v5 , 31G | 10.10.10.11 | 172.16.10.11 | $1200
-| TRINITY  | Red Hat Virtualization   | HP ProLiant ML30 Gen9, Xeon(R) CPU E3-1220 v5 , 31G | 10.10.10.12 | 172.16.10.12 | $1200
 | SERAPH   | FreeNAS                  | ASRock Z77E-ITX, i5-3570K, 16GB                     | 10.10.10.19 | 172.16.10.19 | $800
 
 Command to retrieve Manufacturer, Model, Proc, and Memory:  
