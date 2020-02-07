@@ -1,5 +1,12 @@
 # Post Install Tasks
 
+## Update the size of the Journal (syslog)
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 $HOST "uname -n; sudo grep SystemMaxUse= /etc/systemd/journald.conf"; echo "#########################"; done
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 $HOST "uname -n; sudo sed -i -e 's/SystemMaxUse=8G/SystemMaxUse=2G/g' /etc/systemd/journald.conf"; sleep 2; echo "#########################"; done
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 -t -l root $HOST "uname -n; systemctl restart systemd-journald"; echo "#########################"; done
+rh7-ocp3-mst.matrix.lab
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 -t -l root $HOST "uname -n; journalctl --vacuum-time=1d "; echo "#########################"; done
+
 ## Update Haproxy 
 If you opt to use the LB managed/created by the OCP install for your Infra Nodes, review [../Foo/haproxy_update.txt](../Foo/haproxy_update.txt)
 
@@ -35,7 +42,6 @@ subsets:
 
 ### Create Endpoints (app-storage)
 ```
-
 oc edit endpoints gluster.org-glusterblock-app-storage -n app-storage
 =========================
 subsets:
@@ -47,17 +53,17 @@ subsets:
   - port: 1
     protocol: TCP
 =========================
-
 ```
 
-## Fix Prometheus
+## Fix Prometheus Sizing
 ### Update Prometheus DC to reduce memory requirements
 create endpoints and redeploy the logging pods after modifying the memory requirement  
 oc edit dc -n openshift-logging
 % s/16Gi/2Gi/g
 for DC in `oc get dc | grep "logging-es" | awk '{ print $1 }'`; do oc rollout latest $DC; done
 
-### Metrics Storage
+## Update Storage (openshift-infra)
+### Metrics Storage (
 Again, not sure why this is not ALL handled by the Ansible playbooks
 
 You need to figure out the pod name for "glusterblock-registry-provisioner-dc"
@@ -65,16 +71,14 @@ You need to figure out the pod name for "glusterblock-registry-provisioner-dc"
 oc get pods --all-namespaces | grep provisioner
 ```
 
-
-Next, create the PV "metrics-1"
+Next, create the PV "metrics-cassandra-1"
 ```
-
 echo "apiVersion: v1
 kind: PersistentVolume
 metadata:
   finalizers:
   - kubernetes.io/pv-protection
-  name: metrics-1
+  name: metrics-cassandra-1
   labels:
     metrics-infra: hawkular-cassandra
 spec:
@@ -82,23 +86,56 @@ spec:
   accessModes:
   - ReadWriteOnce
   capacity:
-    storage: 12Gi
+    storage: 10Gi
+  glusterfs:
+    endpoints: gluster.org-glusterblock-infra-storage
+    path: metrics-cassandra-1
+  persistentVolumeReclaimPolicy: Retain" | oc create -f -
+```
+
+Next, create the PV "metrics-1"
+```
+echo "apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+  - kubernetes.io/pv-protection
+  name: metrics-1
+  labels:
+    metrics-infra: hawkular-metrics
+spec:
+  storageClassName: glusterfs-registry-block
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 11Gi
   glusterfs:
     endpoints: gluster.org-glusterblock-infra-storage
     path: metrics-1
   persistentVolumeReclaimPolicy: Retain" | oc create -f -
 ```
 
-Then, create the PVC "metrics-cassandra-1"
-```
-oc delete pvc/metrics-cassandra-1 -n openshift-infra
 
+
+
+
+
+
+
+
+
+
+## NOTES
+
+Create the PVC 
+```
 echo "apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"labels":{"metrics-infra":"hawkular-cassandra"},"name":"metrics-cassandra-1","namespace":"openshift-infra"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"12Gi"}}}}
+      {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"labels":{"metrics-infra":"hawkular-cassandra"},"name":"metrics-cassandra-1","namespace":"openshift-infra"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"10Gi"}}}}
+  creationTimestamp: "2020-02-07T03:54:18Z"
   finalizers:
   - kubernetes.io/pvc-protection
   labels:
@@ -110,30 +147,54 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 12Gi
-  storageClassName: glusterfs-registry-block
-  volumeName: metrics-1" | oc create -f -
+      storage: 10Gi" | oc create -f - 
 ```
 
+ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}/openshift-metrics/config.yml -e openshift_metrics_install_metrics=False
+ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}/openshift-metrics/config.yml -e openshift_metrics_install_metrics=True
 
 
-## Update Storage 
-### Create Endpoints (infra-storage)
 
-oc delete endpoint gluster.org-glusterblock-infra-storage -n infra-storage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Then, create the PVC "metrics-cassandra-1"
+```
+oc delete pvc/metrics-cassandra-1 -n openshift-infra
 
 echo "apiVersion: v1
-kind: Endpoints
+kind: PersistentVolumeClaim
 metadata:
   annotations:
-    control-plane.alpha.kubernetes.io/leader: '{"holderIdentity":"glusterblock-registry-provisioner-dc-1-gdpsx_fac4f0fb-2912-11ea-ac75-0a580a830203","leaseDurationSeconds":15,"acquireTime":"2019-12-28T01:40:08Z","renewTime":"2019-12-28T04:48:59Z","leaderTransitions":0}'
-  name: gluster.org-glusterblock-infra-storage
-  namespace: infra-storage
-subsets:
-- addresses:
-  - ip: 10.10.10.191
-  - ip: 10.10.10.192
-  - ip: 10.10.10.193
-  ports:
-  - port: 1
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"labels":{"metrics-infra":"hawkular-cassandra"},"name":"metrics-cassandra-1","namespace":"openshift-infra"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"10Gi"}}}}
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    metrics-infra: hawkular-cassandra
+  name: metrics-cassandra-1
+  namespace: openshift-infra
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: glusterfs-registry-block
+  volumeName: metrics-cassandra-1" | oc create -f -
+```
 
