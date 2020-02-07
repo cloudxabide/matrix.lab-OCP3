@@ -29,7 +29,7 @@ Also, this whole thing needs to be Ansible-ized at some point.  It's 2018....
 
 ## Products
 Red Hat Enterprise Linux (RHEL)  
-Red Hat Ansible Tower
+Red Hat Ansible Tower  
 Red Hat Identity Management  
 Red Hat Storage (Gluster)  
 Red Hat Open Container Platform (OpenShift)  
