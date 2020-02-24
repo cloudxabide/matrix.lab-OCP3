@@ -38,7 +38,7 @@ volgroup vg_rhel7 pv.03
 #
 logvol /    --fstype=xfs --vgname=vg_rhel7 --name=lv_root --label="root" --size=11264
 logvol /home --fstype=xfs --vgname=vg_rhel7 --name=lv_home --label="home" --size=1024
-logvol /var --fstype=xfs --vgname=vg_rhel7 --name=lv_var --label="var" --size=5120
+logvol /var --fstype=xfs --vgname=vg_rhel7 --name=lv_var --label="var" --size=8192
 logvol /tmp --fstype=xfs --vgname=vg_rhel7 --name=lv_tmp --label="temp" --size=2048
 
 eula --agreed
