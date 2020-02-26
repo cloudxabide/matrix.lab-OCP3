@@ -122,7 +122,7 @@ NOTE:  These memory values are not yet solidified.
 | Infrastructure  | Nodes which will host container such as the registry and routers
 | Application     | Application nodes will provide Docker for hosting containers
 | Storage (apps)  | Hosting either Application or 
-| Storage (infra) | Infrastrcture (metrics, logging, registry) data
+| Storage (infra) | Infrastrcture (metrics, monitoring, logging, registry) 
 
 ![OCP3 Cluster with OCS - Cluster Oveview](images/OCP3-OCS_Cluster_Overview.png)
 
