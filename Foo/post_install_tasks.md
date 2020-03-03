@@ -93,39 +93,141 @@ spec:
   persistentVolumeReclaimPolicy: Retain" | oc create -f -
 ```
 
-Next, create the PV "metrics-1"
+```
+echo "apiVersion: v1
+kind: Endpoints
+metadata:
+  annotations:
+  name: gluster.org-glusterblock-infra-storage
+  namespace: openshift-logging
+subsets:
+- addresses:
+  - ip: 10.10.10.191
+  - ip: 10.10.10.192
+  - ip: 10.10.10.193
+  ports:
+  - port: 1
+    protocol: TCP" | oc create -f -
+```
+
 ```
 echo "apiVersion: v1
 kind: PersistentVolume
 metadata:
   finalizers:
   - kubernetes.io/pv-protection
-  name: metrics-1
+  name: es-logging-app-0
   labels:
-    metrics-infra: hawkular-metrics
+    logging-infra: support
 spec:
   storageClassName: glusterfs-registry-block
   accessModes:
   - ReadWriteOnce
   capacity:
-    storage: 11Gi
+    storage: 13Gi
   glusterfs:
     endpoints: gluster.org-glusterblock-infra-storage
-    path: metrics-1
+    path: es-logging-app-0 
   persistentVolumeReclaimPolicy: Retain" | oc create -f -
+
+echo "apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+  - kubernetes.io/pv-protection
+  name: es-logging-app-1
+  labels:
+    logging-infra: support
+spec:
+  storageClassName: glusterfs-registry-block
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 13Gi
+  glusterfs:
+    endpoints: gluster.org-glusterblock-infra-storage
+    path: es-logging-app-1
+  persistentVolumeReclaimPolicy: Retain" | oc create -f -
+
+echo "apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+  - kubernetes.io/pv-protection
+  name: es-logging-app-2
+  labels:
+    logging-infra: support
+spec:
+  storageClassName: glusterfs-registry-block
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 13Gi
+  glusterfs:
+    endpoints: gluster.org-glusterblock-infra-storage
+    path: es-logging-app-2
+  persistentVolumeReclaimPolicy: Retain" | oc create -f -
+
+echo "apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    logging-infra: support
+  name: es-logging-app-0
+  namespace: openshift-logging
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 13Gi
+  storageClassName: glusterfs-registry-block
+  volumeName: es-logging-app-0" | oc create -f -
+
+echo "apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    logging-infra: support
+  name: es-logging-app-1
+  namespace: openshift-logging
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 13Gi
+  storageClassName: glusterfs-registry-block
+  volumeName: es-logging-app-1" | oc create -f -
+
+echo "apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    logging-infra: support
+  name: es-logging-app-2
+  namespace: openshift-logging
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 13Gi
+  storageClassName: glusterfs-registry-block
+  volumeName: es-logging-app-2" | oc create -f -
+
 ```
 
-
-
-
-
-
-
-
-
-
-
-## NOTES
+## NOTES - Likely not actually needed....
 
 Create the PVC 
 ```
@@ -152,22 +254,6 @@ spec:
 
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}/openshift-metrics/config.yml -e openshift_metrics_install_metrics=False
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}/openshift-metrics/config.yml -e openshift_metrics_install_metrics=True
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
