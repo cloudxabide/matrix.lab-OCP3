@@ -27,7 +27,7 @@ ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}metrics-server/config.yml -vvv | te
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-logging/config.yml -vvv | tee ${LOGDIR}${COUNTER}-openshift-logging-`date +%F`.logs; COUNTER=$((COUNTER+1)) 
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-monitor-availability/config.yml -vvv | tee ${LOGDIR}${COUNTER}-openshift-monitor-availability-`date +%F`.logs; COUNTER=$((COUNTER+1)) 
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-service-catalog/config.yml -vvv | tee ${LOGDIR}${COUNTER}-openshift-service-catalog-`date +%F`.logs; COUNTER=$((COUNTER+1)) 
-ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-management/config.yml -vvv | tee ${LOGDIR}${COUNTER}-openshift-management-`date +%F`.logs; COUNTER=$((COUNTER+1)) 
+#ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-management/config.yml -vvv | tee ${LOGDIR}${COUNTER}-openshift-management-`date +%F`.logs; COUNTER=$((COUNTER+1)) 
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-descheduler/config.yml -vvv | tee ${LOGDIR}${COUNTER}-openshift-descheduler-`date +%F`.logs; COUNTER=$((COUNTER+1)) 
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-node-problem-detector/config.yml -vvv | tee ${LOGDIR}${COUNTER}-openshift-node-problem-detector-`date +%F`.logs; COUNTER=$((COUNTER+1)) 
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-autoheal/config.yml -vvv | tee ${LOGDIR}${COUNTER}-openshift-autoheal-`date +%F`.logs; COUNTER=$((COUNTER+1)) 
