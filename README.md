@@ -325,6 +325,7 @@ https://cluster-console.ocp3-mwn.linuxrevolution.com/
 https://logging.ocp3-mwn.linuxrevolution.com/app/kibana  
 
 ### Monitoring
+NOTE:  These URLs are based on the "openshift_master_default_subdomain"  
 https://prometheus-k8s-openshift-monitoring.ocp3-mwn.linuxrevolution.com/  
 https://grafana-openshift-monitoring.ocp3-mwn.linuxrevolution.com  
 https://alertmanager-main-openshift-monitoring.ocp3-mwn.linuxrevolution.com  
