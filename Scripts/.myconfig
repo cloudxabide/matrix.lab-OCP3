@@ -2,8 +2,8 @@
 #   build_kvm.sh
 #   post_install.sh
 # 
-#NAME:HYPERVISOR:RELEASE:NUMCPU:MEM:HDD0:HDD1:HDD2:releasetype:releasever:BIOS-UEFI:Satellite:DISCONNECTED:PURPOSE:INSTALL
-#   1:         2:      3:     4   5:   6:   7:   8:          9:        10:       11:       12:          13:     14:     15
+#NAME:HYPERVISOR:RELEASE:NUMCPU:MEM:HDD0:HDD1:HDD2:releasetype:releasever:BIOS-UEFI:Satellite:DISCONNECTED:PURPOSE:INSTALL:FIPS
+#   1:         2:      3:     4   5:   6:   7:   8:          9:        10:       11:       12:          13:     14:     15   16
 # PURPOSE:  RHV|RHHI|RHC
 # INSTALL:  RHEL|RHVH|RHELH
 # ===========================================================================================
@@ -14,22 +14,22 @@ RH7-IDM-SRV01:zion:EL7:2:1536:50:0:0:server:7.7:BIOS:0:0:x:x
 RH7-IDM-SRV02:sati:EL7:2:1536:50:0:0:server:7.7:BIOS:0:0:x:x
 RH7-OCP3-BST01:apoc:EL7:2:1536:20:50:0:server:7.7:BIOS:1:0:x:x
 #
-RH7-OCP3-MST:apoc:EL7:2:4096:30:40:0:server:7.7:BIOS:1:0:x:x
-RH7-OCP3-MST01:neo:EL7:4:10240:30:40:0:server:7.7:BIOS:1:0:x:x
-RH7-OCP3-MST02:trinity:EL7:4:10240:30:40:0:server:7.7:BIOS:1:0:x:x
-RH7-OCP3-MST03:morpheus:EL7:4:10240:30:40:0:server:7.7:BIOS:1:0:x:x
-RH7-OCP3-INF01:neo:EL7:4:10240:30:40:0:server:7.7:BIOS:1:0:x:x
-RH7-OCP3-INF02:trinity:EL7:4:10240:30:40:0:server:7.7:BIOS:1:0:x:x
-RH7-OCP3-INF03:morpheus:EL7:4:10240:30:40:0:server:7.7:BIOS:1:0:x:x
-RH7-OCP3-APP01:neo:EL7:4:8192:30:40:0:server:7.7:BIOS:1:0:x:x
-RH7-OCP3-APP02:trinity:EL7:4:8192:30:40:0:server:7.7:BIOS:1:0:x:x
-RH7-OCP3-APP03:morpheus:EL7:4:8192:30:40:0:server:7.7:BIOS:1:0:x:x
+RH7-OCP3-MST:apoc:EL7:2:4096:30:40:0:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-MST01:neo:EL7:4:10240:30:40:0:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-MST02:trinity:EL7:4:10240:30:40:0:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-MST03:morpheus:EL7:4:10240:30:40:0:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-INF01:neo:EL7:4:10240:30:40:0:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-INF02:trinity:EL7:4:10240:30:40:0:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-INF03:morpheus:EL7:4:10240:30:40:0:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-APP01:neo:EL7:4:8192:30:40:0:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-APP02:trinity:EL7:4:8192:30:40:0:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-APP03:morpheus:EL7:4:8192:30:40:0:server:7.7:BIOS:1:0:x:x:1
 # 
-RH7-OCP3-OCS01:neo:EL7:4:8192:30:40:220:server:7.7:BIOS:1:0:x:x 
-RH7-OCP3-OCS02:trinity:EL7:4:8192:30:40:220:server:7.7:BIOS:1:0:x:x 
-RH7-OCP3-OCS03:morpheus:EL7:4:8192:30:40:220:server:7.7:BIOS:1:0:x:x 
-RH7-OCP3-OCS04::EL7:4:8192:30:40:220:server:7.7:BIOS:1:0:x:x 
-RH7-OCP3-OCS11:neo:EL7:4:8192:30:40:110:server:7.7:BIOS:1:0:x:x
-RH7-OCP3-OCS12:trinity:EL7:4:8192:30:40:110:server:7.7:BIOS:1:0:x:x
-RH7-OCP3-OCS13:morpheus:EL7:4:8192:30:40:110:server:7.7:BIOS:1:0:x:x
-RH7-OCP3-OCS14::EL7:4:8192:30:40:110:server:7.7:BIOS:1:0:x:x
+RH7-OCP3-OCS01:neo:EL7:4:8192:30:40:220:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-OCS02:trinity:EL7:4:8192:30:40:220:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-OCS03:morpheus:EL7:4:8192:30:40:220:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-OCS04::EL7:4:8192:30:40:220:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-OCS11:neo:EL7:4:8192:30:40:110:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-OCS12:trinity:EL7:4:8192:30:40:110:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-OCS13:morpheus:EL7:4:8192:30:40:110:server:7.7:BIOS:1:0:x:x:1
+RH7-OCP3-OCS14::EL7:4:8192:30:40:110:server:7.7:BIOS:1:0:x:x:1
