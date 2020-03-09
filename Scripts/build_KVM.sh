@@ -52,7 +52,7 @@ case $? in
   ;;
 esac
 
-grep -w ${GUESTNAME} $CONFIG | awk -F':' '{ print $1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9" "$10" "$11" "$12" "$13" "$14" "$15 }' \
+grep -w ${GUESTNAME} $CONFIG | awk -F':' '{ print $1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9" "$10" "$11" "$12" "$13" "$14" "$15" "$16 }' \
   | while read GUESTNAME HYPERVISOR RELEASE NUMCPUS MEM HDDA HDDB HDDC RELEASETYPE RELEASEVER BIOSTYPE USE_SATELLITE DISCONNECTED PURPOSE INSTALL FIPS
 do
 
@@ -96,6 +96,7 @@ do
   echo "DISCONNECTED: $DISCONNECTED"
   echo "SYSTEM PURPOSE: $PURPOSE"
   echo "BASE INSTALL:  $INSTALL"
+  echo "FIPS ENABLED: $FIPS"
 
   ## RUN A TIMER BEFORE PROCEEDING
   SLEEPYTIME=5
