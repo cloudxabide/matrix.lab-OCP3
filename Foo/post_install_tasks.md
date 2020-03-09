@@ -4,7 +4,6 @@
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 $HOST "uname -n; sudo grep SystemMaxUse= /etc/systemd/journald.conf"; echo "#########################"; done
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 $HOST "uname -n; sudo sed -i -e 's/SystemMaxUse=8G/SystemMaxUse=2G/g' /etc/systemd/journald.conf"; sleep 2; echo "#########################"; done
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 -t -l root $HOST "uname -n; systemctl restart systemd-journald"; echo "#########################"; done
-rh7-ocp3-mst.matrix.lab
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 -t -l root $HOST "uname -n; journalctl --vacuum-time=1d "; echo "#########################"; done
 
 ## Update Haproxy 
@@ -55,12 +54,15 @@ subsets:
 =========================
 ```
 
-## Fix Prometheus Sizing
+## Fix Prometheus Sizing (after running "all_the_playbooks.sh")
 ### Update Prometheus DC to reduce memory requirements
 create endpoints and redeploy the logging pods after modifying the memory requirement  
 oc edit dc -n openshift-logging
 % s/16Gi/2Gi/g
 for DC in `oc get dc | grep "logging-es" | awk '{ print $1 }'`; do oc rollout latest $DC; done
+
+## NOTE:  
+The following is not necessary if things went as planned, but I am keeping it in here.
 
 ## Update Storage (openshift-infra)
 ### Metrics Storage (
