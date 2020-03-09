@@ -48,6 +48,7 @@ openshift_logging_es_pvc_size=13Gi			      |	#openshift_logging_es_pvc_size=13Gi
 openshift_logging_es_cluster_size=3			      |	#openshift_logging_es_cluster_size=3
 openshift_logging_es_pvc_storage_class_name='glusterfs-regist |	#openshift_logging_es_pvc_storage_class_name='glusterfs-regis
 openshift_logging_es_pvc_prefix=es-logging-app		      |	#openshift_logging_es_pvc_prefix=es-logging-app
+openshift_logging_es_memory_limit=2Gi			      |	#openshift_logging_es_memory_limit=2Gi
 openshift_logging_es_ops_cluster_size=3			      |	#openshift_logging_es_ops_cluster_size=3
 openshift_logging_es_ops_nodeselector={"node-role.kubernetes. |	#openshift_logging_es_ops_nodeselector={"node-role.kubernetes
 openshift_logging_es_ops_pvc_dynamic=true		      |	#openshift_logging_es_ops_pvc_dynamic=true
