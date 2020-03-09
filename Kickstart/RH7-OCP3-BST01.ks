@@ -48,6 +48,7 @@ reboot
 @base
 @core
 expect
+dracut-fips
 ntp
 tuned
 %end

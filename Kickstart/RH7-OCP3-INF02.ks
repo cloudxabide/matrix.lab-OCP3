@@ -48,6 +48,7 @@ reboot
 %packages
 @base
 @core
+dracut-fips
 ntp
 tuned
 %end
