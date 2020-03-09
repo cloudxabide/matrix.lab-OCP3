@@ -98,7 +98,7 @@ EOF
 ### THE FOLLOWING WILL NEED TO BE DONE MANUALLY (AND PROBABLY SHOULD ANYHOW)
 cp ~/matrix.lab/Files/ocp-${OCP_VERSION}-multiple_master_native_ha.yml ~/
 # If you need to wipe /dev/vdc after snapshots (this needs to be tested)
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; [ -d /dev/vdc ] && sudo wipefs -a /dev/vdc"; echo ; done
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; [ -b /dev/vdc ] && sudo wipefs -a /dev/vdc"; echo ; done
 
 # The following *absolutely* makes an assumption that there is only ONE inventory file in your home dir.  
 #    Update accordingly
