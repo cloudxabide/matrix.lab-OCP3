@@ -24,7 +24,7 @@ timezone America/Chicago --isUtc --ntpservers=0.rhel.pool.ntp.org,1.rhel.pool.nt
 #########################################################################
 ### DISK ###
 # System bootloader configuration
-bootloader --location=mbr --boot-drive=vda
+bootloader --location=mbr --boot-drive=vda --append "fips=1"
 ignoredisk --only-use=vda
 
 # Partition clearing information
@@ -32,7 +32,7 @@ clearpart --all --initlabel --drives=vda
 
 # Partition Info
 part /boot --fstype="xfs" --ondisk=vda --size=500
-part pv.03 --fstype="lvmpv" --ondisk=vda --size=10240 --grow
+part pv.03 --fstype="lvmpv" --ondisk=vda --size=10240 --grow --encrypted --cipher=aes-ctr-essiv:sha512 --passphrase=kickstart
 #
 volgroup vg_rhel7 pv.03
 #
