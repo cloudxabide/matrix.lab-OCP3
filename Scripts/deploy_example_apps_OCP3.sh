@@ -22,6 +22,7 @@ echo '{ "kind": "List", "apiVersion": "v1", "metadata": {}, "items": [ { "kind":
 
 At some point you will be able to browse to:  
 https://hexgl.ocp3-mwn.linuxrevolution.com/
+https://hexgl.linuxrevolution.com/
 
 ## Update Cluster Admins
 ```
