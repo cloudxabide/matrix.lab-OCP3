@@ -32,7 +32,7 @@ clearpart --all --initlabel --drives=vda
 
 # Partition Info
 part /boot --fstype="xfs" --ondisk=vda --size=500
-part pv.03 --fstype="lvmpv" --ondisk=vda --size=10240 --grow --encrypted --cipher=aes-ctr-essiv:sha512 --passphrase=kickstart
+part pv.03 --fstype="lvmpv" --ondisk=vda --size=10240 --grow 
 #
 volgroup vg_rhel7 pv.03
 #
