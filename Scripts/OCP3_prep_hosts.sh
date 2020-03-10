@@ -72,7 +72,7 @@ do
 done
  
 # Run the "post_install.sh" script on all the hosts (which adds user:mansible)
-SLEEPYTIME=15
+SLEEPYTIME=30
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | grep -v bst | awk '{ print $2 }'`
 do 
   COUNTER=$SLEEPYTIME
