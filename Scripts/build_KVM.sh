@@ -65,8 +65,7 @@ do
   esac
   case $FIPS in
     1)
-      ADDOPTION=" fips=1"
-      BOOTOPTIONS="${BOOTOPTIONS} ${ADDOPTION}"
+      ENABLE_FIPS="fips=1"
     ;;
   esac
   
@@ -152,7 +151,7 @@ virt-install --noautoconsole --name ${GUESTNAME} --hvm --connect qemu:///system 
   --disk /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-2.qcow2,device=disk,bus=virtio,format=qcow2 \
   --os-type=linux --os-variant=${OSVARIANT} ${BOOTOPTIONS} \
   --location="http://${WEBSERVER}/OS/${OSDIR}" \
-  -x "ks=http://${WEBSERVER}/Kickstart/${GUESTNAME}.ks"
+  -x "ks=http://${WEBSERVER}/Kickstart/${GUESTNAME}.ks $ENABLE_FIPS"
     echo "Completed: `date`"
   ;;
   2)
@@ -164,7 +163,7 @@ virt-install --noautoconsole --name ${GUESTNAME} --hvm --connect qemu:///system 
   --disk /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-1.qcow2,device=disk,bus=virtio,format=qcow2 \
   --os-type=linux --os-variant=${OSVARIANT} ${BOOTOPTIONS} \
   --location="http://${WEBSERVER}/OS/${OSDIR}" \
-  -x "ks=http://${WEBSERVER}/Kickstart/${GUESTNAME}.ks"
+  -x "ks=http://${WEBSERVER}/Kickstart/${GUESTNAME}.ks $ENABLE_FIPS"
     echo "Completed: `date`"
   ;;
   *)
@@ -175,7 +174,7 @@ virt-install --noautoconsole --name ${GUESTNAME} --hvm --connect qemu:///system 
   --disk /var/lib/libvirt/images/${GUESTNAME}/${GUESTNAME}-0.qcow2,device=disk,bus=virtio,format=qcow2 \
   --os-type=linux --os-variant=${OSVARIANT} ${BOOTOPTIONS} \
   --location="http://${WEBSERVER}/OS/${OSDIR}" \
-  -x "ks=http://${WEBSERVER}/Kickstart/${GUESTNAME}.ks"
+  -x "ks=http://${WEBSERVER}/Kickstart/${GUESTNAME}.ks $ENABLE_FIPS"
     echo "Completed: `date`"
   ;;
 esac
