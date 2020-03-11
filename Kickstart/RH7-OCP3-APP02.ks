@@ -24,7 +24,7 @@ timezone America/Chicago --isUtc --ntpservers=0.rhel.pool.ntp.org,1.rhel.pool.nt
 #########################################################################
 ### DISK ###
 # System bootloader configuration
-bootloader --location=mbr --boot-drive=vda --append "fips=1"
+bootloader --location=mbr --boot-drive=vda 
 ignoredisk --only-use=vda
 
 # Partition clearing information
