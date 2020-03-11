@@ -37,6 +37,8 @@ echo "NOTE: This script will update host and REBOOT host"
 echo "  Press CTRL-C to quit (you have ${SLEEPYTIME} seconds)"
 while [ $SLEEPYTIME -gt 0 ]; do echo -ne "Will proceed in:  $SLEEPYTIME\033[0K\r"; sleep 1; : $((SLEEPYTIME--)); done
 
+# FUTURE:  need to make sure fips=1 is in the grub:cmdline if enabled
+
 # Determine whether we are using Satellite or RHN and update the subscription, if needed
 CAPSHOSTNAME=`hostname -s | tr [a-z] [A-Z]`
 # WEBSERVER=10.10.10.10; USE_SATELLITE=1
