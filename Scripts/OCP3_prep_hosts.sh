@@ -93,7 +93,7 @@ do
     COUNT=`ssh $HOST "last | grep boo |wc -l"`
     if [ $? -ne 0 ]; then ERROR=$((ERROR+1)) ; fi
     if [ $COUNT -ne 2 ]; then ERROR=$((ERROR+1)) ; fi
-    echo "(reboots): $COUNT"
+    echo "(reboots): $COUNT - expecting 2"
     echo "ERROR Count: $ERROR"
   done
   if [ $ERROR != 0 ]; then echo "Error(s) found."; while [ $COUNTER -gt 0 ]; do echo -ne "Check again in (seconds): $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; fi
