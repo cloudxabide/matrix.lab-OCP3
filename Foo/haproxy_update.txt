@@ -4,6 +4,8 @@ This exists if you'd like to use your single HAproxy node to frontend both the M
 
 ## Quick and Dirty
 ```
+ssh rh7-ocp3-mst.matrix.lab 
+
 cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.orig
 wget -O /etc/haproxy/haproxy.cfg https://raw.githubusercontent.com/cloudxabide/matrix.lab/master/Files/etc_haproxy_haproxy.cfg
 restorecon -Fvv /etc/haproxy/haproxy.cfg
@@ -16,7 +18,7 @@ firewall-cmd --reload
 ```
 
 
-## Slow and ... Clean?
+## Slow and ... Clean?  Manual steps.
 Update the following file  
 /etc/haproxy/haproxy.cfg
 
