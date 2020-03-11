@@ -147,7 +147,7 @@ openshift_storageclass_default=false
 ##################################################################################33
 # http://people.redhat.com/jrivera/openshift-docs_preview/openshift-origin/glusterfs-review/install_config/persistent_storage/persistent_storage_glusterfs.html#install-example-full
 ## infra-storage - BEGIN
-# OCS storage for OpenShift infrastructure (registry,logging,metrics,prometheus)
+# OCS storage for OpenShift infrastructure (registry,logging,metrics,monitoring)
 openshift_storage_glusterfs_registry_namespace=infra-storage
 openshift_storage_glusterfs_registry_storageclass=false
 openshift_storage_glusterfs_registry_block_deploy=true
