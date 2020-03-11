@@ -1,16 +1,17 @@
 # Post Install Tasks
 
+## Update Haproxy 
+Host: rh7-ocp3-mst.matrix.lab
+If you opt to use the LB managed/created by the OCP install for your Infra Nodes, review [../Foo/haproxy_update.txt](../Foo/haproxy_update.txt)
+
 ## Update the size of the Journal (syslog)
+Host: rh7-ocp3-bst01.matrix.lab
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 $HOST "uname -n; sudo grep SystemMaxUse= /etc/systemd/journald.conf"; echo "#########################"; done
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 $HOST "uname -n; sudo sed -i -e 's/SystemMaxUse=8G/SystemMaxUse=2G/g' /etc/systemd/journald.conf"; sleep 2; echo "#########################"; done
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 -t -l root $HOST "uname -n; systemctl restart systemd-journald"; echo "#########################"; done
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 -t -l root $HOST "uname -n; journalctl --vacuum-time=1d "; echo "#########################"; done
 
-## Update Haproxy 
-If you opt to use the LB managed/created by the OCP install for your Infra Nodes, review [../Foo/haproxy_update.txt](../Foo/haproxy_update.txt)
-
 ## Update Cluster Permissions and Roles
-
 ### Update the User(s) login credentials
 ```
 for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print $3 }'`; do ssh $HOST  "sudo htpasswd -b /etc/origin/master/htpasswd ocpadmin Passw0rd"; done
@@ -18,6 +19,7 @@ for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print
 ```
 
 ### Elevate "ocpadmin" user to Cluster Admin
+Host: rh7-ocp3-mst01.matrix.lab
 ```
 oadm policy add-cluster-role-to-user cluster-admin ocpadmin
 ```
@@ -56,6 +58,7 @@ subsets:
 
 ## Fix Prometheus Sizing (after running "all_the_playbooks.sh")
 ### Update Prometheus DC to reduce memory requirements
+NOTE:  This is no longer *necessary*, I resolved this by updating the inventory file
 create endpoints and redeploy the logging pods after modifying the memory requirement  
 oc edit dc -n openshift-logging
 % s/16Gi/2Gi/g

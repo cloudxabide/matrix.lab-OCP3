@@ -8,7 +8,7 @@ echo | openssl s_client -connect rh7-ocp3-mst.matrix.lab:8443 -servername rh7-oc
 oc login --certificate-authority=rh7-ocp3-mst.matrix.lab.pem --username=`whoami` --password=Passw0rd --server=rh7-ocp3-mst.matrix.lab:8443
 ```
 
-## Create Your Project and Deploy App
+## Create Your Project and Deploy App (HexGL)
 ```
 # HexGL is a HTML5 video game resembling WipeOut from back in the day (Hack the Planet!)
 MYPROJ="hexgl"
@@ -23,10 +23,4 @@ echo '{ "kind": "List", "apiVersion": "v1", "metadata": {}, "items": [ { "kind":
 At some point you will be able to browse to:  
 https://hexgl.ocp3-mwn.linuxrevolution.com/
 https://hexgl.linuxrevolution.com/
-
-## Update Cluster Admins
-```
-oc adm policy add-cluster-role-to-user cluster-admin ocpadmin
-```
-
 
