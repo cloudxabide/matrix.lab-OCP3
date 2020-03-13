@@ -110,15 +110,6 @@ nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-glusterfs/config.ym
 sh ~/matrix.lab/Foo/all_the_playbooks.sh
 
 nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-checks/health.yml -vvv | tee ${LOGDIR}/05-pbs-healthcheck-`date +%F`.logs &
-
-#################################################################
-# THE FOLLOWING DOES NOT SEEM TO WORK
-# http://people.redhat.com/jrivera/openshift-docs_preview/openshift-origin/glusterfs-review/install_config/persistent_storage/persistent_storage_glusterfs.html#install-example-full
-nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-logging/config.yml -vvv | tee ${LOGDIR}/04a-pbs_openshift-logging-`date +%F`.logs
-nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-metrics/config.yml -vvv | tee ${LOGDIR}/04b-pbs_openshift-metrics-`date +%F`.logs
-nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}metrics-server/config.yml -vvv | tee ${LOGDIR}/04c-pbs_metrics-server-`date +%F`.logs
-#################################################################
-
 ```
 
 Example of how OCP3 *should* be deployed
