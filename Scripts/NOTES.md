@@ -47,7 +47,7 @@ done
 #  morpheus)
 #    for GUEST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep ocp | egrep -v 'bst|ocs' | egrep '2$|4$' | awk '{ print $3 }' | tr [a-z] [A-Z]`; do COUNTER=${SLEEPYTIME}; ./build_KVM.sh $GUEST; while [ $COUNTER -gt 0 ]; do echo -ne "Proceed in: $COUNTER\033[0K\r"; sleep 1; : $((COUNTER--)); done; done
 #    # Build the Load Balancer (which has no numeric representation in the hostname, nor VM name)
-#    ./build_KVM.sh RH7-OCP3-MST; sleep $SLEEPYTIME
+#    ./build_KVM.sh RH7-OCP3-PROXY; sleep $SLEEPYTIME
 #  ;;
 #  sati)
 #    # Don't rebuild the bastion every time any longer...
