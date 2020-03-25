@@ -186,7 +186,7 @@ ipa dnsrecord-add 10.10.10.in-addr.arpa 243     --ptr-rec vpn-guest-03.matrix.la
 ####################
 # OCP Hosts
 ####################
-ipa dnsrecord-add matrix.lab rh7-ocp3-mst    --a-rec 10.10.10.170
+ipa dnsrecord-add matrix.lab rh7-ocp3-proxy  --a-rec 10.10.10.170
 ipa dnsrecord-add matrix.lab openshift       --cname-rec='rh7-ocp3-mst.matrix.lab.'
 ipa dnsrecord-add matrix.lab ocp3            --cname-rec='rh7-ocp3-mst.matrix.lab.'
 ipa dnsrecord-add matrix.lab api             --cname-rec='rh7-ocp3-mst.matrix.lab.'
@@ -209,7 +209,7 @@ ipa dnsrecord-add matrix.lab rh7-ocp3-ocs12  --a-rec 10.10.10.197
 ipa dnsrecord-add matrix.lab rh7-ocp3-ocs13  --a-rec 10.10.10.198
 ipa dnsrecord-add matrix.lab rh7-ocp3-ocs14  --a-rec 10.10.10.199
 # OCP Hosts (Reverse)
-ipa dnsrecord-add 10.10.10.in-addr.arpa 170  --ptr-rec rh7-ocp3-mst.matrix.lab.
+ipa dnsrecord-add 10.10.10.in-addr.arpa 170  --ptr-rec rh7-ocp3-proxy.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 171  --ptr-rec rh7-ocp3-mst01.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 172  --ptr-rec rh7-ocp3-mst02.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 173  --ptr-rec rh7-ocp3-mst02.matrix.lab.
