@@ -9,7 +9,7 @@ Purpose:  To provide an overview and details of:
 This example provides context in regards to a single app  
   project:      openshift-console  
   application:  console  
-  host(s):      rh7-ocp3-mst0[1:3]
+  host(s):      rh7-ocp3-mst0[1:3]  
   URL:          https://cluster-console.ocp3-mwn.linuxrevolution.com
 
 The console is running on the Master Nodes, in an H/A configuration (in this case, 3-way).  
@@ -49,7 +49,7 @@ While the non-routable address space which the nodes use is configurable to meet
 As I have opted to let the installer select the CIDR to utilize, I will need to retrieve the configuration.  
 
 The 2 CIDR values of concern 
-[OpenShift 3.11 - Configuring the Pod Network on Masters]https://docs.openshift.com/container-platform/3.11/install_config/configuring_sdn.html#configuring-the-pod-network-on-masters) explains the CIDR for the overall SDN.  
+[OpenShift 3.11 - Configuring the Pod Network on Masters](https://docs.openshift.com/container-platform/3.11/install_config/configuring_sdn.html#configuring-the-pod-network-on-masters) explains the CIDR for the overall SDN.  
 
 [OpenShift 3.11 Documentation - Network Subnetting](https://docs.openshift.com/container-platform/3.11/scaling_performance/network_optimization.html#scaling-performance-network-subnetting) explains the CIDR for each individual Nodes within the SDN.
 
