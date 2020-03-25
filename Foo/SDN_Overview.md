@@ -1,9 +1,15 @@
 # OpenShift 3 SDN Overview
 
-Status:   Work in Progress
-Purpose:  To provide an overview and details of 
-"Internal" SDN Subnets on each host  
-"External" IP Endpoints
+Status:   Work in Progress  
+Purpose:  To provide an overview and details of:  
+"Internal" SDN Subnets on each host   
+"External" IP Endpoints  
+
+This example provides context in regards to
+  project:      openshift-console  
+  application:  console  
+  host(s):      rh7-ocp3-mst0[1:3]
+
 
 ## Architecture
 The architecture I used is essentially a Reference Architecture consisting of the following:  
