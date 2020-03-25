@@ -180,7 +180,7 @@ NOTE:  These memory values are not yet solidified.
 | Hostname            | vda | vdb    | vdc 
 |:--------------------|:----|:-------|:---
 | rh7-ocp3-bst01      | OS  | Docker | N/A (NFS exports (registry, metrics))
-| rh7-ocp3-mst        | OS  | Docker | N/A
+| rh7-ocp3-proxy      | OS  | Docker | N/A
 | rh7-ocp3-mst0[1:3]  | OS  | Docker | N/A
 | rh7-ocp3-inf0[1:3]  | OS  | Docker | N/A
 | rh7-ocp3-app0[1:3]  | OS  | Docker | N/A
@@ -223,7 +223,7 @@ LAG8 - (unassigned)
                   --------------
                   |            |
                   |            |
-                  |     LB     |       rh7-ocp3-mst
+                  |     LB     |       rh7-ocp3-proxy
                   |            |   Load Balancer (haproxy)  
                   |            |
                   --------------                     --------------
