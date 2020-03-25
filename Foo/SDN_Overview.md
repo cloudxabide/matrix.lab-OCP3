@@ -5,11 +5,15 @@ Purpose:  To provide an overview and details of:
 "Internal" SDN Subnets on each host   
 "External" IP Endpoints  
 
-This example provides context in regards to
+## Preamble
+This example provides context in regards to a single app  
   project:      openshift-console  
   application:  console  
   host(s):      rh7-ocp3-mst0[1:3]
 
+The console is running on the Master Nodes, in an H/A configuration (in this case, 3-way).  
+To access the console you would you provide the URL (cluster-console.ocp3-mwn.linuxrevolution.com).  That hostname returns an IP of the Load Balancer which directs traffic to the Infrastructure Nodes.  
+The Infra Nodes (listening on 10.10.10.175/176/177) would then direct the request to the appropriate pods (again, running on the Master Nodes)  
 
 ## Architecture
 The architecture I used is essentially a Reference Architecture consisting of the following:  
