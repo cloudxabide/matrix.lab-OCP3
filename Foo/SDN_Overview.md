@@ -12,8 +12,13 @@ This example provides context in regards to a single app
   host(s):      rh7-ocp3-mst0[1:3]  
   URL:          https://cluster-console.ocp3-mwn.linuxrevolution.com
 
-The console is running on the Master Nodes, in an H/A configuration (in this case, 3-way).  
-To access the console you would you provide the URL (cluster-console.ocp3-mwn.linuxrevolution.com).  That hostname returns an IP of the Load Balancer which directs traffic to the Infrastructure Nodes.  
+NOTE:  This will seem a bit confusing at there are 2 "consoles" that easily get confused:  
+* a "Web UI" the basic User Console (project: openshift-web-console, application: webconsole)  
+* a "Cluster Console" which is the admin console (project: openshift-console, application: console)  
+Also - this lab environment is externally accessible from the Internet.  I have attempted to keep the IP/hostnames straight so that everything appears as it would from the lab itself.  (i.e. all non-routable IPs and DNS entries to match)
+
+The Cluster Console pods are running on the Master Nodes, in an H/A configuration (in this case, 3-way).  
+To access the Cluster Console you would you provide the URL (cluster-console.ocp3-mwn.linuxrevolution.com).  That hostname returns an IP of the Load Balancer which forwards traffic to the Infrastructure Nodes.  
 The Infra Nodes (listening on 10.10.10.175/176/177) would then direct the request to the appropriate pods (again, running on the Master Nodes)  
 
 ## Architecture
@@ -75,7 +80,7 @@ rh7-ocp3-ocs12.matrix.lab   rh7-ocp3-ocs12.matrix.lab   10.10.10.197   10.131.4.
 rh7-ocp3-ocs13.matrix.lab   rh7-ocp3-ocs13.matrix.lab   10.10.10.198   10.129.6.0/23   []             []
 ```
 
-Retrieve the API endpoint (URL) for the console and cluster-console
+Retrieve the URL for the cluster-console  
 ```
 # oc status
 In project openshift-console on server https://rh7-ocp3-mst.matrix.lab:8443
@@ -86,6 +91,12 @@ https://cluster-console.ocp3-mwn.linuxrevolution.com (reencrypt) to pod port htt
     deployment #1 deployed 12 days ago
 
 View details with 'oc describe <resource>/<name>' or list everything with 'oc get all'.
+```
+
+```
+# oc get route -n openshift-console
+NAME      HOST/PORT                                      PATH      SERVICES   PORT      TERMINATION          WILDCARD
+console   cluster-console.ocp3-mwn.linuxrevolution.com             console    https     reencrypt/Redirect   None
 ```
 
 Validate that the DNS entry for that URL is the Load Balancer
