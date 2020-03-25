@@ -18,7 +18,7 @@ rh7-ocp3-mst02.matrix.lab openshift_public_hostname=rh7-ocp3-mst02.matrix.lab
 rh7-ocp3-mst03.matrix.lab openshift_public_hostname=rh7-ocp3-mst03.matrix.lab
 
 [lb]
-rh7-ocp3-mst.matrix.lab  openshift_public_hostname=rh7-ocp3-mst.matrix.lab
+rh7-ocp3-proxy.matrix.lab  openshift_public_hostname=rh7-ocp3-proxy.matrix.lab
 
 # 3300GB - infra-storage (running on the "infra" nodes - update .myconfig)
 #[glusterfs_registry]
@@ -106,7 +106,7 @@ openshift_node_groups=[{'name': 'node-config-master', 'labels': ['node-role.kube
 ## HOSTNAME DEFINITIONS
 ###########
 # The Internal Hostname (node to master communication) (Trying .matrix.lab to see if it allows external access)
-openshift_master_cluster_hostname=rh7-ocp3-mst.matrix.lab
+openshift_master_cluster_hostname=rh7-ocp3-proxy.matrix.lab
 
 # The External Hostname (webconsole)
 openshift_master_cluster_public_hostname=ocp3-console.linuxrevolution.com
