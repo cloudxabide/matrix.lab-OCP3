@@ -75,3 +75,25 @@ View details with 'oc describe <resource>/<name>' or list everything with 'oc ge
 ## Network Topology
 ![OCP OCS SDN Overview](../images/OCP3-OCS_SDN_Overview.png)
 
+## Recon
+Using the previous image, focus on the master nodes (for now) 
+```
+# oc get hostsubnet | grep mst
+rh7-ocp3-mst01.matrix.lab   rh7-ocp3-mst01.matrix.lab   10.10.10.171   10.128.0.0/23   []             []
+rh7-ocp3-mst02.matrix.lab   rh7-ocp3-mst02.matrix.lab   10.10.10.172   10.130.0.0/23   []             []
+rh7-ocp3-mst03.matrix.lab   rh7-ocp3-mst03.matrix.lab   10.10.10.173   10.129.0.0/23   []             []
+```
+
+Retrieve the IP(s) for each of the openshift-console pods 
+```
+# oc get pods -n openshift-console -o wide
+NAME                       READY     STATUS    RESTARTS   AGE       IP            NODE                        NOMINATED NODE
+console-554bb5f54d-r5pl2   1/1       Running   0          12d       10.128.0.10   rh7-ocp3-mst01.matrix.lab   <none>
+console-554bb5f54d-srjzw   1/1       Running   0          12d       10.130.0.9    rh7-ocp3-mst02.matrix.lab   <none>
+console-554bb5f54d-wxw28   1/1       Running   0          13h       10.129.0.24   rh7-ocp3-mst03.matrix.lab   <none>
+```
+
+Notice that the IP assigned to the pod exists in the CIDR identified in "hostsubnet" output
+
+
+Review the [OpenShift 3.11 - Admin Guide - SDN Troubleshooting](https://docs.openshift.com/container-platform/3.11/admin_guide/sdn_troubleshooting.html#the-interfaces-on-a-node) to see all the interfaces that are created, as well as the SDN flows inside a Node.
