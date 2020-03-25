@@ -133,3 +133,7 @@ console-554bb5f54d-wxw28   1/1       Running   0          13h       10.129.0.24 
 Notice that the IP assigned to the pod exists in the CIDR identified in "hostsubnet" output
 
 Review the [OpenShift 3.11 - Admin Guide - SDN Troubleshooting](https://docs.openshift.com/container-platform/3.11/admin_guide/sdn_troubleshooting.html#the-interfaces-on-a-node) to see all the interfaces that are created, as well as the SDN flows inside a Node.
+
+## References
+Techbloc wrote a great blog post on the [OpenShift SDN](https://techbloc.net/archives/tag/sdn)  
+![OpenShift-Origin-Networking-768x686.png](OpenShift-Origin-Networking-768x686.png) 
