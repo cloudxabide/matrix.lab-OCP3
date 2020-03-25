@@ -136,4 +136,4 @@ Review the [OpenShift 3.11 - Admin Guide - SDN Troubleshooting](https://docs.ope
 
 ## References
 Techbloc wrote a great blog post on the [OpenShift SDN](https://techbloc.net/archives/tag/sdn)  
-![OpenShift-Origin-Networking-768x686.png](OpenShift-Origin-Networking-768x686.png) 
+![OpenShift-Origin-Networking-768x686.png](../images/OpenShift-Origin-Networking-768x686.png) 
