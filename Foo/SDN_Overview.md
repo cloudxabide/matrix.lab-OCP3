@@ -10,6 +10,7 @@ This example provides context in regards to a single app
   project:      openshift-console  
   application:  console  
   host(s):      rh7-ocp3-mst0[1:3]
+  URL:          https://cluster-console.ocp3-mwn.linuxrevolution.com
 
 The console is running on the Master Nodes, in an H/A configuration (in this case, 3-way).  
 To access the console you would you provide the URL (cluster-console.ocp3-mwn.linuxrevolution.com).  That hostname returns an IP of the Load Balancer which directs traffic to the Infrastructure Nodes.  
@@ -87,6 +88,15 @@ https://cluster-console.ocp3-mwn.linuxrevolution.com (reencrypt) to pod port htt
 View details with 'oc describe <resource>/<name>' or list everything with 'oc get all'.
 ```
 
+Validate that the DNS entry for that URL is the Load Balancer
+```
+# nslookup cluster-console.ocp3-mwn.linuxrevolution.com
+Server:		10.10.10.171
+Address:	10.10.10.171#53
+
+Name:	cluster-console.ocp3-mwn.linuxrevolution.com
+Address: 10.10.10.170
+```
 
 ## Network Topology
 ![OCP OCS SDN Overview](../images/OCP3-OCS_SDN_Overview.png)
