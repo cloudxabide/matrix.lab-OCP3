@@ -43,6 +43,12 @@ While the non-routable address space which the nodes use is configurable to meet
 
 As I have opted to let the installer select the CIDR to utilize, I will need to retrieve the configuration.  
 
+The 2 CIDR values of concern 
+[OpenShift 3.11 - Configuring the Pod Network on Masters]https://docs.openshift.com/container-platform/3.11/install_config/configuring_sdn.html#configuring-the-pod-network-on-masters) explains the CIDR for the overall SDN.  
+
+[OpenShift 3.11 Documentation - Network Subnetting](https://docs.openshift.com/container-platform/3.11/scaling_performance/network_optimization.html#scaling-performance-network-subnetting) explains the CIDR for each individual Nodes within the SDN.
+
+
 The following command is helpful as it will provide the external IP for each node, as well as the CIDR assigned to each node "SUBNET" for Docker
 ```
 # oc get hostsubnets
@@ -81,7 +87,7 @@ View details with 'oc describe <resource>/<name>' or list everything with 'oc ge
 ## Network Topology
 ![OCP OCS SDN Overview](../images/OCP3-OCS_SDN_Overview.png)
 
-## Recon
+## Let's piece this together 
 Using the previous image, focus on the master nodes (for now) 
 ```
 # oc get hostsubnet | grep mst
@@ -100,6 +106,5 @@ console-554bb5f54d-wxw28   1/1       Running   0          13h       10.129.0.24 
 ```
 
 Notice that the IP assigned to the pod exists in the CIDR identified in "hostsubnet" output
-
 
 Review the [OpenShift 3.11 - Admin Guide - SDN Troubleshooting](https://docs.openshift.com/container-platform/3.11/admin_guide/sdn_troubleshooting.html#the-interfaces-on-a-node) to see all the interfaces that are created, as well as the SDN flows inside a Node.
