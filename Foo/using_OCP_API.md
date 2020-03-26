@@ -1,7 +1,7 @@
 # Using API
 
 ```
-HOSTNAME=rh7-ocp3-mst.matrix.lab
+HOSTNAME=rh7-ocp3-proxy.matrix.lab
 CERTIFICATE=${HOSTNAME}.pem
 ENDPOINT=${HOSTNAME}:8443
 OCPUSERNAME=ocpadmin

@@ -83,7 +83,7 @@ rh7-ocp3-ocs13.matrix.lab   rh7-ocp3-ocs13.matrix.lab   10.10.10.198   10.129.6.
 Retrieve the URL for the cluster-console  
 ```
 # oc status
-In project openshift-console on server https://rh7-ocp3-mst.matrix.lab:8443
+In project openshift-console on server https://rh7-ocp3-proxy.matrix.lab:8443
 
 https://cluster-console.ocp3-mwn.linuxrevolution.com (reencrypt) to pod port https (svc/console)
   deployment/console deploys registry.redhat.io/openshift3/ose-console:v3.11.170

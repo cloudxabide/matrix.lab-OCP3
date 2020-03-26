@@ -1,7 +1,7 @@
 # Post Install Tasks
 
 ## Update Haproxy 
-Host: rh7-ocp3-mst.matrix.lab
+Host: rh7-ocp3-proxy.matrix.lab
 If you opt to use the LB managed/created by the OCP install for your Infra Nodes, review [../Foo/haproxy_update.txt](../Foo/haproxy_update.txt)
 
 ## Update the size of the Journal (syslog)
