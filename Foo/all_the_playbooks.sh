@@ -31,4 +31,5 @@ ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-service-catalog/config.ym
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-descheduler/config.yml -vvv | tee ${LOGDIR}${COUNTER}-openshift-descheduler-`date +%F`.logs; COUNTER=$((COUNTER+1)) 
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-node-problem-detector/config.yml -vvv | tee ${LOGDIR}${COUNTER}-openshift-node-problem-detector-`date +%F`.logs; COUNTER=$((COUNTER+1)) 
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-autoheal/config.yml -vvv | tee ${LOGDIR}${COUNTER}-openshift-autoheal-`date +%F`.logs; COUNTER=$((COUNTER+1)) 
-ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}olm/config.yml -vvv | tee ${LOGDIR}${COUNTER}-olm-`date +%F`.logs; $((COUNTER+1)); COUNTER=$((COUNTER+1)) 
+## OLM is in Tech Preview (*I* certainly don't need this)
+#ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}olm/config.yml -vvv | tee ${LOGDIR}${COUNTER}-olm-`date +%F`.logs; $((COUNTER+1)); COUNTER=$((COUNTER+1)) 
