@@ -83,7 +83,7 @@ rh7-ocp3-mst02.matrix.lab
 rh7-ocp3-mst03.matrix.lab
 
 [lb]
-rh7-ocp3-mst.matrix.lab
+rh7-ocp3-proxy.matrix.lab
 
 # GlusterFS Application Nodes
 [glusterfs]

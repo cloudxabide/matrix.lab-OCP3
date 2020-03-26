@@ -78,6 +78,7 @@ os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
 #os_sdn_network_plugin_name='redhat/openshift-ovs-networkpolicy'
 
 osm_default_node_selector='node-role.kubernetes.io/compute=true'
+# These are defaults (shown for reference)
 osm_cluster_network_cidr=10.128.0.0/14
 openshift_portal_net=172.30.0.0/16
 

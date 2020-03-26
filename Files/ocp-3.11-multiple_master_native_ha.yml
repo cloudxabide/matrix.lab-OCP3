@@ -17,7 +17,7 @@ rh7-ocp3-mst02.matrix.lab openshift_public_hostname=rh7-ocp3-mst02.matrix.lab
 rh7-ocp3-mst03.matrix.lab openshift_public_hostname=rh7-ocp3-mst03.matrix.lab
 
 [lb]
-rh7-ocp3-mst.matrix.lab 
+rh7-ocp3-proxy.matrix.lab 
 
 [nodes]
 rh7-ocp3-mst01.matrix.lab openshift_public_hostname=rh7-ocp3-mst01.matrix.lab openshift_node_group_name='node-config-master'
@@ -53,7 +53,7 @@ oreg_auth_password="<rhnpass>"
 
 # https://docs.openshift.com/container-platform/3.11/install_config/certificate_customization.html
 openshift_master_cluster_method=native
-openshift_master_cluster_hostname=rh7-ocp3-mst.matrix.lab
+openshift_master_cluster_hostname=rh7-ocp3-proxy.matrix.lab
 openshift_master_cluster_public_hostname=ocp3-console.linuxrevolution.com
 
 # registry
