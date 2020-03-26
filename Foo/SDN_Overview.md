@@ -12,13 +12,13 @@ This example provides context in regards to a single app
   host(s):      rh7-ocp3-mst0[1:3]  
   URL:          https://cluster-console.ocp3-mwn.linuxrevolution.com
 
-NOTE:  This will seem a bit confusing at there are 2 "consoles" that easily get confused:  
+NOTE:  This will seem a bit confusing as there are 2 "consoles" that easily get confused:  
 * a "Web UI" the basic User Console (project: openshift-web-console, application: webconsole)  
 * a "Cluster Console" which is the admin console (project: openshift-console, application: console)  
 Also - this lab environment is externally accessible from the Internet.  I have attempted to keep the IP/hostnames straight so that everything appears as it would from the lab itself.  (i.e. all non-routable IPs and DNS entries to match)
 
 The Cluster Console pods are running on the Master Nodes, in an H/A configuration (in this case, 3-way).  
-To access the Cluster Console you would you provide the URL (cluster-console.ocp3-mwn.linuxrevolution.com).  That hostname returns an IP of the Load Balancer which forwards traffic to the Infrastructure Nodes.  
+To access the Cluster Console you would provide the URL (cluster-console.ocp3-mwn.linuxrevolution.com).  That hostname returns an IP of the Load Balancer which forwards traffic to the Infrastructure Nodes.  
 The Infra Nodes (listening on 10.10.10.175/176/177) would then direct the request to the appropriate pods (again, running on the Master Nodes)  
 
 ## Architecture
