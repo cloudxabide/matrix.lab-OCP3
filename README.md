@@ -96,7 +96,7 @@ NOTE:  These memory values are not yet solidified.
 | RH7-IDM-SRV02     | Red Hat Identity Management     | IdM and DNS          | 2, 1024m       | sati       |
 | RH7-OCP3-BST      | Red Hat Enteprise Linux         | Ansible Bastion      | 2, 2048m       | sati       |
 | ----------------- | ------------------------------- | ---------------------| -------------- | ---------- | 
-| RH7-OCP3-MST      | Red Hat OCPv3                   | Master HAproxy       | 2, 2048m       | RHV        |
+| RH7-OCP3-PROXY    | Red Hat Enterprise Linux        | HAproxy for OCP      | 2, 2048m       | RHV        |
 | RH7-OCP3-MST01    | Red Hat OCPv3                   | Master Node          | 2, 5120m       | RHV        |
 | RH7-OCP3-MST02    | Red Hat OCPv3                   | Master Node          | 2, 5120m       | RHV        |
 | RH7-OCP3-MST03    | Red Hat OCPv3                   | Master Node          | 2, 5120m       | RHV        |
