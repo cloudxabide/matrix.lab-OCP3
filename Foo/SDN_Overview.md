@@ -2,8 +2,8 @@
 
 Status:   Work in Progress  
 Purpose:  To provide an overview and details of:  
-"Internal" SDN Subnets on each host   
-"External" IP Endpoints  
+* "Internal" SDN Subnets on each host  
+* "External" IP Endpoints  
 
 ## Preamble
 This example provides context in regards to a single app  
