@@ -14,8 +14,9 @@ for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ 
 ## Update Cluster Permissions and Roles
 ### Update the User(s) login credentials
 ```
-for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print $3 }'`; do ssh $HOST  "sudo htpasswd -b /etc/origin/master/htpasswd ocpadmin Passw0rd"; done
-for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print $3 }'`; do ssh $HOST  "sudo htpasswd -b /etc/origin/master/htpasswd morpheus Passw0rd"; done
+PASSWORD=Passw0rd
+for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print $3 }'`; do ssh $HOST  "sudo htpasswd -b /etc/origin/master/htpasswd ocpadmin $PASSWORD"; done
+for HOST in `grep -v \#  ~/matrix.lab/Files/etc_hosts | grep mst0 | awk '{ print $3 }'`; do ssh $HOST  "sudo htpasswd -b /etc/origin/master/htpasswd morpheus $PASSWORD"; done
 ```
 
 ### Elevate "ocpadmin" user to Cluster Admin
@@ -56,6 +57,16 @@ subsets:
 =========================
 ```
 
+### Define a "default" storage class - glusterfs-storage-block
+In my environment, I want to use GlusterFS:block 
+```
+oc patch storageclass glusterfs-storage-block -p '{"metadata": {"annotations": {"storageclass.kubernetes.io/is-default-class": "true"}}}'
+```
+
+
+## NOTE:  
+The following is not necessary if things went as planned, but I am keeping it in here.
+
 ## Fix Prometheus Sizing (after running "all_the_playbooks.sh")
 ### Update Prometheus DC to reduce memory requirements
 NOTE:  This is no longer *necessary*, I resolved this by updating the inventory file
@@ -64,8 +75,6 @@ oc edit dc -n openshift-logging
 % s/16Gi/2Gi/g
 for DC in `oc get dc | grep "logging-es" | awk '{ print $1 }'`; do oc rollout latest $DC; done
 
-## NOTE:  
-The following is not necessary if things went as planned, but I am keeping it in here.
 
 ## Update Storage (openshift-infra)
 ### Metrics Storage (
