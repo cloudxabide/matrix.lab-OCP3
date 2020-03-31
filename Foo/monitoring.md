@@ -37,6 +37,16 @@ From there you can select
 * Workloads   
   * Pods | Deployments | Deployment Configs | Stateful Sets | Secrets | Config Maps  
   * Cronjobs | Jobs | Daemon Sets | Replica Sets | Replication Controllers | HPAs  
+* Networking   
+  * Services | Routes | Ingress | Network Policies  
+* Storage  
+  * Persistent Volumes | Persistent Volume Claims | Storage Classes
+* Builds  
+  * Build Configs | Builds | Image Streams
+* Monitoring   
+  * Metrics | Alerts | Dashboards   
+* Administration   
+  * Projects | Namespaces | Nodes | Service Accounts | Roles | Role Bindings | Resource Quotas | CRDs
 
 
 
