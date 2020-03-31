@@ -1,10 +1,12 @@
 # Monitoring, Metrics, Logging
 
-Quick highlight(s) of the services and endpoints for the different components
-
+Status:   In-progress
+Purpose:  Provide a quick guide to reviewing the monitoring tools/functions with OpenShift 3
+          Highlight(s) of the services and endpoints for the different components
+Notes:   
 It is worth noting (and hopefully easy to visualize in this example), there are essentially 2 points of Ingress to my cluster.  
-master-api:8443 (in this case, using .linuxrevolution.com)  
-infra-routers:443 (in my case using *.ocp3-mwn.linuxrevolution.com)  
+* master-api:8443 (in this case, using .linuxrevolution.com)  
+* infra-routers:443 (in my case using *.ocp3-mwn.linuxrevolution.com)  
 
 Now - the "Web Console" and API will utilize the "master" endpoint:  ocp3-console.linuxrevolution.com:8443  
 All of the other services will utilze the "infra-routers" endpoint:  cluster-console.ocp3-mwn.linuxrevolution.com (as an example)
@@ -49,11 +51,12 @@ From there you can select
   * Projects | Namespaces | Nodes | Service Accounts | Roles | Role Bindings | Resource Quotas | CRDs
 
 
-Monitoring | Metrics
-Destination: Prometheus.  
-An example:  provide "sum(sort_desc(rate(container_cpu_usage_seconds_total{id="/"}[5m])))" for a query
+### Monitoring | Metrics  
+Destination:  Prometheus   
+An example:  provide "sum(sort_desc(rate(container_cpu_usage_seconds_total{id="/"}[5m])))" for a query, then click "Execute", then "Graph"
 
-Monitoring | Dashboards
-brings you to Grafana.  
+### Monitoring | Dashboards  
+Destination:  Grafana  
+An example:  
 
 
