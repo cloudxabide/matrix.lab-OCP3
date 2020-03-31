@@ -32,9 +32,9 @@ You will notice that this is very much project/namespace and application focused
 
 Towards the top, you will see "Service Catalog" (the default value), click on it and select "Cluster Console"  
 From there you can select
-* Home 
+* Home   
 ** Status | Search | Events
-* Workloads 
+* Workloads   
 ** Pods | Deployments | Deployment Configs | Stateful Sets | Secrets | Config Maps
 **   Cronjobs | Jobs | Daemon Sets | Replica Sets | Replication Controllers | HPAs
 
