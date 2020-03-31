@@ -138,7 +138,7 @@ case $OCP_VERSION in
     OCP_REPOS_MGMT='subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-3.9-rpms" --enable="rhel-7-fast-datapath-rpms"  --enable="rhel-7-server-ansible-2.4-rpms"'
   ;;
   *)
-    OCP_REPOS_MGMT='subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-3.11-rpms" --enable="rhel-7-server-ansible-2.6-rpms"'
+    OCP_REPOS_MGMT='subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-3.11-rpms" --enable="rhel-7-server-ansible-2.8-rpms"'
   ;;
 esac
 
@@ -168,7 +168,7 @@ esac
 
 # Setup Docker and OpenShift Utils on the Nodes
 #  CLEAN THIS SUDO STUFF UP, IF NEEDED
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst|proxy' | awk '{ print $2 }'`
 do
   ssh -l root -t $HOST << EOF
     uname -n
@@ -181,7 +181,7 @@ EOF
 done
 
 # Make sure docker-storage-setup ran correctly
-for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo df -h /var/lib/docker"; echo "#########################"; done
+for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst|proxy' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo df -h /var/lib/docker"; echo "#########################"; done
 
 # Reboot the Guests
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh $HOST "uname -n; sudo shutdown now -r"; echo "#########################"; done
