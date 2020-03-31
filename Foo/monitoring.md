@@ -35,8 +35,8 @@ From there you can select
 * Home   
   * Status | Search | Events  
 * Workloads   
-** Pods | Deployments | Deployment Configs | Stateful Sets | Secrets | Config Maps  
-**   Cronjobs | Jobs | Daemon Sets | Replica Sets | Replication Controllers | HPAs  
+  * Pods | Deployments | Deployment Configs | Stateful Sets | Secrets | Config Maps  
+  * Cronjobs | Jobs | Daemon Sets | Replica Sets | Replication Controllers | HPAs  
 
 
 
