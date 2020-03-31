@@ -52,6 +52,37 @@ chmod 0644 /var/www/html/*
 
 
 # Install/configure/manage Public Cert infrastructure (Let's Encrypt)
-yum -y install certbot python2-certbot-apache
+mkdir -p /var/www/vhosts/plex.linuxrevolution.com/ /var/www/html/vhosts/ocp3-mwn.linuxrevolution.com
+yum -y install certbot 
+wget https://dl.eff.org/certbot-auto
+sudo mv certbot-auto /usr/local/bin/certbot-auto
+sudo chown root /usr/local/bin/certbot-auto
+sudo chmod 0755 /usr/local/bin/certbot-auto
+
+
+# REDIRECT ALL HTTP TRAFFIC TO HTTPS
+cat << EOF > /etc/httpd/conf.d/ocp3-mwn.linuxrevolution.com.conf
+<VirtualHost *:80>
+  ServerName ocp3-mwn.linuxrevolution.com
+  ServerAlias *.ocp3-mwn.linuxrevolution.com
+
+  RewriteEngine On
+  RewriteCond %{HTTP_HOST} ^(.+)\.ocp3-mwn\.linuxrevolution\.com$
+  RewriteRule ^(.*)$ https://%1.ocp3-mwn.linuxrevolution.com$1 [R=302,L]
+</VirtualHost>
+EOF
+cat << EOF > /etc/httpd/conf.d/linuxrevolution.com.conf
+<VirtualHost *:80>
+  ServerName linuxrevolution.com
+  ServerAlias *.linuxrevolution.com
+
+  RewriteEngine On
+  RewriteCond %{HTTP_HOST} ^(.+)\.linuxrevolution\.com$
+  RewriteRule ^(.*)$ https://%1.linuxrevolution.com$1 [R=302,L]
+</VirtualHost>
+EOF
+systemctl restart httpd
+
+certbot-auto certonly --server https://acme-v02.api.letsencrypt.org/directory --manual --preferred-challenges dns -d 'linuxrevolution.com,*.linuxrevolution.com,*.ocp3-mwn.linuxrevolution.com'
 
 
