@@ -49,6 +49,11 @@ From there you can select
   * Projects | Namespaces | Nodes | Service Accounts | Roles | Role Bindings | Resource Quotas | CRDs
 
 
+Monitoring | Metrics
+Destination: Prometheus.  
+An example:  provide "sum(sort_desc(rate(container_cpu_usage_seconds_total{id="/"}[5m])))" for a query
 
+Monitoring | Dashboards
+brings you to Grafana.  
 
 
