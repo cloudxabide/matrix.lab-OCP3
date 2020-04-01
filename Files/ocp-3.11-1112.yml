@@ -225,7 +225,6 @@ openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra":"true"}
 openshift_metrics_cassandra_pvc_storage_class_name='glusterfs-registry-block'
 openshift_metrics_cassandra_pvc_prefix=metrics-cassandra
 openshift_metrics_cassandra_pvc_size=10Gi
-openshift_metrics_cassandra_pvc_storage_class_name='glusterfs-registry-block'
 openshift_metrics_cassandra_storage_type=pv
 ########################################################################################
 
