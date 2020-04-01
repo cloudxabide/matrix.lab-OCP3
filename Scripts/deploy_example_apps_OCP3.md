@@ -68,6 +68,7 @@ oc delete route mattermost
 echo '{ "kind": "List", "apiVersion": "v1", "metadata": {}, "items": [ { "kind": "Route", "apiVersion": "v1", "metadata": { "name": "mattermost", "creationTimestamp": null, "labels": { "app": "mattermost" } }, "spec": { "host": "mattermost.linuxrevolution.com", "to": { "kind": "Service", "name": "mattermost" }, "port": { "targetPort": "8065-tcp" }, "tls": { "termination": "edge" } }, "status": {} } ] }' | oc create -f -
 ```
 
+#### Manual Update (optional)
 ```
 oc edit route -n mattermost
   port:
@@ -82,8 +83,8 @@ oc edit route -n mattermost
 ```
 
 ### Enjoy
-https://mattermost.linuxrevolution.com
-Or the default URL
+https://mattermost.linuxrevolution.com  
+Or the default URL  
 https://mattermost-mattermost.ocp3-mwn.linuxrevolution.com
 
 ### Cleanup
