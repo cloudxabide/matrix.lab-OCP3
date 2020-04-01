@@ -75,6 +75,7 @@ cp ${HOME}/matrix.lab/Files/ocp-3.11-1112*  ~
 sed -i -e 's/<rhnuser>/yo/g'  ${HOME}/ocp-3.11-1112*
 sed -i -e 's/<rhnpass>/moreyo/g' ${HOME}/*OCS*yml
 
+tmux new -s OCP
 rm ~/openshift-ansible.log
 BASE="${HOME}/ocp-3.11-1112"
 INVENTORY="${BASE}.yml"
@@ -108,6 +109,7 @@ nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-glusterfs/config.ym
 # run Foo/all_the_playbooks.sh
 #  which have single digit numerical prefix and the name of the playbook in the log filename
 sh ~/matrix.lab/Foo/all_the_playbooks.sh
+# there is a script that updates the proxy (again), which means you also need to update the proxy (again) from the process above
 
 nohup ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}openshift-checks/health.yml -vvv | tee ${LOGDIR}/05-pbs-healthcheck-`date +%F`.logs &
 ```
