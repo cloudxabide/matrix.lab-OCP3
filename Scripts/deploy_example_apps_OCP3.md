@@ -1,4 +1,4 @@
-# Deploy_Apps
+# Deploy Apps
 
 ## Setup your oc Client Environment
 ```
@@ -22,7 +22,7 @@ echo '{ "kind": "List", "apiVersion": "v1", "metadata": {}, "items": [ { "kind":
 ```
 
 At some point you will be able to browse to (depending on the route you enabled):  
-https://hexgl.ocp3-mwn.linuxrevolution.com/
+https://hexgl.ocp3-mwn.linuxrevolution.com/  
 https://hexgl.linuxrevolution.com/
 
 ## Mattermost (this does not work at this time)
@@ -45,13 +45,13 @@ oc new-app postgresql-persistent -p POSTGRESQL_USER=mmuser \
                                  -p MEMORY_LIMIT=512Mi
 ```
 
-As system:admin modify SCC (Do NOT do this in Prod) and add ImageStream
+As system:admin modify SCC (Do NOT do this in a Production Environment) 
 ```
 oc annotate namespace mattermost openshift.io/sa.scc.uid-range=1001/1001 --overwrite
 oc adm policy add-scc-to-user anyuid system:serviceaccount:mattermost:mattermost
 ```
 
-As user:morpheus create the mattermost app
+As user:morpheus create the mattermost app (and add ImageStream)
 ```
 oc create --filename mattermost.yaml
 oc create serviceaccount mattermost
@@ -64,7 +64,7 @@ oc expose service/mattermost --labels=app=mattermost
 ```
 
 ### Fix the Route (add edge termination)
-As system:admin
+As system:admin add tls:termination:edge 
 ```
 oc edit route -n mattermost
   port:
