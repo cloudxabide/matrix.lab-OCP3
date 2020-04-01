@@ -2,17 +2,19 @@
 
 Status:   In-progress
 Purpose:  Provide a quick guide to reviewing the monitoring tools/functions with OpenShift 3
-          Highlight(s) of the services and endpoints for the different components
+          Highlight(s) of the services and endpoints for the different components  
 Notes:   
-It is worth noting (and hopefully easy to visualize in this example), there are essentially 2 points of Ingress to my cluster.  
-* master-api:8443 (in this case, using .linuxrevolution.com)  
+It is worth explaining (and hopefully easy to visualize in this example), there are essentially 2 points of Ingress to my cluster.  
+* master-api:8443 (in this case, using ocp3-console.linuxrevolution.com)  
 * infra-routers:443 (in my case using *.ocp3-mwn.linuxrevolution.com)  
 
 Now - the "Web Console" and API will utilize the "master" endpoint:  ocp3-console.linuxrevolution.com:8443  
 All of the other services will utilze the "infra-routers" endpoint:  cluster-console.ocp3-mwn.linuxrevolution.com (as an example)
 
+You can review the complete environment and architecture in the [README.md](../README.md) for this repo.
 
 ## Endpoints
+Here are a list of endpoints (URLs) for my lab environment
 
 ### OCP3 URLs
 https://ocp3-console.linuxrevolution.com:8443/console/  
@@ -49,7 +51,6 @@ From there you can select
   * Metrics | Alerts | Dashboards   
 * Administration   
   * Projects | Namespaces | Nodes | Service Accounts | Roles | Role Bindings | Resource Quotas | CRDs
-
 
 ### Monitoring | Metrics  
 Destination:  Prometheus   
