@@ -14,7 +14,7 @@ RH7-IDM-SRV01:zion:EL7:2:1536:50:0:0:server:7.7:BIOS:0:0:x:x:0
 RH7-IDM-SRV02:sati:EL7:2:1536:50:0:0:server:7.7:BIOS:0:0:x:x:0
 RH7-OCP3-BST01:apoc:EL7:2:1536:20:50:0:server:7.7:BIOS:1:0:x:x:0
 #
-RH7-OCP3-PROXY:apoc:EL7:2:4096:30:40:0:server:7.7:BIOS:1:0:x:x:0
+RH7-OCP3-PROXY:apoc:EL7:2:3072:30:0:0:server:7.7:BIOS:1:0:x:x:0
 RH7-OCP3-MST01:neo:EL7:4:10240:30:40:0:server:7.7:BIOS:1:0:x:x:0
 RH7-OCP3-MST02:trinity:EL7:4:10240:30:40:0:server:7.7:BIOS:1:0:x:x:0
 RH7-OCP3-MST03:morpheus:EL7:4:10240:30:40:0:server:7.7:BIOS:1:0:x:x:0
