@@ -320,9 +320,10 @@ To begin building the environment, I utilize:
 
 ## OCP3 URLs
 https://ocp3-console.linuxrevolution.com:8443/console/  
-https://hawkular.ocp3-mwn.linuxrevolution.com  
 https://cluster-console.ocp3-mwn.linuxrevolution.com/  
 https://logging.ocp3-mwn.linuxrevolution.com/app/kibana  
+
+https://hawkular.ocp3-mwn.linuxrevolution.com  (Endpoint Only - no User WebUI)
 
 ### Monitoring
 NOTE:  These URLs are based on the "openshift_master_default_subdomain"  
