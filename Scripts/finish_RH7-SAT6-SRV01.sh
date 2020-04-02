@@ -147,7 +147,7 @@ done
 ######################
 PRODUCT='Red Hat Ansible Engine'
 hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
-REPOS="7387"
+REPOS="7387 8562"
 for REPO in $REPOS
 do
   echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
