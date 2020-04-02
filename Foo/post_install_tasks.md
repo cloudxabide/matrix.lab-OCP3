@@ -64,6 +64,118 @@ oc patch storageclass glusterfs-storage-block -p '{"metadata": {"annotations": {
 ```
 
 
+
+#########################################################################################################################
+#########################################################################################################################
+## TESTING 
+#########################################################################################################################
+#########################################################################################################################
+## Prometheus and Alertmanager update (openshift-monitor)
+```
+echo "apiVersion: v1
+kind: Endpoints
+metadata:
+  annotations:
+    control-plane.alpha.kubernetes.io/leader: '{"holderIdentity":"glusterblock-registry-provisioner-dc-1-j9md8_a8f81bb1-7169-11ea-a984-0a580a820603","leaseDurationSeconds":15,"acquireTime":"2020-03-29T03:02:18Z","renewTime":"2020-04-02T00:21:06Z","leaderTransitions":1}'
+  creationTimestamp: "2020-03-29T01:44:15Z"
+  name: gluster.org-glusterblock-infra-storage
+  namespace: openshift-monitoring
+subsets:
+- addresses:
+  - ip: 10.10.10.191
+  - ip: 10.10.10.192
+  - ip: 10.10.10.193
+  ports:
+  - port: 1
+    protocol: TCP" | oc create -f - -n openshift-monitoring
+
+echo "apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+  - kubernetes.io/pv-protection
+  name: alert-mgr-0 
+spec:
+  storageClassName: glusterfs-registry-block
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 2Gi
+  glusterfs:
+    endpoints: gluster.org-glusterblock-infra-storage
+    path: alert-mgr-0
+  persistentVolumeReclaimPolicy: Retain" | oc create -f - 
+
+echo "apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+  - kubernetes.io/pv-protection
+  name: alert-mgr-1
+spec:
+  storageClassName: glusterfs-registry-block
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 2Gi
+  glusterfs:
+    endpoints: gluster.org-glusterblock-infra-storage
+    path: alert-mgr-1
+  persistentVolumeReclaimPolicy: Retain" | oc create -f - 
+
+echo "apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+  - kubernetes.io/pv-protection
+  name: alert-mgr-2
+spec:
+  storageClassName: glusterfs-registry-block
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 2Gi
+  glusterfs:
+    endpoints: gluster.org-glusterblock-infra-storage
+    path: alert-mgr-2
+  persistentVolumeReclaimPolicy: Retain" | oc create -f - 
+
+echo "apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+  - kubernetes.io/pv-protection
+  name: prometheus-0
+spec:
+  storageClassName: glusterfs-registry-block
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  glusterfs:
+    endpoints: gluster.org-glusterblock-infra-storage
+    path: prometheus-0
+  persistentVolumeReclaimPolicy: Retain" | oc create -f -
+
+echo "apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+  - kubernetes.io/pv-protection
+  name: prometheus-1
+spec:
+  storageClassName: glusterfs-registry-block
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  glusterfs:
+    endpoints: gluster.org-glusterblock-infra-storage
+    path: prometheus-1
+  persistentVolumeReclaimPolicy: Retain" | oc create -f -
+
+```
+
 ## NOTE:  
 The following is not necessary if things went as planned, but I am keeping it in here.
 
