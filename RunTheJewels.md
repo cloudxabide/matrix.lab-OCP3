@@ -141,3 +141,11 @@ for HOST in $HYPERVISORS; do ssh -t $HOST "matrix.lab/Scripts/lab_control.sh tea
 ```
 Return to 'Deploy OpenShift Container Platform 3' 
 
+
+## Some Cleanup Bits
+```
+ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}/openshift-metrics/config.yml -e openshift_logging_install_logging=false
+
+# Remove Prometheus
+ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}/openshift-monitoring/config.yml -e openshift_cluster_monitoring_operator_install=falsE
+```
