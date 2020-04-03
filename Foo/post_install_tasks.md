@@ -25,6 +25,17 @@ Host: rh7-ocp3-mst01.matrix.lab
 oadm policy add-cluster-role-to-user cluster-admin ocpadmin
 ```
 
+### Define a "default" storage class - glusterfs-storage-block
+In my environment, I want to use GlusterFS:block
+```
+oc patch storageclass glusterfs-storage-block -p '{"metadata": {"annotations": {"storageclass.kubernetes.io/is-default-class": "true"}}}'
+```
+
+#########################################################################################################################
+#########################################################################################################################
+## TESTING 
+#########################################################################################################################
+#########################################################################################################################
 ## Update Storage 
 ### Update Endpoints (infra-storage)
 ```
@@ -63,13 +74,6 @@ In my environment, I want to use GlusterFS:block
 oc patch storageclass glusterfs-storage-block -p '{"metadata": {"annotations": {"storageclass.kubernetes.io/is-default-class": "true"}}}'
 ```
 
-
-
-#########################################################################################################################
-#########################################################################################################################
-## TESTING 
-#########################################################################################################################
-#########################################################################################################################
 ## Prometheus and Alertmanager update (openshift-monitor)
 ```
 echo "apiVersion: v1
