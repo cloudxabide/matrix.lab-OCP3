@@ -43,6 +43,7 @@ oc new-app postgresql-persistent -p POSTGRESQL_USER=mmuser \
 ```
 
 As system:admin modify SCC (Do NOT do this in a Production Environment) 
+NOTE: you NEED to wait for the database to be deployed  
 ```
 oc annotate namespace mattermost openshift.io/sa.scc.uid-range=1001/1001 --overwrite
 oc adm policy add-scc-to-user anyuid system:serviceaccount:mattermost:mattermost
