@@ -40,8 +40,8 @@ do
   ssh -l root -t $HYPERVISOR "uname -n; virsh list --all"
 done
 ```
-### Start the OCP3 guests
-You need to wait until they are all done being provisioned (they will terminate when complete)
+### Start the OCP3 nodes 
+You need to wait until they are all done being provisioned (they will terminate when installation is complete)
 ```
 HYPERVISORS="apoc neo trinity morpheus"
 for HYPERVISOR in $HYPERVISORS    
