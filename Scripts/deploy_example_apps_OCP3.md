@@ -24,17 +24,17 @@ https://hexgl.linuxrevolution.com/
 
 ## Mattermost 
 forked from - https://github.com/goern/mattermost-openshift.git   
-As user:morpheus create the project "mattermost"
+I had to make the following changes and updates from the original source (my source (below) already has this update)
 ```
-cd ${HOME}; git clone https://github.com/cloudxabide/mattermost-openshift.git; cd mattermost-openshift/
 # Not sure why the DB is named incorrectly
 sed -i -e 's/mattermost_test/mattermost/g' mattermost.yaml
 # Need edge termination as I do not allow HTTP through my firewall
 sed -i -e 's/targetPort: 8065/targetPort: 8065\n      tls:\n        termination: edge/g' mattermost.yaml
 ```
 
-As user:morpheus create a new project
+As user:morpheus clone the repo, create the project "mattermost"
 ```
+cd ${HOME}; git clone https://github.com/cloudxabide/mattermost-openshift.git; cd mattermost-openshift/
 oc new-project mattermost
 oc new-app postgresql-persistent -p POSTGRESQL_USER=mmuser \
                                  -p POSTGRESQL_PASSWORD=mostest \
@@ -96,4 +96,27 @@ oc delete pvc postgresql -n mattermost
 oc project hexgl
 oc delete project mattermost
 ```
+
+## RocketChat
+Status:  Work in Progress
+
+I believe you will only be able to do this from a node in the cluster... (i.e. not the bastion)
+```
+docker pull rocketchat/rocket.chat
+docker tag rocketchat/rocket.chat hub.openshift.rhel-cdk.10.1.2.2.xip.io/openshift/rocket-chat
+docker push hub.openshift.rhel-cdk.10.1.2.2.xip.io/openshift/rocket-chat
+```
+
+user: morpheus
+```
+oc login {blah}
+oc new-project rocket-chat
+
+git clone https://github.com/rimolive/rocketchat-openshift
+cd rocketchat-openshift
+oc create -n openshift -f rocket-chat-is.json
+oc create -n openshift -f rocket-chat-ephemeral.json
+oc new-app rocket-chat -p MONGODB_DATABASE=rocketchat \
+                       -p MONGODB_USER=rocketchat-admin \
+                        -p MONGODB_PASSWORD=rocketchat 
 
