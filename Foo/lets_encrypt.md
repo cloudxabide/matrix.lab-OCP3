@@ -20,4 +20,9 @@ certbot-auto certonly --server https://acme-v02.api.letsencrypt.org/directory --
 ```
 the command will generate a random string for you to enter as a TXT value with the name "_acme-challenge.linuxrevolution.com" (I don't recall whether I had to do a separate one for "*.ocp3-mwn...")
 
-
+## Update Inventory
+You will need to retrieve the 3 files listed below and put them in /root/TLS
+```
+# Certificate Foo (testing)
+openshift_hosted_router_certificate={"certfile": "/root/TLS/router.pem", "keyfile": "/root/TSL/privkey2.pem", "cafile": "/root/TLS/chain2.pem"}
+```
