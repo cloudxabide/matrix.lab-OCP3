@@ -4,8 +4,16 @@
 # 
 #NAME:HYPERVISOR:RELEASE:NUMCPU:MEM:HDD0:HDD1:HDD2:releasetype:releasever:BIOS-UEFI:Satellite:DISCONNECTED:PURPOSE:INSTALL:FIPS
 #   1:         2:      3:     4   5:   6:   7:   8:          9:        10:       11:       12:          13:     14:     15   16
-# PURPOSE:  RHV|RHHI|RHC
-# INSTALL:  RHEL|RHVH|RHELH
+# BIOS-UEFI: BIOS|UEFI (select one)
+# PURPOSE:   RHV|RHHI|RHC
+# INSTALL:   RHEL|RHVH|RHELH (unused)
+# 
+# ==  HYPERVISORS (for reference) ============================================================
+APOC:x:EL7:x:x:x:x:0:server:7.8:UEFI:0:x:x:x:1
+NEO:x:EL7:x:x:x:x:0:server:7.8:UEFI:0:x:x:x:1
+TRINITY:x:EL7:x:x:x:x:0:server:7.8:UEFI:0:x:x:x:1
+MORPHEUS:x:EL7:x:x:x:x:0:server:7.8:UEFI:0:x:x:x:1
+ZION:x:EL7:x:x:x:x:0:server:7.8:UEFI:0:x:x:x:1
 # ===========================================================================================
 RH7-SAT6-SRV01:apoc:EL7:4:10240:50:200:0:server:7.7:BIOS:0:0:x:x:0
 RH8-UTIL-SRV01:zion:EL8:4:1024:50:0:0:server:8.0:BIOS:0:0:x:x:0

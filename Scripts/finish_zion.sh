@@ -177,5 +177,12 @@ systemctl restart dhcpd; systemctl status dhcpd
 # https://docs.oracle.com/cd/E37670_01/E41137/html/ol-pxe-boot.html
 # https://wiki.fogproject.org/wiki/index.php?title=BIOS_and_UEFI_Co-Existence
 
-
-
+## To enable RHV
+mkdir /tmp/rhv-staging; cd $_
+rpm2cpio /var/www/OS/RHVH-4.3/Packages/redhat-virtualization-host-image-update-4.3.9-20200324.0.el7_8.noarch.rpm
+mkdir /var/www/OS/RHVH-4.3-SquashFS/
+cp usr/share/redhat-virtualization-host/image/* $_
+# Put this in your kicstart - 
+#   liveimg --url=http://10.10.10.10/OS/RHVH-4.2-SquashFS/redhat-virtualization-host-4.2-20180508.0.el7_5.squashfs.img
+mkdir /var/lib/tftpboot/RHVH-4.3/
+cp /var/www/OS/RHVH-4.3/images/pxeboot/{vmlinuz,initrd.img} /var/lib/tftpboot/RHVH-4.3/

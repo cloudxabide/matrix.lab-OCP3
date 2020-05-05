@@ -86,3 +86,29 @@ systemctl restart httpd
 certbot-auto certonly --server https://acme-v02.api.letsencrypt.org/directory --manual --preferred-challenges dns -d 'linuxrevolution.com,*.linuxrevolution.com,*.ocp3-mwn.linuxrevolution.com'
 
 
+VHOST="plex.linuxrevolution.com"
+# Non-SSL vhost files
+cat << EOF > /etc/httpd/conf.d/${VHOST}.conf
+<VirtualHost *:80>
+ServerAdmin webadmin@${VHOST}
+ServerName  ${VHOST}
+DocumentRoot /var/www/html/${VHOST}
+
+ErrorLog /var/log/httpd/${VHOST}_error.log
+CustomLog /var/log/httpd/${VHOST}_access.log combined
+</VirtualHost>
+EOF
+mkdir -p /var/www/html/${VHOST}
+
+cat << EOF > /var/www/html/plex.linuxrevolution.com/index.html
+<HTML><HEAD><TITLE> LinuxRevolution | Plex y'all | &#169 2019</TITLE>
+<META http-equiv="refresh" content="1;URL='http://plex.linuxrevolution.com:32400/'">
+</HEAD>
+<BODY>
+Gettin after some Plex Yo...
+</BODY>
+</HTML>
+EOF
+
+# This needs an update to either use html or just a single host entry
+certbot-auto certonly --server https://acme-v02.api.letsencrypt.org/directory --manual --preferred-challenges dns -d 'plex.linuxrevolution.com'
