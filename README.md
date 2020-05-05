@@ -2,7 +2,9 @@
 
 ## Status
 Untested.  I am currently making a TON of changes to make my lab Hyperconverged.  
-Environment is currently being used to test OCP3.
+Environment is currently being used to test OCP3 and FIPS.
+
+fips1234!
 
 ## Overview
 My Homelab dedicated to deploying portoins of the Red Hat product portfolio and AWS integration.
@@ -12,9 +14,9 @@ installation - I would not use some of these tactics in a production or business
 environment.
 
 ### Deployment Modes
-* (current) Ad-hoc
+* Ad-hoc
 * RHVH 4.3 
-* RHHI = Hyperconverged - RHVH 4.2 + Gluster 
+* (current) RHHI = Hyperconverged - RHVH 4.3 + Gluster + FIPS
 * RHEL as RHV Hypervisors and Hyperconverged (only RHEL 7.4 supported)
 * RHV/RHELH with External Storage (iSCSI/NFS) from NAS host
 
