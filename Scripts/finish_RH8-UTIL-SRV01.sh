@@ -112,3 +112,8 @@ EOF
 
 # This needs an update to either use html or just a single host entry
 certbot-auto certonly --server https://acme-v02.api.letsencrypt.org/directory --manual --preferred-challenges dns -d 'plex.linuxrevolution.com'
+
+## Make this system a BIND host (chicken-egg scenario and I'd like to have 
+## DNS available when I am rebuilding the IdM hosts)
+yum -y install bind-chroot
+
