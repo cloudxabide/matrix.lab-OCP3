@@ -12,10 +12,18 @@ EOF
 
 # Manage Subscription and Channels/Repos
 # This *would* likely be necessary for a "normal" RHN account
-# POOL=`subscription-manager list --available --matches 'Red Hat Satellite' | grep "Pool ID:" | awk '{ print $3 }' | tail -1`
-# subscription-manager attach --pool=${POOL}
+POOL=`subscription-manager list --available --matches 'Red Hat Satellite' | grep "Pool ID:" | awk '{ print $3 }' | tail -1`
+subscription-manager attach --pool=${POOL}
 
+subscription-manager repos --disable="*"
 case $SATVERSION in
+  6.6)
+    subscription-manager repos --enable=rhel-7-server-rpms \
+      --enable=rhel-7-server-satellite-6.6-rpms \
+      --enable=rhel-7-server-satellite-maintenance-6-rpms \
+      --enable=rhel-server-rhscl-7-rpms \
+      --enable=rhel-7-server-ansible-2.8-rpms
+  ;;
   6.5)
     subscription-manager repos --enable=rhel-7-server-rpms \
       --enable=rhel-server-rhscl-7-rpms \
@@ -65,9 +73,35 @@ cp /etc/foreman-installer/scenarios.d/satellite-answers.yaml /etc/foreman-instal
 # Update the install file for your custom Answers file
 sed -i -e "s/satellite-answers/${ORGANIZATION}-satellite-answers/g" /etc/foreman-installer/scenarios.d/satellite.yaml
 
+
+satellite-installer --scenario satellite \
+--foreman-initial-organization "$ORGANIZATION" \
+--foreman-initial-location "$LOCATION" \
+--foreman-initial-admin-username "admin" \
+--foreman-initial-admin-password "Passw0rd" \
+--foreman-proxy-puppetca true \
+--foreman-proxy-tftp true \
+--enable-foreman-plugin-discovery
+
+other_options() {
+--foreman-proxy-dns true \
+--foreman-proxy-dns-interface eth0 \
+--foreman-proxy-dns-zone matrix.lab \
+--foreman-proxy-dns-forwarders 10.10.10.121 \
+--foreman-proxy-dns-forwarders 10.10.10.122 \
+--foreman-proxy-dns-reverse 10.10.10.in-addr.arpa \
+--foreman-proxy-dhcp true \
+--foreman-proxy-dhcp-interface eth0 \
+--foreman-proxy-dhcp-range "10.10.10.200 10.10.10.250" \
+--foreman-proxy-dhcp-gateway 10.10.10.1 \
+--foreman-proxy-dhcp-namesrvs 10.10.10.121 \
+--foreman-proxy-dhcp-namesrvs 10.10.10.122 \
+--foreman-proxy-tftp true \
+--foreman-proxy-tftp-srvname ${SATELLITE}.${DOMAIN} \
+}
+
 # Save the manifest file in ~ - then upload it
 hammer subscription upload --file $(find ~ -name "*$MATRIXLABS*.zip") --organization="${ORGANIZATION}" 
-
 
 ###################
 # --source-id=1 (should be INTERNAL)
@@ -105,7 +139,7 @@ do
   hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever='8.1' --product="${PRODUCT}" --id="${REPO}"
 done
 
-REPOS="8693" # Satellite Tools 6.5 for RHEL 8
+REPOS="8693 8979" # Satellite Tools 6.5/6.6 for RHEL 8 
 for REPO in $REPOS
 do
   echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
@@ -127,7 +161,7 @@ do
   hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever='7.7' --product="${PRODUCT}" --id="${REPO}"
 done
 ## THERE ARE REPOS WHICH DO *NOT* ACCEPT A "releasever" VALUE
-REPOS="8503" # Satellite Tools 6.5
+REPOS="8503 8935" # Satellite Tools 6.5
 for REPO in $REPOS
 do
   echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
@@ -147,7 +181,7 @@ done
 ######################
 PRODUCT='Red Hat Ansible Engine'
 hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
-REPOS="7387 8562"
+REPOS="7387 8562 9318"
 for REPO in $REPOS
 do
   echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
@@ -171,9 +205,16 @@ done
 wget -q https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7  -O /root/RPM-GPG-KEY-EPEL-7
 hammer gpg create --key /root/RPM-GPG-KEY-EPEL-7 --name 'GPG-EPEL-7' --organization="${ORGANIZATION}"
 GPGKEYID=`hammer gpg list --name="GPG-EPEL-7" --organization="${ORGANIZATION}" | grep ^[0-9] | awk '{ print $1 }'`
-PRODUCT='Extra Packages for Enterprise Linux'
+PRODUCT='Extra Packages for Enterprise Linux 7'
 hammer product create --name="${PRODUCT}" --organization="${ORGANIZATION}"
 hammer repository create --name='EPEL 7 - x86_64' --organization="${ORGANIZATION}" --product="${PRODUCT}" --content-type='yum' --publish-via-http=true --url=http://dl.fedoraproject.org/pub/epel/7/x86_64/ --gpg-key-id="${GPGKEYID}" --gpg-key="${GPG-EPEL-7}"
+
+wget -q https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8  -O /root/RPM-GPG-KEY-EPEL-8
+hammer gpg create --key /root/RPM-GPG-KEY-EPEL-8 --name 'GPG-EPEL-8' --organization="${ORGANIZATION}"
+GPGKEYID=`hammer gpg list --name="GPG-EPEL-8" --organization="${ORGANIZATION}" | grep ^[0-9] | awk '{ print $1 }'`
+PRODUCT='Extra Packages for Enterprise Linux 8'
+hammer product create --name="${PRODUCT}" --organization="${ORGANIZATION}"
+hammer repository create --name='EPEL 8 - x86_64' --organization="${ORGANIZATION}" --product="${PRODUCT}" --content-type='yum' --publish-via-http=true --url=http://dl.fedoraproject.org/pub/epel/8/x86_64/ --gpg-key-id="${GPGKEYID}" --gpg-key="${GPG-EPEL-8}"
 
 #################
 ## SYNC EVERYTHING (Manually)
@@ -185,10 +226,12 @@ for i in $(hammer --csv repository list --organization="${ORGANIZATION}" | awk -
 hammer sync-plan create --enabled true --interval=daily --name='Daily sync - Red Hat' --description="Daily Sync Plan for Red Hat Products" --sync-date='2015-11-22 02:00:00' --organization="${ORGANIZATION}"
 hammer product set-sync-plan --sync-plan='Daily sync - Red Hat' --organization="${ORGANIZATION}" --name='Red Hat Ansible Engine'
 hammer product set-sync-plan --sync-plan='Daily sync - Red Hat' --organization="${ORGANIZATION}" --name='Red Hat Enterprise Linux Server'
+hammer product set-sync-plan --sync-plan='Daily sync - Red Hat' --organization="${ORGANIZATION}" --name='Red Hat Enterprise Linux for x86_64'
 hammer product set-sync-plan --sync-plan='Daily sync - Red Hat' --organization="${ORGANIZATION}" --name='Red Hat OpenShift Container Platform'
 hammer product set-sync-plan --sync-plan='Daily sync - Red Hat' --organization="${ORGANIZATION}" --name='Red Hat Software Collections for RHEL Server'
 hammer sync-plan create --enabled true --interval=daily --name='Daily sync - EPEL' --description="Daily Sync Plan for EPEL" --sync-date='2015-11-22 03:00:00' --organization="${ORGANIZATION}"
 hammer product set-sync-plan --sync-plan='Daily sync - EPEL' --organization="${ORGANIZATION}" --name='Extra Packages for Enterprise Linux'
+hammer product set-sync-plan --sync-plan='Daily sync - EPEL' --organization="${ORGANIZATION}" --name='Extra Packages for Enterprise Linux 8'
 
 #################
 ## LIFECYCLE ENVIRONMENT
