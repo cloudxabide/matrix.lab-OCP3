@@ -115,5 +115,80 @@ certbot-auto certonly --server https://acme-v02.api.letsencrypt.org/directory --
 
 ## Make this system a BIND host (chicken-egg scenario and I'd like to have 
 ## DNS available when I am rebuilding the IdM hosts)
-yum -y install bind-chroot
+yum -y install bind-chroot 
+/usr/libexec/setup-named-chroot.sh /var/named/chroot on
+systemctl disable named
+systemctl start named-chroot
+systemctl enable named-chroot
+
+mkdir /var/named/masters; chown named:named $_; chmod 770 $_
+
+touch /var/named/chroot/var/named/data/cache_dump.db
+touch /var/named/chroot/var/named/data/named_stats.txt
+touch /var/named/chroot/var/named/data/named_mem_stats.txt
+touch /var/named/chroot/var/named/data/named.run
+mkdir /var/named/chroot/var/named/dynamic
+touch /var/named/chroot/var/named/dynamic/managed-keys.bind
+
+restorecon -RFvv /var/named/
+
+chmod -R 777 /var/named/chroot/var/named/data
+chmod -R 777 /var/named/chroot/var/named/dynamic
+
+cp /var/named/chroot/etc/named.conf /var/named/chroot/etc/named.conf.orig
+sed -i -e 's/127.0.0.1/any/'g /etc/named.conf
+sed -i -e 's/localhost/any/g' /etc/named.conf
+
+
+cat << EOF >> /var/named/chroot/etc/named.conf
+
+#  ZONES FOR LinuxRevolution.com
+zone "linuxrevolution.com" {
+    type master;
+    file "masters/linuxrevolution.com.zone";
+};
+zone "cloudapps.linuxrevolution.com" {
+    type master;
+    file "masters/cloudapps.linuxrevolution.com.zone";
+};
+EOF
+
+cat << EOF > /var/named/masters/linuxrevolution.com.zone
+\$TTL 86400
+@       IN      SOA     linuxrevolution.com. hostmaster.linuxrevolution.com. (
+                               2014101901      ; Serial
+                               43200      ; Refresh
+                               3600       ; Retry
+                               3600000    ; Expire
+                               2592000 )  ; Minimum
+
+;       Define the nameservers and the mail servers
+
+               IN      NS      ns1.linuxrevolution.com.
+	IN	A	174.53.251.89
+*	IN	A	174.53.251.89
+ns1	IN	A	172.30.0.202
+zion	IN	A	174.53.251.89
+www	IN	CNAME	zion	
+EOF
+
+cat << EOF > /var/named/masters/cloudapps.linuxrevolution.com.zone
+\$TTL 86400
+@       IN      SOA     cloudapps.linuxrevolution.com. hostmaster.linuxrevolution.com. (
+                               2014101901      ; Serial
+                               43200      ; Refresh
+                               3600       ; Retry
+                               3600000    ; Expire
+                               2592000 )  ; Minimum
+
+;       Define the nameservers and the mail servers
+
+               IN      NS      ns1.cloudapps.linuxrevolution.com.
+	IN	A	174.53.251.89
+*	IN	A	174.53.251.89
+ns1     IN      A       172.30.0.202
+EOF
+
+chown named:named /var/named/chroot/var/named/masters/*
+restorecon -Fvv /var/named/chroot/var/named/*
 
