@@ -1,8 +1,8 @@
-
+#!/bin/bash
 
 # Install/configure CertBOT (for Let's Encrypt)
 
-subscription-manager repos --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-optional-rpms
+subscription-manager repos --disable="*" --enable rhel-7-server-rpms --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-optional-rpms --enable webtatic --enable epel
 yum -y install certbot python2-certbot-apache
 
 cd /opt
