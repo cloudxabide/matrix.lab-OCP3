@@ -32,7 +32,7 @@ case $SATVERSION in
       --enable=rhel-7-server-ansible-2.6-rpms
   ;;
   6.2)
-    echo ""
+    echo "Seriously?  LIke.. Seriously?  Upgrade"
   ;;
 esac
 subscription-manager release --unset
@@ -103,6 +103,10 @@ other_options() {
 # Save the manifest file in ~ - then upload it
 hammer subscription upload --file $(find ~ -name "*$MATRIXLABS*.zip") --organization="${ORGANIZATION}" 
 
+# If you run yum update, you may also need to 
+# https://access.redhat.com/solutions/4796841
+# satellite-installer --scenario satellite --upgrade
+
 ###################
 # --source-id=1 (should be INTERNAL)
 hammer user create --login satadmin --mail="satadmin@${SATELLITE}.${DOMAIN}" --firstname="Satellite" --lastname="Adminstrator" --password="Passw0rd" --auth-source-id=1
@@ -133,8 +137,8 @@ REPOS="7416 7441"
 for REPO in $REPOS
 do
   echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
-  echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever='8Server' --product=\"${PRODUCT}\" --id=\"${REPO}\" "
-  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever='8Server' --product="${PRODUCT}" --id="${REPO}"
+  echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever='8' --product=\"${PRODUCT}\" --id=\"${REPO}\" "
+  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever='8' --product="${PRODUCT}" --id="${REPO}"
   echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever='8.1' --product=\"${PRODUCT}\" --id=\"${REPO}\" "
   hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever='8.1' --product="${PRODUCT}" --id="${REPO}"
 done
@@ -214,7 +218,7 @@ hammer gpg create --key /root/RPM-GPG-KEY-EPEL-8 --name 'GPG-EPEL-8' --organizat
 GPGKEYID=`hammer gpg list --name="GPG-EPEL-8" --organization="${ORGANIZATION}" | grep ^[0-9] | awk '{ print $1 }'`
 PRODUCT='Extra Packages for Enterprise Linux 8'
 hammer product create --name="${PRODUCT}" --organization="${ORGANIZATION}"
-hammer repository create --name='EPEL 8 - x86_64' --organization="${ORGANIZATION}" --product="${PRODUCT}" --content-type='yum' --publish-via-http=true --url=http://dl.fedoraproject.org/pub/epel/8/x86_64/ --gpg-key-id="${GPGKEYID}" --gpg-key="${GPG-EPEL-8}"
+hammer repository create --name='EPEL 8 - x86_64' --organization="${ORGANIZATION}" --product="${PRODUCT}" --content-type='yum' --publish-via-http=true --url=https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/ --gpg-key-id="${GPGKEYID}" --gpg-key="${GPG-EPEL-8}"
 
 #################
 ## SYNC EVERYTHING (Manually)
@@ -238,3 +242,19 @@ hammer product set-sync-plan --sync-plan='Daily sync - EPEL' --organization="${O
 hammer lifecycle-environment create --name='DEV' --prior='Library' --organization="${ORGANIZATION}"
 hammer lifecycle-environment create --name='TEST' --prior='DEV' --organization="${ORGANIZATION}"
 hammer lifecycle-environment create --name='PROD' --prior='TEST' --organization="${ORGANIZATION}"
+
+#################
+## Create Activation Keys
+hammer activation-key create --name "ak-ocp3" --unlimited-hosts --description "AK for OCP3" \
+  --lifecycle-environment "Library"  --organization="${ORGANIZATION}"
+SUBID=$(hammer subscription list --organization="${ORGANIZATION}" --search "OpenShift Employee Subscription" | egrep -v '^ID|^-' | awk -F\| '{ print $2 }' | sed 's/ //g')
+hammer activation-key add-subscription --name "ak-ocp3" --subscription-id "${SUBID}" --organization "MATRIXLABS"
+hammer activation-key content-override --name "ak-ocp3" --content-label rhel-7-server-satellite-tools-6.6-rpms  --value 1 --organization "${ORGANIZATION}"
+
+mmer activation-key create --name "ak-rhel7-library-infra" --unlimited-hosts --description "RHEL 7 (Library) for Infra" \
+  --lifecycle-environment "Library"  --organization="${ORGANIZATION}"
+SUBID=$(hammer subscription list --organization="${ORGANIZATION}" --search "Employee SKU" | egrep -v '^ID|^-' | awk -F\| '{ print $2 }' | sed 's/ //g')
+hammer activation-key add-subscription --name "ak-rhel7-library-infra" --subscription-id "${SUBID}" --organization "MATRIXLABS"
+hammer activation-key content-override --name "ak-rhel7-library-infra" --content-label rhel-7-server-satellite-tools-6.6-rpms  --value 1 --organization "${ORGANIZATION}"
+
+My_Organization"
