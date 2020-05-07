@@ -34,7 +34,7 @@ part pv.03 --fstype="lvmpv" --ondisk=vda --size=10240 --grow
 #
 volgroup vg_rhel pv.03
 #
-logvol /    --fstype=xfs --vgname=vg_rhel --name=lv_root --label="root" --size=8192
+logvol /    --fstype=xfs --vgname=vg_rhel --name=lv_root --label="root" --size=10240
 logvol swap --fstype=swap --vgname=vg_rhel --name=lv_swap --label="swap" --size=2048
 logvol /home --fstype=xfs --vgname=vg_rhel --name=lv_home --label="home" --size=1024
 logvol /tmp --fstype=xfs --vgname=vg_rhel --name=lv_tmp --label="temp" --size=2048
