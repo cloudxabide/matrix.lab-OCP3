@@ -55,7 +55,8 @@ case $USE_SATELLITE in
   *)
     # THIS ABSOLUTELY NEEDS CLEANUP (I'll deal with this later)
     yum clean all; subscription-manager clean
-    yum -y localinstall http://${SATELLITE}.${DOMAIN}/pub/katello-ca-consumer-latest.noarch.rpm
+    curl --insecure --output katello-ca-consumer-latest.noarch.rpm https://${SATELLITE}.${DOMAIN}/pub/katello-ca-consumer-latest.noarch.rpm
+    yum -y localinstall katello-ca-consumer-latest.noarch.rpm
     # I temp created this registration method (2019-12)
     #subscription-manager register --org="${ORGANIZATION}"  --username='admin' --password='Passw0rd' --auto-attach --force
     subscription-manager register --org="${ORGANIZATION}" --activationkey="ak-ocp3" --force

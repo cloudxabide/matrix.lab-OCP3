@@ -52,7 +52,7 @@ chmod 0644 /var/www/html/*
 
 
 # Install/configure/manage Public Cert infrastructure (Let's Encrypt)
-mkdir -p /var/www/vhosts/plex.linuxrevolution.com/ /var/www/html/vhosts/ocp3-mwn.linuxrevolution.com
+mkdir -p /var/www/vhosts/plex.matrix.lab/ /var/www/html/vhosts/ocp3-mwn.matrix.lab
 yum -y install certbot 
 wget https://dl.eff.org/certbot-auto
 sudo mv certbot-auto /usr/local/bin/certbot-auto
@@ -61,32 +61,32 @@ sudo chmod 0755 /usr/local/bin/certbot-auto
 
 
 # REDIRECT ALL HTTP TRAFFIC TO HTTPS
-cat << EOF > /etc/httpd/conf.d/ocp3-mwn.linuxrevolution.com.conf
+cat << EOF > /etc/httpd/conf.d/ocp3-mwn.matrix.lab.conf
 <VirtualHost *:80>
-  ServerName ocp3-mwn.linuxrevolution.com
-  ServerAlias *.ocp3-mwn.linuxrevolution.com
+  ServerName ocp3-mwn.matrix.lab
+  ServerAlias *.ocp3-mwn.matrix.lab
 
   RewriteEngine On
   RewriteCond %{HTTP_HOST} ^(.+)\.ocp3-mwn\.linuxrevolution\.com$
-  RewriteRule ^(.*)$ https://%1.ocp3-mwn.linuxrevolution.com$1 [R=302,L]
+  RewriteRule ^(.*)$ https://%1.ocp3-mwn.matrix.lab$1 [R=302,L]
 </VirtualHost>
 EOF
-cat << EOF > /etc/httpd/conf.d/linuxrevolution.com.conf
+cat << EOF > /etc/httpd/conf.d/matrix.lab.conf
 <VirtualHost *:80>
-  ServerName linuxrevolution.com
-  ServerAlias *.linuxrevolution.com
+  ServerName matrix.lab
+  ServerAlias *.matrix.lab
 
   RewriteEngine On
   RewriteCond %{HTTP_HOST} ^(.+)\.linuxrevolution\.com$
-  RewriteRule ^(.*)$ https://%1.linuxrevolution.com$1 [R=302,L]
+  RewriteRule ^(.*)$ https://%1.matrix.lab$1 [R=302,L]
 </VirtualHost>
 EOF
 systemctl restart httpd
 
-certbot-auto certonly --server https://acme-v02.api.letsencrypt.org/directory --manual --preferred-challenges dns -d 'linuxrevolution.com,*.linuxrevolution.com,*.ocp3-mwn.linuxrevolution.com'
+certbot-auto certonly --server https://acme-v02.api.letsencrypt.org/directory --manual --preferred-challenges dns -d 'matrix.lab,*.matrix.lab,*.ocp3-mwn.matrix.lab'
 
 
-VHOST="plex.linuxrevolution.com"
+VHOST="plex.matrix.lab"
 # Non-SSL vhost files
 cat << EOF > /etc/httpd/conf.d/${VHOST}.conf
 <VirtualHost *:80>
@@ -100,9 +100,9 @@ CustomLog /var/log/httpd/${VHOST}_access.log combined
 EOF
 mkdir -p /var/www/html/${VHOST}
 
-cat << EOF > /var/www/html/plex.linuxrevolution.com/index.html
+cat << EOF > /var/www/html/plex.matrix.lab/index.html
 <HTML><HEAD><TITLE> LinuxRevolution | Plex y'all | &#169 2019</TITLE>
-<META http-equiv="refresh" content="1;URL='http://plex.linuxrevolution.com:32400/'">
+<META http-equiv="refresh" content="1;URL='http://plex.matrix.lab:32400/'">
 </HEAD>
 <BODY>
 Gettin after some Plex Yo...
@@ -111,7 +111,7 @@ Gettin after some Plex Yo...
 EOF
 
 # This needs an update to either use html or just a single host entry
-certbot-auto certonly --server https://acme-v02.api.letsencrypt.org/directory --manual --preferred-challenges dns -d 'plex.linuxrevolution.com'
+certbot-auto certonly --server https://acme-v02.api.letsencrypt.org/directory --manual --preferred-challenges dns -d 'plex.matrix.lab'
 
 ## Make this system a BIND host (chicken-egg scenario and I'd like to have 
 ## DNS available when I am rebuilding the IdM hosts)
@@ -139,23 +139,20 @@ cp /var/named/chroot/etc/named.conf /var/named/chroot/etc/named.conf.orig
 sed -i -e 's/127.0.0.1/any/'g /etc/named.conf
 sed -i -e 's/localhost/any/g' /etc/named.conf
 
-
 cat << EOF >> /var/named/chroot/etc/named.conf
 
-#  ZONES FOR LinuxRevolution.com
-zone "linuxrevolution.com" {
+#  ZONES FOR matrix.lab
+zone "matrix.lab" {
     type master;
-    file "masters/linuxrevolution.com.zone";
-};
-zone "cloudapps.linuxrevolution.com" {
-    type master;
-    file "masters/cloudapps.linuxrevolution.com.zone";
+    file "masters/matrix.lab.zone";
+    allow-transfer { 10.10.10.0/24; };
 };
 EOF
 
-cat << EOF > /var/named/masters/linuxrevolution.com.zone
+cat << EOF > /var/named/masters/matrix.lab.zone
+\$ORIGIN matrix.lab.
 \$TTL 86400
-@       IN      SOA     linuxrevolution.com. hostmaster.linuxrevolution.com. (
+@       IN      SOA     matrix.lab. hostmaster.matrix.lab. (
                                2014101901      ; Serial
                                43200      ; Refresh
                                3600       ; Retry
@@ -163,30 +160,12 @@ cat << EOF > /var/named/masters/linuxrevolution.com.zone
                                2592000 )  ; Minimum
 
 ;       Define the nameservers and the mail servers
+               		IN      NS      rh8-util-srv01.matrix.lab.
 
-               IN      NS      ns1.linuxrevolution.com.
-	IN	A	174.53.251.89
-*	IN	A	174.53.251.89
-ns1	IN	A	172.30.0.202
-zion	IN	A	174.53.251.89
-www	IN	CNAME	zion	
-EOF
-
-cat << EOF > /var/named/masters/cloudapps.linuxrevolution.com.zone
-\$TTL 86400
-@       IN      SOA     cloudapps.linuxrevolution.com. hostmaster.linuxrevolution.com. (
-                               2014101901      ; Serial
-                               43200      ; Refresh
-                               3600       ; Retry
-                               3600000    ; Expire
-                               2592000 )  ; Minimum
-
-;       Define the nameservers and the mail servers
-
-               IN      NS      ns1.cloudapps.linuxrevolution.com.
-	IN	A	174.53.251.89
-*	IN	A	174.53.251.89
-ns1     IN      A       172.30.0.202
+; The host entries (A records)
+			IN	A	10.10.10.10
+*			IN	A	10.10.10.10
+rh8-util-srv01  	IN	A	10.10.10.100
 EOF
 
 chown named:named /var/named/chroot/var/named/masters/*
