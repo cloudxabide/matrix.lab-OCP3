@@ -58,7 +58,7 @@ logvol swap           --fstype="swap" --size=4096  --name=swap     --vgname=vg_r
 part raid.0011 --size 200 --asprimary --grow --ondrive=sdb
 part raid.0021 --size 200 --asprimary --grow --ondrive=sdc
 raid pv.0001 --fstype xfs --device md0 --level=RAID0 raid.0011 raid.0021
-volgroup vg_data --pe_size=4096 pv.0001
+volgroup vg_data --pesize=4096 pv.0001
 logvol /data --vgname=vg_data --size=3000 --name=data --grow
 
 reboot
