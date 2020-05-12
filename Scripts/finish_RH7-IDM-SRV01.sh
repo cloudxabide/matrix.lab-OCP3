@@ -229,12 +229,22 @@ ipa dnsrecord-add 10.10.10.in-addr.arpa 197  --ptr-rec rh7-ocp3-ocs12.matrix.lab
 ipa dnsrecord-add 10.10.10.in-addr.arpa 198  --ptr-rec rh7-ocp3-ocs13.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 199  --ptr-rec rh7-ocp3-ocs14.matrix.lab.
 
+# Add an internal reference that refers to the external zone
+### LINUXREVOLUTION.com
+ipa dnszone-add linuxrevolution.com --admin-email=root@matrix.lab --minimum=3000 --dynamic-update=true --skip-overlap-check
+
+# OCP Console (internal/external)
+ipa dnsrecord-add matrix.lab ocp3-console --a-rec 10.10.10.170 
+ipa dnsrecord-add linuxrevolution.com 'ocp3-console' --a-rec 10.10.10.170
+
 #### IF I am running Masters and Infra on the same proxy
 haproxy-master_and_infra() {
 ipa dnszone-add cloudapps.matrix.lab --admin-email=root@matrix.lab --minimum=3000 --dynamic-update=true
 ipa dnsrecord-add cloudapps.matrix.lab '*' --a-rec 10.10.10.170
 ipa dnszone-add ocp3-mwn.matrix.lab --admin-email=root@matrix.lab --minimum=3000 --dynamic-update=true
 ipa dnsrecord-add ocp3-mwn.matrix.lab '*' --a-rec 10.10.10.170 
+ipa dnszone-add cloudapps.linuxrevolution.com --admin-email=root@matrix.lab --minimum=3000 --dynamic-update=true
+ipa dnsrecord-add cloudapps.linuxrevolution.com '*' --a-rec 10.10.10.170
 ipa dnszone-add ocp3-mwn.linuxrevolution.com --admin-email=root@matrix.lab --minimum=3000 --dynamic-update=true
 ipa dnsrecord-add ocp3-mwn.linuxrevolution.com '*' --a-rec 10.10.10.170
 ####
@@ -257,16 +267,6 @@ ipa dnsrecord-add ocp3-mwn.linuxrevolution.com '*' --a-rec 10.10.10.176
 ipa dnsrecord-add ocp3-mwn.linuxrevolution.com '*' --a-rec 10.10.10.177
 }
 
-# OCP Console (internal/external)
-ipa dnsrecord-add matrix.lab ocp3-console --a-rec 10.10.10.170 
-ipa dnsrecord-add linuxrevolution.com 'ocp3-console' --a-rec 10.10.10.170
-
-# Add an internal reference that refers to the external zone
-### LINUXREVOLUTION.com
-ipa dnszone-add linuxrevolution.com --admin-email=root@matrix.lab --minimum=3000 --dynamic-update=true --skip-overlap-check
-
-### OCP3-MWN.LINUXREVOLUTION.com
-ipa dnszone-add ocp3-mwn.linuxrevolution.com --admin-email=root@matrix.lab --minimum=3000 --dynamic-update=true
 
 # THIS IS SPECIFIC TO MY HOME - it allows zone-transfer and "host -l matrix.lab" to run
 ipa dnszone-mod --allow-transfer='192.168.0.0/24;10.10.10.0/24;127.0.0.1' matrix.lab
