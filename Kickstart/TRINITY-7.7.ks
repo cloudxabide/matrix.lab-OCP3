@@ -55,10 +55,10 @@ logvol /var/log/audit --fstype="xfs"  --size=2048  --name=varaudit --vgname=vg_r
 logvol swap           --fstype="swap" --size=4096  --name=swap     --vgname=vg_rhel7
 
 # RAID-0 the 2 "extra" disks (sdb, sdc)
-part raid.0011 --size 200 --asprimary --grow --ondrive=sda
-part raid.0021 --size 200 --asprimary --grow --ondrive=sdb
+part raid.0011 --size 200 --asprimary --grow --ondrive=sdb
+part raid.0021 --size 200 --asprimary --grow --ondrive=sdc
 raid pv.0001 --fstype xfs --device md0 --level=RAID0 raid.0011 raid.0021
-volgroup vg_data pv.0001
+volgroup vg_data --pe_size=4096 pv.0001
 logvol /data --vgname=vg_data --size=3000 --name=data --grow
 
 reboot
