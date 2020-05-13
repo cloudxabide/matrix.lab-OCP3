@@ -93,6 +93,7 @@ sed -i -e '27iallow 10.10.10.0\/24' /etc/chrony.conf
 mkdir /data/images # do not use -p, I WANT this to fail if /data is not there
 mkdir -p /var/lib/libvirt/images/
 echo "/data/images /var/lib/libvirt/images/ none bind,defaults 0 0" >> /etc/fstab
+mount -a
 
 %end
 
