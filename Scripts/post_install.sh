@@ -1,6 +1,5 @@
 #!/bin/bash
 
-WEBSERVER="10.10.10.10"
 
 #set -o errexit
 readonly LOG_FILE="/root/post_install.sh.log"
@@ -15,6 +14,7 @@ touch $LOG_FILE
 exec 1>$LOG_FILE 
 exec 2>&1 
 
+WEBSERVER="10.10.10.10"
 PWD=`pwd`
 DATE=`date +%Y%m%d`
 ARCH=`uname -p`
@@ -29,7 +29,11 @@ then
 fi
 
 # Grab the finish_script (if available)
-wget http://${WEBSERVER}/Scripts/finish_$(hostname -s | tr [a-z] [A-Z]).sh 
+case `hostname -s` in 
+  rh7*|rh8*) FINHOSTNAME=$(hostname -s | tr [a-z] [A-Z]);;
+  *) FINHOSTNAME=$(hostname -s);;
+esac
+wget http://${WEBSERVER}/Scripts/finish_${FINHOSTNAME}.sh
 
 # Display warning (in case this script was run interactively)
 SLEEPYTIME=5
@@ -46,6 +50,8 @@ USE_SATELLITE=`curl -s ${WEBSERVER}/Scripts/.myconfig | grep -w $CAPSHOSTNAME | 
 ENVIRONMENTALS="${HOME}/environmentals.txt"
 curl -s ${WEBSERVER}/Scripts/environmentals.txt > $ENVIRONMENTALS && . ${ENVIRONMENTALS}
 
+ACTIVATIONKEY="ak-rhel7-library-infra"
+
 case $USE_SATELLITE in
   0)
     export rhnuser=$(curl -s ${WEBSERVER}/OS/.rhninfo | grep rhnuser | cut -f2 -d\=)
@@ -59,7 +65,7 @@ case $USE_SATELLITE in
     yum -y localinstall katello-ca-consumer-latest.noarch.rpm
     # I temp created this registration method (2019-12)
     #subscription-manager register --org="${ORGANIZATION}"  --username='admin' --password='Passw0rd' --auto-attach --force
-    subscription-manager register --org="${ORGANIZATION}" --activationkey="ak-ocp3" --force
+    subscription-manager register --org="${ORGANIZATION}" --activationkey="$ACTIVATIONKEY" --force
   ;;
 esac
 
@@ -68,7 +74,7 @@ esac
 case `cut -f5 -d\: /etc/system-release-cpe` in
   7.*)
     echo "NOTE:  detected EL7"
-    [ $USE_SATELLITE == 1 ] && EXTRAS="--enable rhel-7-server-satellite-tools-6.5-rpms "
+    [ $USE_SATELLITE == 1 ] && EXTRAS="--enable rhel-7-server-satellite-tools-6.6-rpms "
     subscription-manager repos --disable="*" --enable rhel-7-server-rpms $EXTRAS
     #subscription-manager release --set=7.6
   ;;
