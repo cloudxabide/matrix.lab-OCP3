@@ -274,9 +274,14 @@ SUBID=$(hammer subscription list --organization="${ORGANIZATION}" --search "Open
 hammer activation-key add-subscription --name "ak-ocp3" --subscription-id "${SUBID}" --organization "MATRIXLABS"
 hammer activation-key content-override --name "ak-ocp3" --content-label rhel-7-server-satellite-tools-6.6-rpms  --value 1 --organization "${ORGANIZATION}"
 
-mmer activation-key create --name "ak-rhel7-library-infra" --unlimited-hosts --description "RHEL 7 (Library) for Infra" \
+hammer activation-key create --name "ak-rhel7-library-infra" --unlimited-hosts --description "RHEL 7 (Library) for Infra" \
   --lifecycle-environment "Library"  --organization="${ORGANIZATION}"
 SUBID=$(hammer subscription list --organization="${ORGANIZATION}" --search "Employee SKU" | egrep -v '^ID|^-' | awk -F\| '{ print $2 }' | sed 's/ //g')
 hammer activation-key add-subscription --name "ak-rhel7-library-infra" --subscription-id "${SUBID}" --organization "MATRIXLABS"
 hammer activation-key content-override --name "ak-rhel7-library-infra" --content-label rhel-7-server-satellite-tools-6.6-rpms  --value 1 --organization "${ORGANIZATION}"
 
+hammer activation-key create --name "ak-rhel8-library-infra" --unlimited-hosts --description "RHEL 8 (Library) for Infra" \
+  --lifecycle-environment "Library"  --organization="${ORGANIZATION}"
+SUBID=$(hammer subscription list --organization="${ORGANIZATION}" --search "Employee SKU" | egrep -v '^ID|^-' | awk -F\| '{ print $2 }' | sed 's/ //g')
+hammer activation-key add-subscription --name "ak-rhel8-library-infra" --subscription-id "${SUBID}" --organization "MATRIXLABS"
+hammer activation-key content-override --name "ak-rhel8-library-infra" --content-label rhel-8-server-satellite-tools-6.6-rpms  --value 1 --organization "${ORGANIZATION}"
