@@ -9,11 +9,11 @@
 # INSTALL:   RHEL|RHVH|RHELH (unused)
 # 
 # ==  HYPERVISORS (for reference) ============================================================
-APOC:x:EL7:x:x:x:x:0:server:7.8:UEFI:0:x:x:x:1
-NEO:x:EL7:x:x:x:x:0:server:7.8:UEFI:0:x:x:x:1
-TRINITY:x:EL7:x:x:x:x:0:server:7.8:UEFI:0:x:x:x:1
-MORPHEUS:x:EL7:x:x:x:x:0:server:7.8:UEFI:0:x:x:x:1
-ZION:x:EL7:x:x:x:x:0:server:7.8:UEFI:1:x:x:x:1
+APOC:x:EL7:x:x:x:x:0:server:7.8:UEFI:1:x:x:x:1
+NEO:x:EL7:x:x:x:x:0:server:7.8:UEFI:1:x:x:x:1
+TRINITY:x:EL7:x:x:x:x:0:server:7.8:UEFI:1:x:x:x:1
+MORPHEUS:x:EL7:x:x:x:x:0:server:7.8:UEFI:1:x:x:x:1
+ZION:x:EL7:x:x:x:x:0:server:7.8:UEFI:0:x:x:x:1
 SATI:x:EL7:x:x:x:x:0:server:7.8:UEFI:1:x:x:x:1
 # ===========================================================================================
 RH7-SAT6-SRV01:apoc:EL7:4:10240:50:200:0:server:7.7:BIOS:0:0:x:x:1
