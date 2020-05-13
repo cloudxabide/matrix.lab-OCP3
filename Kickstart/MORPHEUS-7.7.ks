@@ -86,8 +86,12 @@ net-tools
 %post --log=/root/ks-post.log
 echo "NOTE:  Retrieving Finish Script"
 wget http://10.10.10.10/post_install.sh -O /root/post_install.sh
-echo "NOTE:  Updating chrony to allow inbound connections"
-sed -i -e '27iallow 10.10.10.0\/24' /etc/chrony.conf
+
+# Create mount for Guest VMs
+mkdir /data/images # do not use -p, I WANT this to fail if /data is not there
+mkdir -p /var/lib/libvirt/images/
+echo "# BIND mount for Guest VMs" >> /etc/fstab
+echo "/data/images /var/lib/libvirt/images/ none bind,defaults 0 0" >> /etc/fstab
 
 %end
 
