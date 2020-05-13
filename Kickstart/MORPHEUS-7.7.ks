@@ -67,6 +67,10 @@ eula --agreed
 %packages
 @^minimal
 @core
+@virtualization-hypervisor
+@virtualization-client
+@virtualization-platform
+@virtualization-tools
 cockpit
 chrony
 kexec-tools
