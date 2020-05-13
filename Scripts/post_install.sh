@@ -50,7 +50,11 @@ USE_SATELLITE=`curl -s ${WEBSERVER}/Scripts/.myconfig | grep -w $CAPSHOSTNAME | 
 ENVIRONMENTALS="${HOME}/environmentals.txt"
 curl -s ${WEBSERVER}/Scripts/environmentals.txt > $ENVIRONMENTALS && . ${ENVIRONMENTALS}
 
-ACTIVATIONKEY="ak-rhel7-library-infra"
+case `hostname -s` in
+  neo|trinity|morpheus) ACTIVATIONKEY="ak-rhel7-library-infra";;
+  apoc|zion) ACTIVATIONKEY="ak-rhel8-library-infra";;
+  *ocp3*) ACTIVATIONKEY="ak-ocp3";;
+esac
 
 case $USE_SATELLITE in
   0)
@@ -119,7 +123,7 @@ yum -y install deltarpm
 # Enable Cockpit (AFAIK this will be universally applied)
 # Manage Cockpit
 yum -y install cockpit
-systemctl enable cockpit.socket
+systemctl enable cockpit.socket --now
 firewall-cmd --permanent --zone=$(firewall-cmd --get-default-zone) --add-service=cockpit 
 firewall-cmd --complete-reload
 
