@@ -24,5 +24,5 @@ the command will generate a random string for you to enter as a TXT value with t
 You will need to retrieve the 3 files listed below and put them in /root/TLS
 ```
 # Certificate Foo (testing)
-openshift_hosted_router_certificate={"certfile": "/root/TLS/router.pem", "keyfile": "/root/TSL/privkey2.pem", "cafile": "/root/TLS/chain2.pem"}
+openshift_hosted_router_certificate={"certfile": "/root/TLS/cert2.pem", "keyfile": "/root/TLS/privkey2.pem", "cafile": "/root/TLS/chain2.pem"}
 ```
