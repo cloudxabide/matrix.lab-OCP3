@@ -93,12 +93,13 @@ PLAYBOOKS="/usr/share/ansible/openshift-ansible/playbooks/"
 ansible all --list-hosts -i ${INVENTORY}
 ansible all -i ${INVENTORY} -a "uptime"
 
+ANSIBLE_OPTIONS=" "
 # Run preReqs with full inventory 
-ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}prerequisites.yml -vvv | tee ${LOGDIR}/01-prerequistes-`date +%F`.logs &
+ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}prerequisites.yml $ANSIBLE_OPTIONS | tee ${LOGDIR}/01-prerequistes-`date +%F`.logs &
 
 #####################
 # this part is tricky - since I am using the proxy node for both Master/API and app/wildcard traffic, I believe I need to udpate it as soon as the playbook does its thing.
-ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}deploy_cluster.yml -vvv | tee ${LOGDIR}/02-pbs-deploy_cluster-`date +%F`.logs &
+ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}deploy_cluster.yml $ANSIBLE_OPTIONS | tee ${LOGDIR}/02-pbs-deploy_cluster-`date +%F`.logs &
 
 # on host:  rh7-ocp3-proxy
 watch "ls -l /etc/haproxy/haproxy.cfg"
