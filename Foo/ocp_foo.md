@@ -18,9 +18,8 @@ ansible-playbook -i ~/ocp-${OCP_VERSION}*.yml playbooks/deploy_cluster.yml
 for HOSTNAME in `egrep 'openshift_m.*hostname' ~/matrix.lab/Files/ocp-3.11-multiple_master_native_ha-ocs-converged.yml | awk -F\= '{ print $2 }'`; do nslookup $HOSTNAME | grep ^Name ; done
 
 for HOST in mst mst01 mst02 mst03; do echo "$HOST.matrix.lab"; dig +short rh7-ocp3-${HOST}.matrix.lab; echo; done
-for HOSTNAME in `egrep 'openshift_m.*hostname' ~/matrix.lab/Files/ocp-3.11-multiple_master_native_ha-ocs-converged.yml | awk -F\= '{ print $2 }'`; do echo "$HOSTNAME"; dig +short $HOSTNAME; echo; done
-dig +short test.$(egrep ^openshift_master_default_subdomain ~/matrix.lab/Files/ocp-3.11-multiple_master_native_ha-ocs-converged.yml | awk -F\= '{ print $2 }') 
-
+for HOSTNAME in `egrep 'openshift_m.*hostname' ~/ocp-3.11-1112.yml | awk -F\= '{ print $2 }'`; do echo "$HOSTNAME"; dig +short $HOSTNAME; echo; done
+dig +short test.$(egrep ^openshift_master_default_subdomain  ~/ocp-3.11-1112.yml | awk -F\= '{ print $2 }') 
 
 ```
 
