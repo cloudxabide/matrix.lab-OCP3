@@ -26,3 +26,17 @@ You will need to retrieve the 3 files listed below and put them in /root/TLS
 # Certificate Foo (testing)
 openshift_hosted_router_certificate={"certfile": "/root/TLS/cert2.pem", "keyfile": "/root/TLS/privkey2.pem", "cafile": "/root/TLS/chain2.pem"}
 ```
+
+## Speculation
+I *think* this is how I got this working.  (Ugh, did not doc well enough)  
+NOTE:  the numeric value will likely be "1" and not "2" like in my example  
+You will get 4 files from LetsEncrypt in /etc/letsencrypt/archive 
+cert1.pem <- certfile  
+chain1.pem <- cafile  
+fullchain1.pem <- I suspect not used, but.. it might be the cafile?
+privkey1.pem <- keyfile  
+```
+cd /root/TLS
+for FILE in `ls *2.pem`; do echo "## $FILE"; openssl x509 -in $FILE -noout -text ; done
+```
+

@@ -21,6 +21,8 @@
 #    TODO:  Need to figure out a better way for sending the password to 
 #             ssh-copy-id use getops to either get the password as an ARGV, or 
 #             set it to a default
+#           Make the script fail early (before changes, if possible) if a node is
+#             unavailable.
 #
 
 WEBSERVER=10.10.10.10

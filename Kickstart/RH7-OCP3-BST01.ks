@@ -51,6 +51,7 @@ expect
 dracut-fips
 ntp
 tuned
+tmux
 %end
 
 %post --log=/root/ks-post.log

@@ -55,6 +55,9 @@ done
 ### Prepare nodes for OCP3 Software
 Once you are certain all of the VMs have started, run the following:
 ```
+INVENTORY="$HOME/homelab.yml"
+ansible all -i ${INVENTORY} -m shell -a "sudo virsh list --all" 
+# If the previous command indicates they are all "running", then...
 ./OCP3_prep_hosts.sh
 # If you want to see it's progress, do the following: 
 # ssh rh7-ocp3-bst01.matrix.lab "tail -f /root/install_OCP3.sh.log"
@@ -90,15 +93,16 @@ PLAYBOOKS="/usr/share/ansible/openshift-ansible/playbooks/"
 ansible all --list-hosts -i ${INVENTORY}
 ansible all -i ${INVENTORY} -a "uptime"
 
-# Run preReqs with full inventory (will succeed)
+# Run preReqs with full inventory 
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}prerequisites.yml -vvv | tee ${LOGDIR}/01-prerequistes-`date +%F`.logs &
 
 #####################
-# https://docs.okd.io/3.11/install_config/persistent_storage/persistent_storage_glusterfs.html#install-example-full
-# Run deploy_cluster with resources removed (Gluster, logging, metrics) (will succeed)
+# this part is tricky - since I am using the proxy node for both Master/API and app/wildcard traffic, I believe I need to udpate it as soon as the playbook does its thing.
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}deploy_cluster.yml -vvv | tee ${LOGDIR}/02-pbs-deploy_cluster-`date +%F`.logs &
 
-# Update the HAproxy Node (if you need to)
+# on host:  rh7-ocp3-proxy
+watch "ls -l /etc/haproxy/haproxy.cfg"
+# once the file changes, update the HAproxy Node (if you need to)
 # <THISREPO>/Foo/haproxy_update.txt
 ```
 
