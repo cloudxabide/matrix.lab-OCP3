@@ -23,8 +23,9 @@ echo "`dmidecode -s system-manufacturer` `dmidecode -s baseboard-product-name`,`
 
 Host            | Hypervisor   | IP           | Hardware        | Purpose                | Services  
 :---------------|:------------:|:-------------|:----------------|:-----------------------|:---------  
-rh8-util-srv01  | zion         | 10.10.10.100 | Virtual Machine | Utility/Bastion Host   | SSH, Fail2Ban
-rh7-sat6-srv01  | apoc         | 10.10.10.102 | Virtual Machine | Utility/Bastion Host   | Red Hat Satellite 6 
+rh8-util-srv01  | zion         | 10.10.10.100 | Virtual Machine | Utility Host           | SSH, Fail2Ban, Network Ingress
+rh7-sat6-srv01  | apoc         | 10.10.10.102 | Virtual Machine | Utility Host           | Red Hat Satellite 6 
+rh7-sat6-srv01  | apoc         | 10.10.10.103 | Virtual Machine | Utility Host           | Red Hat Satellite 6 (capsule)
 rh7-nms-srv01   | zion         | 10.10.10.110 | Virtual Machine | LibreNMS Monitoring    | SNMP Monitoring  
 win2k16-ad-srv1 | -            | 10.10.10.120 | Virtual Machine | Windows server         | DNS, ADFS 
 rh7-idm-srv01   | -            | 10.10.10.121 | Virtual Machine | IdM server             | DNS, LDAPS
