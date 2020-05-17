@@ -6,11 +6,17 @@ If you opt to use the LB managed/created by the OCP install for your Infra Nodes
 
 ## Update the size of the Journal (syslog)
 Host: rh7-ocp3-bst01.matrix.lab
+## Using "shell commands and SSH"
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 $HOST "uname -n; sudo grep SystemMaxUse= /etc/systemd/journald.conf"; echo "#########################"; done
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 $HOST "uname -n; sudo sed -i -e 's/SystemMaxUse=8G/SystemMaxUse=2G/g' /etc/systemd/journald.conf"; sleep 2; echo "#########################"; done
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 -t -l root $HOST "uname -n; systemctl restart systemd-journald"; echo "#########################"; done
 for HOST in `grep ocp3 ~/matrix.lab/Files/etc_hosts | egrep -v '#|bst' | awk '{ print $2 }'`; do ssh -oConnectTimeout=3 -t -l root $HOST "uname -n; journalctl --vacuum-time=1d "; echo "#########################"; done
-
+## Using Ansible
+ansible masters -i $INVENTORY -m shell -a "sudo grep SystemMaxUse= /etc/systemd/journald.conf"
+ansible masters -i $INVENTORY -m shell -a "sed -i -e 's/SystemMaxUse=8G/SystemMaxUse=2G/g' /etc/systemd/journald.conf"
+ansible masters -i $INVENTORY -m shell -a "systemctl restart systemd-journald"
+ansible masters -i $INVENTORY -m shell -a "journalctl --vacuum-time=1d"
+ 
 ## Update Cluster Permissions and Roles
 ### Update the User(s) login credentials
 ```
@@ -33,7 +39,7 @@ oc patch storageclass glusterfs-storage-block -p '{"metadata": {"annotations": {
 
 #########################################################################################################################
 #########################################################################################################################
-## TESTING 
+## TESTING - No longer necessary hopefully
 #########################################################################################################################
 #########################################################################################################################
 ## Update Storage 
