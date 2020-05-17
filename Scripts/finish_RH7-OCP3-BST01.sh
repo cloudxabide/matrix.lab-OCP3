@@ -23,3 +23,4 @@ esac
 
 echo "sudo yum -y install $OPENSHIFT_UTILS $DOCKER_VERSION"
 sudo yum -y install $OPENSHIFT_UTILS 
+sudo yum -y install atomic-openshift-clients
