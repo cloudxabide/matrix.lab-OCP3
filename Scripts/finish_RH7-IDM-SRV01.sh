@@ -160,6 +160,7 @@ ipa dnsrecord-add matrix.lab rh7-sat6-srv01     --a-rec 10.10.10.102
 ipa dnsrecord-add matrix.lab rh7-sat6-cap01     --a-rec 10.10.10.103
 ipa dnsrecord-add matrix.lab rh7-rhv4-mgr01     --a-rec 10.10.10.104
 ipa dnsrecord-add matrix.lab rh7-cfme-srv01     --a-rec 10.10.10.105
+ipa dnsrecord-add matrix.lab rh7-sat6-srv02     --a-rec 10.10.10.106
 ipa dnsrecord-add matrix.lab rh7-ans-srv01      --a-rec 10.10.10.107
 ipa dnsrecord-add matrix.lab rh7-lms-srv01      --a-rec 10.10.10.110
 ipa dnsrecord-add matrix.lab librenms           --cname-rec='rh7-lms-srv01'
@@ -171,6 +172,7 @@ ipa dnsrecord-add 10.10.10.in-addr.arpa 102     --ptr-rec rh7-sat6-srv01.matrix.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 103     --ptr-rec rh7-sat6-cap01.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 104     --ptr-rec rh7-rhv4-mgr01.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 105     --ptr-rec rh7-cfme-srv01.matrix.lab.
+ipa dnsrecord-add 10.10.10.in-addr.arpa 106     --ptr-rec rh7-sat6-srv02.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 107     --ptr-rec rh7-ans-srv01.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 110     --ptr-rec rh7-lms-srv01.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 111     --ptr-rec rh7-jenkins-srv01.matrix.lab.
@@ -247,6 +249,8 @@ ipa dnszone-add cloudapps.linuxrevolution.com --admin-email=root@matrix.lab --mi
 ipa dnsrecord-add cloudapps.linuxrevolution.com '*' --a-rec 10.10.10.170
 ipa dnszone-add ocp3-mwn.linuxrevolution.com --admin-email=root@matrix.lab --minimum=3000 --dynamic-update=true
 ipa dnsrecord-add ocp3-mwn.linuxrevolution.com '*' --a-rec 10.10.10.170
+
+}
 ####
 
 haproxy-master_only() {
