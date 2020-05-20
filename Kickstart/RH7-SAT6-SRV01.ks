@@ -44,7 +44,7 @@ logvol swap --fstype=swap --vgname=vg_rhel7 --name=lv_swap --label="swap" --size
 logvol /home --fstype=xfs --vgname=vg_rhel7 --name=lv_home --label="home" --size=1024 --fsoptions="nodev,nosuid"
 logvol /tmp --fstype=xfs --vgname=vg_rhel7 --name=lv_tmp --label="temp" --size=1024 --fsoptions="nodev,nosuid"
 logvol /var/tmp --fstype=xfs --vgname=vg_rhel7 --name=lv_vartmp --label="vartemp" --size=1024 --fsoptions="defaults,nodev,nosuid"
-logvol /var/log --fstype=xfs --vgname=vg_rhel7 --name=lv_varlog --label="varlog" --size=3072--fsoptions="defaults,nodev,nosuid,noexec"
+logvol /var/log --fstype=xfs --vgname=vg_rhel7 --name=lv_varlog --label="varlog" --size=3072 --fsoptions="defaults,nodev,nosuid,noexec"
 
 # Satellite 6 Directories
 part pv.04 --fstype="lvmpv" --ondisk=vdb --size=10240 --grow
