@@ -50,7 +50,7 @@ logvol /var/log --fstype=xfs --vgname=vg_rhel7 --name=lv_varlog --label="varlog"
 part pv.04 --fstype="lvmpv" --ondisk=vdb --size=10240 --grow
 volgroup vg_sat6 pv.04
 logvol /var/lib/pulp --fstype=xfs --vgname=vg_sat6 --name=lv_pulp --label="pulp" --size=143360
-logvol /var/cache/pulp --fstype=xfs --vgname=vg_sat6 --name=lv_cachepulp --label="cachepulp" --size=15360
+logvol /var/cache/pulp --fstype=xfs --vgname=vg_sat6 --name=lv_cachepulp --label="cachepulp" --size=20480
 logvol /var/lib/qpidd --fstype=xfs --vgname=vg_sat6 --name=lv_qpidd --label="qpidd" --size=1024
 logvol /var/lib/mongodb --fstype=xfs --vgname=vg_sat6 --name=lv_mongodb --label="mongodb" --size=15360 
 logvol /var/lib/pgsql --fstype=xfs --vgname=vg_sat6 --name=lv_pgsql --label="pgsql" --size=2048
