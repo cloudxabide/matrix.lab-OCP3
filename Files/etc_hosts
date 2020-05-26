@@ -40,3 +40,6 @@
 10.10.10.197 rh7-ocp3-ocs12.matrix.lab rh7-ocp3-ocs12
 10.10.10.198 rh7-ocp3-ocs13.matrix.lab rh7-ocp3-ocs13
 10.10.10.199 rh7-ocp3-ocs14.matrix.lab rh7-ocp3-ocs14 #
+10.10.10.221 rhx-poc-tst01.matrix.lab rhx-poc-tst01
+10.10.10.222 rhx-poc-dev01.matrix.lab rhx-poc-dev01
+10.10.10.223 rhx-poc-prd01.matrix.lab rhx-poc-prd01
