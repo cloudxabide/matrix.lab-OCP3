@@ -133,7 +133,7 @@ hammer product list --organization="${ORGANIZATION}" > ~/hammer_product_list.out
 # RHEL 8 (Work In Progress)
 PRODUCT='Red Hat Enterprise Linux for x86_64'
 hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
-REPOS="7416 7441"
+REPOS="7416 7441 7421"
 for REPO in $REPOS
 do
   echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
@@ -155,7 +155,7 @@ done
 PRODUCT='Red Hat Enterprise Linux Server'
 hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
 #REPOS="3815 2463 2472 2456 2476"
-REPOS="2472 2456 3030"
+REPOS="2472 2456 3030 2455"
 for REPO in $REPOS
 do
   echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
@@ -222,6 +222,14 @@ do
   hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --product="${PRODUCT}" --id="${REPO}"
 done
 
+PRODUCT="Red Hat Enterprise Linux 8 for x86_64 - BaseOS (Kickstart)"
+hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
+REPOS="7421"
+for REPO in $REPOS
+do
+  echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
+  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --product="${PRODUCT}" --id="${REPO}"
+done
 
 #################
 ## EPEL Stuff - Pay attention to the output of this section.  It's not tested/validated
