@@ -191,8 +191,7 @@ ipa dnsrecord-add 10.10.10.in-addr.arpa 243     --ptr-rec vpn-guest-03.matrix.la
 ipa dnsrecord-add matrix.lab rh7-ocp3-proxy  --a-rec 10.10.10.170
 ipa dnsrecord-add matrix.lab openshift       --cname-rec='rh7-ocp3-proxy.matrix.lab.'
 ipa dnsrecord-add matrix.lab ocp3            --cname-rec='rh7-ocp3-proxy.matrix.lab.'
-ipa dnsrecord-add matrix.lab api             --cname-rec='rh7-ocp3-proxy.matrix.lab.'
-ipa dnsrecord-add matrix.lab rh7-ocp3-mst01  --a-rec 10.10.10.171
+ipa dnsrecord-add matrix.lab api             --cname-rec='rh7-ocp3-proxy.matrix.lab.' ipa dnsrecord-add matrix.lab rh7-ocp3-mst01  --a-rec 10.10.10.171
 ipa dnsrecord-add matrix.lab rh7-ocp3-mst02  --a-rec 10.10.10.172
 ipa dnsrecord-add matrix.lab rh7-ocp3-mst03  --a-rec 10.10.10.173
 ipa dnsrecord-add matrix.lab rh7-ocp3-inf01  --a-rec 10.10.10.175
@@ -230,6 +229,14 @@ ipa dnsrecord-add 10.10.10.in-addr.arpa 196  --ptr-rec rh7-ocp3-ocs11.matrix.lab
 ipa dnsrecord-add 10.10.10.in-addr.arpa 197  --ptr-rec rh7-ocp3-ocs12.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 198  --ptr-rec rh7-ocp3-ocs13.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 199  --ptr-rec rh7-ocp3-ocs14.matrix.lab.
+
+# POC "test" hosts
+ipa dnsrecord-add matrix.lab rhx-poc-tst01   --a-rec 10.10.10.221
+ipa dnsrecord-add matrix.lab rhx-poc-dev01   --a-rec 10.10.10.222
+ipa dnsrecord-add matrix.lab rhx-poc-prd01   --a-rec 10.10.10.223
+ipa dnsrecord-add 10.10.10.in-addr.arpa 221  --ptr-rec rhx-poc-tst01.matrix.lab.
+ipa dnsrecord-add 10.10.10.in-addr.arpa 222  --ptr-rec rhx-poc-dev01.matrix.lab.
+ipa dnsrecord-add 10.10.10.in-addr.arpa 223  --ptr-rec rhx-poc-prd01.matrix.lab.
 
 # Add an internal reference that refers to the external zone
 ### LINUXREVOLUTION.com
