@@ -44,3 +44,8 @@ RH7-OCP3-OCS11:neo:EL7:4:8192:30:40:110:server:7.7:BIOS:1:0:x:x:0
 RH7-OCP3-OCS12:trinity:EL7:4:8192:30:40:110:server:7.7:BIOS:1:0:x:x:0
 RH7-OCP3-OCS13:morpheus:EL7:4:8192:30:40:110:server:7.7:BIOS:1:0:x:x:0
 RH7-OCP3-OCS14::EL7:4:8192:30:40:110:server:7.7:BIOS:1:0:x:x:0
+# POC hosts
+RH7-POC-TST01:zion:EL7:2:1536:40:0:0:server:7.7:BIOS:0:0:x:x:0
+RH7-POC-DEV01:zion:EL7:2:1536:40:0:0:server:7.7:BIOS:0:0:x:x:0
+RH7-POC-PRD01:zion:EL7:2:1536:40:0:0:server:7.7:BIOS:0:0:x:x:0
+
