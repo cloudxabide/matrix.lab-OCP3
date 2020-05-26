@@ -231,12 +231,12 @@ ipa dnsrecord-add 10.10.10.in-addr.arpa 198  --ptr-rec rh7-ocp3-ocs13.matrix.lab
 ipa dnsrecord-add 10.10.10.in-addr.arpa 199  --ptr-rec rh7-ocp3-ocs14.matrix.lab.
 
 # POC "test" hosts
-ipa dnsrecord-add matrix.lab rhx-poc-tst01   --a-rec 10.10.10.221
-ipa dnsrecord-add matrix.lab rhx-poc-dev01   --a-rec 10.10.10.222
-ipa dnsrecord-add matrix.lab rhx-poc-prd01   --a-rec 10.10.10.223
-ipa dnsrecord-add 10.10.10.in-addr.arpa 221  --ptr-rec rhx-poc-tst01.matrix.lab.
-ipa dnsrecord-add 10.10.10.in-addr.arpa 222  --ptr-rec rhx-poc-dev01.matrix.lab.
-ipa dnsrecord-add 10.10.10.in-addr.arpa 223  --ptr-rec rhx-poc-prd01.matrix.lab.
+ipa dnsrecord-add matrix.lab rh7-poc-tst01   --a-rec 10.10.10.221
+ipa dnsrecord-add matrix.lab rh7-poc-dev01   --a-rec 10.10.10.222
+ipa dnsrecord-add matrix.lab rh7-poc-prd01   --a-rec 10.10.10.223
+ipa dnsrecord-add 10.10.10.in-addr.arpa 221  --ptr-rec rh7-poc-tst01.matrix.lab.
+ipa dnsrecord-add 10.10.10.in-addr.arpa 222  --ptr-rec rh7-poc-dev01.matrix.lab.
+ipa dnsrecord-add 10.10.10.in-addr.arpa 223  --ptr-rec rh7-poc-prd01.matrix.lab.
 
 # Add an internal reference that refers to the external zone
 ### LINUXREVOLUTION.com
