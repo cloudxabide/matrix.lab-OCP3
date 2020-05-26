@@ -285,3 +285,21 @@ hammer activation-key create --name "ak-rhel8-library-infra" --unlimited-hosts -
 SUBID=$(hammer subscription list --organization="${ORGANIZATION}" --search "Employee SKU" | egrep -v '^ID|^-' | awk -F\| '{ print $2 }' | sed 's/ //g')
 hammer activation-key add-subscription --name "ak-rhel8-library-infra" --subscription-id "${SUBID}" --organization "MATRIXLABS"
 hammer activation-key content-override --name "ak-rhel8-library-infra" --content-label rhel-8-server-satellite-tools-6.6-rpms  --value 1 --organization "${ORGANIZATION}"
+
+# POC Activation Keys
+# TODO: parameterize the OS version too
+OSREL="rhel-7"
+ENV="poc"
+for LCE in DEV TEST PROD
+do
+  hammer activation-key create --name "ak-${ENV}-${LCE}-${OSREL}" --unlimited-hosts \
+    --description "${OSREL} (${LCE}) for ${ENV}" \
+    --lifecycle-environment "${LCE}"  --organization="${ORGANIZATION}" \ 
+    SUBID=$(hammer subscription list --organization="${ORGANIZATION}" --search "Employee SKU" | egrep -v '^ID|^-' | awk -F\| '{ print $2 }' | sed 's/ //g')
+  hammer activation-key add-subscription --name "ak-${ENV}-${LCE}-${OSREL}" --subscription-id "${SUBID}" \
+    --organization "${ORGANIZATION}"
+  hammer activation-key content-override --name "ak-${ENV}-${LCE}-${OSREL}" \
+    --content-label ${OSREL}-server-satellite-tools-${SATVERSION}-rpms \
+    --value 1 --organization "${ORGANIZATION}"
+done
+
