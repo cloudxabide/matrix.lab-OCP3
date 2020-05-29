@@ -222,13 +222,33 @@ do
   hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --product="${PRODUCT}" --id="${REPO}"
 done
 
-PRODUCT="Red Hat Enterprise Linux 8 for x86_64 - BaseOS (Kickstart)"
+PRODUCT='Red Hat Virtualization Manager'
 hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
-REPOS="7421"
+REPOS="7683"
 for REPO in $REPOS
 do
   echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
   hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --product="${PRODUCT}" --id="${REPO}"
+done
+
+PRODUCT='Red Hat Gluster Storage Server for On-premise'
+hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
+REPOS="2981 4604 4406"
+for REPO in $REPOS
+do
+  echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
+  REPOS="4604 4406"
+  for RELEASEVER in 7Server
+  do
+    echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever=$RELEASEVER --product=\"${PRODUCT}\" --id=\"${REPO}\" "
+    hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever=$RELEASEVER --product="${PRODUCT}" --id="${REPO}"
+  done
+  REPOS="2981"
+  for RELEASEVER in 7.7 7.8
+  do
+    echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever=$RELEASEVER --product=\"${PRODUCT}\" --id=\"${REPO}\" "
+    hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever=$RELEASEVER --product="${PRODUCT}" --id="${REPO}"
+  done 
 done
 
 #################
