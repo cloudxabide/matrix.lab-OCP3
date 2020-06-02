@@ -73,7 +73,6 @@ cp /etc/foreman-installer/scenarios.d/satellite-answers.yaml /etc/foreman-instal
 # Update the install file for your custom Answers file
 sed -i -e "s/satellite-answers/${ORGANIZATION}-satellite-answers/g" /etc/foreman-installer/scenarios.d/satellite.yaml
 
-
 satellite-installer --scenario satellite \
 --foreman-initial-organization "$ORGANIZATION" \
 --foreman-initial-location "$LOCATION" \
@@ -114,14 +113,19 @@ hammer user add-role --login=satadmin --role-id=9
 hammer user create --login reguser --mail="reguser@${SATELLITE}.${DOMAIN}" --firstname="Registration" --lastname="User" --password="Passw0rd" --auth-source-id=1
 hammer user-group create --name="regusers" --role-ids=12 --users=satadmin,reguser
 
-#hammer organization create --name="${ORGANIZATION}" --label="${ORGANIZATION}"
+hammer organization create --name="${ORGANIZATION}" --label="${ORGANIZATION}"
 hammer organization add-user --user=satadmin --name="${ORGANIZATION}"
 hammer organization add-user --user=reguser --name="${ORGANIZATION}"
 
 hammer location create --name="${LOCATION}"
 hammer location add-organization --name="${LOCATION}" --organization="${ORGANIZATION}"
 hammer domain create --name="${DOMAIN}"
-hammer subnet create --domain-ids=1 --gateway='10.10.10.1' --mask='255.255.255.0' --name='10.10.10.0/24' --network='10.10.10.0' --dns-primary='10.10.10.121' --dns-secondary='10.10.10.122'
+hammer subnet create --name='10.10.10.0/24' 
+  --description "Default Subnet for $ORGANIZATION" --organization "$ORGANIZATION" \
+  --network='10.10.10.0' --protocol "ipv4" \
+  --domains "$DOMAIN"  --gateway='10.10.10.1' --mask='255.255.255.0' \
+  --dns-primary='10.10.10.121' --dns-secondary='10.10.10.122' \
+  --boot-mode "dhcp" 
 hammer organization add-subnet --subnet-id=1 --name="${ORGANIZATION}"
 hammer organization add-domain --domain="${DOMAIN}" --name="${ORGANIZATION}"
 
@@ -154,18 +158,30 @@ done
 # RHEL 6/7
 PRODUCT='Red Hat Enterprise Linux Server'
 hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
-#REPOS="3815 2463 2472 2456 2476"
-REPOS="2472 2456 3030 2455"
+REPOS="3030"
 for REPO in $REPOS
 do
-  echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
-  echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever='7Server' --product=\"${PRODUCT}\" --id=\"${REPO}\" "
-  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever='7Server' --product="${PRODUCT}" --id="${REPO}"
-  echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever='7.7' --product=\"${PRODUCT}\" --id=\"${REPO}\" "
-  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever='7.7' --product="${PRODUCT}" --id="${REPO}"
+  for RELEASEVER in 7Server
+  do
+    echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
+    echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever=$RELEASEVER --product=\"${PRODUCT}\" --id=\"${REPO}\" "
+    hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever=$RELEASEVER --product="${PRODUCT}" --id="${REPO}"
+  done
 done
+
+REPOS="2456 2472 2455"
+for REPO in $REPOS
+do
+  for RELEASEVER in 7.7 7.8
+  do
+    echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
+    echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever=$RELEASEVER --product=\"${PRODUCT}\" --id=\"${REPO}\" "
+    hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever=$RELEASEVER --product="${PRODUCT}" --id="${REPO}"
+  done
+done
+
 ## THERE ARE REPOS WHICH DO *NOT* ACCEPT A "releasever" VALUE
-REPOS="8503 8935" # Satellite Tools 6.5
+REPOS="8503 8935" # Satellite Tools 6.5/6.6
 for REPO in $REPOS
 do
   echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
@@ -233,23 +249,20 @@ done
 
 PRODUCT='Red Hat Gluster Storage Server for On-premise'
 hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
-REPOS="2981 4604 4406"
-for REPO in $REPOS
+REPOS="4604 4406"
+for RELEASEVER in 7Server
 do
   echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
-  REPOS="4604 4406"
-  for RELEASEVER in 7Server
-  do
-    echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever=$RELEASEVER --product=\"${PRODUCT}\" --id=\"${REPO}\" "
-    hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever=$RELEASEVER --product="${PRODUCT}" --id="${REPO}"
-  done
-  REPOS="2981"
-  for RELEASEVER in 7.7 7.8
-  do
-    echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever=$RELEASEVER --product=\"${PRODUCT}\" --id=\"${REPO}\" "
-    hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever=$RELEASEVER --product="${PRODUCT}" --id="${REPO}"
-  done 
+  echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever=$RELEASEVER --product=\"${PRODUCT}\" --id=\"${REPO}\" "
+  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever=$RELEASEVER --product="${PRODUCT}" --id="${REPO}"
 done
+REPOS="2981"
+for RELEASEVER in 7.7 7.8
+do
+  echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
+  echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever=$RELEASEVER --product=\"${PRODUCT}\" --id=\"${REPO}\" "
+  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever=$RELEASEVER --product="${PRODUCT}" --id="${REPO}"
+done 
 
 #################
 ## EPEL Stuff - Pay attention to the output of this section.  It's not tested/validated
@@ -331,3 +344,50 @@ do
     --value 1 --organization "${ORGANIZATION}"
 done
 
+#  Create SCAP Content
+# https://access.redhat.com/documentation/en-us/red_hat_satellite/6.7/html/administering_red_hat_satellite/chap-red_hat_satellite-administering_red_hat_satellite-security_compliance_management
+foreman-rake foreman_openscap:bulk_upload:default
+hammer scap-content create --title "ssg-rhel7-ds" \
+  --location "$LOCATION" --organization "$ORGANIZATION" \
+  --scap-file "/usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml" 
+  
+# Create a hostgroup
+hammer hostgroup create --name "HostGroup-apoc-POC-Dev" \
+  --organization "$ORGANIZATION" --location "$LOCATION" \
+  --architecture "x86_64" --lifecycle-environment "POC-Dev"
+
+# POC KVM-based Provisioning (optional - mostly here as a reference)
+# https://access.redhat.com/documentation/en-us/red_hat_satellite/6.7/html/provisioning_guide/provisioning_virtual_machines_in_kvm
+HYPERVISORS="neo trinity morpheus apoc cypher"
+for HYPERVISOR in $HYPERVISORS 
+do 
+  hammer compute-resource create --name "$HYPERVISOR - KVM Server" \
+--provider "Libvirt" --description "KVM server at $HYPERVISOR.matrix.lab" \
+--url "qemu+ssh://root@$HYPERVISOR.matrix.lab/system" --locations "$LOCATION" \
+--organizations "$ORGANIZATION"
+done
+
+# Might add this to the for-loop above
+hammer compute-resource image create --name "Test KVM Image" \
+--operatingsystem "RedHat 7.8" --architecture "x86_64" --username root \
+--user-data false --uuid "/var/lib/libvirt/images/TestImage.qcow2" \
+--compute-resource "apoc - KVM Server"
+
+# Create a Compute Profile (CP) then update it
+hammer compute-profile create --name "Libvirt CP"
+# This is where things really matter
+hammer compute-profile values create --compute-profile "Libvirt CP" \
+--compute-resource "apoc - KVM Server" \
+--interface "compute_type=network,compute_model=virtio,compute_network=brkvm" \
+--volume "pool_name=default,capacity=40G,format_type=qcow2" \
+--compute-attributes "cpus=2,memory=1536000000"
+
+# Build a KVM Guest (I prefer the build image method)
+hammer host create --name "kvm-test1" --organization "$ORGANIZATION" \
+--location "$LOCATION" --hostgroup "Base" \
+--compute-resource "apoc - KVM Server" --provision-method build \
+--build true --enabled true --managed true \
+--interface "managed=true,primary=true,provision=true,compute_type=network,compute_network=brkvm" \
+--compute-attributes="cpus=2,memory=1536000000" \
+--volume="pool_name=default,capacity=40G,format_type=qcow2" \
+--root-password "Passw0rd"
