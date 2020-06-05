@@ -126,7 +126,9 @@ NOTE:  These memory values are not yet solidified.
 | Storage (apps)  | Hosting either Application or 
 | Storage (infra) | Infrastrcture (metrics, monitoring, logging, registry) 
 
-![OCP3 Cluster with OCS - Cluster Oveview](images/OCP3-OCS_Cluster_Overview.png)
+![OCP3 Cluster with OCS - Cluster Oveview](images/OCP3-OCS_Cluster_Overview.png)  
+
+![Homelab - My Rack](images/MyRack.jpeg)  
 
 ## External Repos
 
