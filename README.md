@@ -200,9 +200,9 @@ NOTE:  These memory values are not yet solidified.
 |  gi5  | seraph-em1 (LAG1)       | gi6  | apoc-eno1               | 
 |  gi7  | apoc-ens3f0 (LAG2)      | gi8  | apoc-ens3f1 (LAG2)      |
 |  gi9  | neo-eno1                | gi10  | neo-eno2 (ilom)        |
-|  gi11 | neo-ens3f2 (LAG3)       | gi12 | neo-ens3f3 (LAG3)       |
-|  gi13 | trinity-eno1            | gi12 | trinity-eno2 (ilom)     |
-|  gi15 | trinity-ens3f0 (LAG4)   | gi14 | trinity-ens3f1 (LAG4)   |
+|  gi11 | neo-ens3f0 (LAG3)       | gi12 | neo-ens3f1 (LAG3)       |
+|  gi13 | trinity-eno1            | gi14 | trinity-eno2 (ilom)     |
+|  gi15 | trinity-ens3f0 (LAG4)   | gi16 | trinity-ens3f1 (LAG4)   |
 |  gi17 | morpheus-eno1           | gi18 | morpheus-eno2 (ilom)    |
 |  gi19 | morpheus-ens3f0 (LAG5)  | gi20 | morpheus-ens3f1 (LAG5 ) |
 |  gi21 |                         | gi22 |                         |
