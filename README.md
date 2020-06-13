@@ -46,11 +46,11 @@ FreeNAS (not a Red Hat Product, not even running Linux - but, customers have it 
 | MORPHEUS | Red Hat Enterprise Linux | HP ProLiant ML30 Gen9, Xeon(R) CPU E3-1220 v6 , 62G | 10.10.10.13 | 172.16.10.13 | $1200
 | SATI     | Red Hat Enterprise Linux | NUC7i7BNB, Core(TM) i7-7567U CPU , 7.5G             | 10.10.10.17 | 172.16.10.17 | $900
 | APOC     | Red Hat Enterprise Linux | ASUS X99-PRO/USB 3.1, Xeon(R) CPU E5-2630 v3 , 94G  | 10.10.10.18 | 172.16.10.18 | $800
+| SERAPH   | FreeNAS                  | ASRock Z77E-ITX, i5-3570K, 16GB                     | 10.10.10.19 | 172.16.10.19 | $800
 
 ## PHYSICAL HOSTS (Idle)
 | Hostname | Purpose                  | Model, Proc, Mem Size                               | IP (public) | IP (storage) | Price (approx)
 | :--------|:------------------------:| ---------------------------------------------------:|:-----------:|:------------:|:--------------|
-| SERAPH   | FreeNAS                  | ASRock Z77E-ITX, i5-3570K, 16GB                     | 10.10.10.19 | 172.16.10.19 | $800
 
 Command to retrieve Manufacturer, Model, Proc, and Memory:  
 ```
@@ -79,7 +79,7 @@ Our heroes will function as hypervisors or compute nodes.
   *  IDM (rh7-idm-srv01)
 
 ### SERAPH
-* NAS host for NFS and iSCSI
+* FreeNAS host for NFS and iSCSI
 
 ### Other Infrastructure Systems
   *  Ansible Tower?
@@ -175,7 +175,7 @@ NOTE:  These memory values are not yet solidified.
         |             |     |             |
         |    APOC     |     |   SERAPH    |    ** ADMIN/UTILITY **
         |             |     |   (NAS)     |        APOC / Asus
-        |             |     |             |      SERAPH / ASrock 
+        |             |     |             |      SERAPH / ASrock Z77E-itx
         ---------------     ---------------
 </pre>
 
@@ -195,31 +195,31 @@ NOTE:  These memory values are not yet solidified.
 
 | Switch Port | Host Interface    | Switch Port | Host Interface   |
 |:-----------:|:-----------------:|:-----------:|:----------------:|
-|  gi1  | zion                    | gi2  | seraph-eno1             |
-|  gi3  | seraph-ens3f0 (LAG1)    | gi4  | seraph-ens3f1 (LAG1)    |
-|  gi5  | neo-eno1                | gi6  | neo-eno2 (ilom)         |
-|  gi7  | neo-ens3f0 (LAG2)       | gi8  | neo-ens3f1 (LAG2)       |
-|  gi9  | neo-ens3f2 (LAG3)       | gi10 | neo-ens3f3 (LAG3)       |
-|  gi11 | trinity-eno1            | gi12 | trinity-eno2 (ilom)     |
-|  gi13 | trinity-ens3f0 (LAG4)   | gi14 | trinity-ens3f1 (LAG4)   |
-|  gi15 | trinity-ens3f2 (LAG5)   | gi16 | trinity-ens3f3 (LAG5)   |
+|  gi1  | zion                    | gi2  | cypher                  |
+|  gi3  | seraph-eno1             | gi4  | seraph-em0 (LAG1)       |
+|  gi5  | seraph-em1 (LAG1)       | gi6  | apoc-eno1               | 
+|  gi7  | apoc-ens3f0 (LAG2)      | gi8  | apoc-ens3f1 (LAG2)      |
+|  gi9  | neo-eno1                | gi10  | neo-eno2 (ilom)        |
+|  gi11 | neo-ens3f2 (LAG3)       | gi12 | neo-ens3f3 (LAG3)       |
+|  gi13 | trinity-eno1            | gi12 | trinity-eno2 (ilom)     |
+|  gi15 | trinity-ens3f0 (LAG4)   | gi14 | trinity-ens3f1 (LAG4)   |
 |  gi17 | morpheus-eno1           | gi18 | morpheus-eno2 (ilom)    |
-|  gi19 | morpheus-ens3f0 (LAG6)  | gi20 | morpheus-ens3f1 (LAG6 ) |
-|  gi21 | morpheus-ens3f2 (LAG7)  | gi22 | morpheus-ens3f3 (LAG7 ) |
-|  gi23 | apoc-ens3f0 (LAG8)      | gi24 | apoc-ens3f1 (LAG8)      |
+|  gi19 | morpheus-ens3f0 (LAG5)  | gi20 | morpheus-ens3f1 (LAG5 ) |
+|  gi21 |                         | gi22 |                         |
+|  gi23 |                         | gi24 |                         |
 |   -   |         --              |   -  |           --            |
-|  gi25 | apoc-eno1               | gi26 |                         |
-|  gi27 |                         | gi28 |         UPLINK          |
+|  gi25 |                         | gi26 |                         |
+|  gi27 | attic                   | gi28 |         UPLINK          |
 
 ## 802.3ad LAG groups (configured on Mr Switch)
 LAG1 - seraph-storage  
-LAG2 - neo-guestnet  
+LAG2 - apoc-storage
 LAG3 - neo-storage  
-LAG4 - trinity-guestnet  
-LAG5 - trinity-storage   
-LAG6 - morpheus-guestnet   
-LAG7 - morpheus-storage  
-LAG8 - (unassigned)
+LAG4 - trinity-storage   
+LAG5 - morpheus-storage  
+LAG6 - unassigned
+LAG7 - unassigned
+LAG8 - unassigned
 </pre>
 
 ## OCP Overview
