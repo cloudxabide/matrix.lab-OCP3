@@ -123,9 +123,9 @@ ipa dnsrecord-add matrix.lab apoc		--a-rec 10.10.10.18
 ipa dnsrecord-add matrix.lab apoc-storage       --a-rec 172.16.10.18
 ipa dnsrecord-add matrix.lab seraph             --a-rec 10.10.10.19
 ipa dnsrecord-add matrix.lab seraph-storage     --a-rec 172.16.10.19
-ipa dnsrecord-add matrix.lab storage            --cname-rec='seraph-storage.matrix.lab.'
-ipa dnsrecord-add matrix.lab nas                --cname-rec='seraph-storage.matrix.lab.'
-ipa dnsrecord-add matrix.lab freenas                --cname-rec='seraph-storage.matrix.lab.'
+ipa dnsrecord-add matrix.lab storage            --cname-rec='seraph.matrix.lab.'
+ipa dnsrecord-add matrix.lab nas                --cname-rec='seraph.matrix.lab.'
+ipa dnsrecord-add matrix.lab freenas            --cname-rec='seraph.matrix.lab.'
 ipa dnsrecord-add matrix.lab dock-dell          --a-rec 10.10.10.30
 ipa dnsrecord-add matrix.lab dock-thinkpad	--a-rec 10.10.10.31
 
