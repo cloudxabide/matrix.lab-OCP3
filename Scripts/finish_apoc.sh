@@ -102,3 +102,35 @@ systemctl stop NetworkManager; systemctl start NetworkManager
 EOF
 sh /root/nmcli_cmds.sh &
 
+# Configure the Bonded LACP 802.3ad Interface(s)
+grep bonding /etc/modprobe.d/* || echo "alias bond0 bonding" > /etc/modprobe.d/network-bonding.conf
+BONDINTERFACE="bond0"
+IP=172.16.10.18
+nmcli con add type bond con-name $BONDINTERFACE ifname $BONDINTERFACE 
+nmcli con modify id bond0 bond.options mode=802.3ad,miimon=100,lacp_rate=fast,xmit_hash_policy=layer2+3
+nmcli con modify bond0 ipv4.address ${IP}/24 ipv4.method manual
+nmcli con add type bond-slave ifname ens6f0 con-name ens6f0 master bond0
+nmcli con add type bond-slave ifname ens6f1 con-name ens6f1 master bond0
+ifup bond0
+
+old_method() {
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-bond0
+DEVICE=bond0
+IPADDR=172.168.10.18
+NETMASK=255.255.255.0
+USERCTL=no
+BOOTPROTO=none
+ONBOOT=yes
+DEFROUTE=no
+BONDING_OPTS="mode=4 miimon=100 lacp_rate=0"
+EOF
+
+for INT in 0 1
+do
+  sed -i -e 's/ONBOOT=no/ONBOOT=yes/g' /etc/sysconfig/network-scripts/ifcfg-ens6f${INT}
+  sed -i -e 's/DEFROUTE=yes/DEFROUTE=no/g' /etc/sysconfig/network-scripts/ifcfg-ens6f${INT}
+  echo "SLAVE=yes" >> /etc/sysconfig/network-scripts/ifcfg-ens6f${INT}
+  echo "MASTER=bond0" >> /etc/sysconfig/network-scripts/ifcfg-ens6f${INT}
+  echo "NM_CONTROLLED=no"  >> /etc/sysconfig/network-scripts/ifcfg-ens6f${INT}
+done
+}
