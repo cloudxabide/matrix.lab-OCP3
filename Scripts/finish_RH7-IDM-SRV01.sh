@@ -166,6 +166,7 @@ ipa dnsrecord-add matrix.lab rh7-lms-srv01      --a-rec 10.10.10.110
 ipa dnsrecord-add matrix.lab librenms           --cname-rec='rh7-lms-srv01'
 ipa dnsrecord-add matrix.lab rh7-jenkins-srv01  --a-rec 10.10.10.111
 ipa dnsrecord-add matrix.lab jenkins            --cname-rec='rh7-jenkins-srv01'
+ipa dnsrecord-add matrix.lab vmw-vcenter6       --a-rec 10.10.10.130
 ipa dnsrecord-add 10.10.10.in-addr.arpa 20      --ptr-rec websrv.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 100     --ptr-rec rh8-util-srv01.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 102     --ptr-rec rh7-sat6-srv01.matrix.lab.
@@ -176,6 +177,7 @@ ipa dnsrecord-add 10.10.10.in-addr.arpa 106     --ptr-rec rh7-sat6-srv02.matrix.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 107     --ptr-rec rh7-ans-srv01.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 110     --ptr-rec rh7-lms-srv01.matrix.lab.
 ipa dnsrecord-add 10.10.10.in-addr.arpa 111     --ptr-rec rh7-jenkins-srv01.matrix.lab.
+ipa dnsrecord-add 10.10.10.in-addr.arpa 130     --ptr-rec vmw-vcenter6.matrix.lab.
 ###############
 # VPN Endpoints 
 ###############
@@ -242,6 +244,9 @@ ipa dnsrecord-add 10.10.10.in-addr.arpa 223  --ptr-rec rh7-poc-prd01.matrix.lab.
 ### LINUXREVOLUTION.com
 ipa dnszone-add linuxrevolution.com --admin-email=root@matrix.lab --minimum=3000 --dynamic-update=true --skip-overlap-check
 
+#######
+## OpenShift Stuff
+#######
 # OCP Console (internal/external)
 ipa dnsrecord-add matrix.lab ocp3-console --a-rec 10.10.10.170 
 ipa dnsrecord-add linuxrevolution.com 'ocp3-console' --a-rec 10.10.10.170
