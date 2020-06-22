@@ -18,18 +18,27 @@ insmod hpdsa
 set timeout=20
 ### END /etc/grub.d/00_header ###
 
-search --no-floppy --set=root -l 'RHEL-7.4 Server.x86_64'
+search --no-floppy --set=root -l 'RHEL-7.7 Server.x86_64'
+
 ###### ###### ###### ###### ###### ###### ###### ######
-submenu 'RHVH 4 -->'{
-  menuentry 'TRINITY - Red Hat Virtualization 4 Hypervisor' --class fedora --class gnu-linux --class gnu --class os {
-    linuxefi RHVH-4.3/vmlinuz inst.stage2=http://10.10.10.10/OS/RHVH-4.3/ inst.ks=http://10.10.10.10/Kickstart/TRINITY-RHVH-4.3.ks inst.gpt ip=10.10.10.12::10.10.10.1:255.255.255.0:trinity.matrix.lab:eno1:none
-    initrdefi RHVH-4.3/initrd.img
-  }
+menuentry "Local Disk" {
+   LOCALBOOT 0
 }
 
 submenu  'RHEL 7.7 -->' {
   menuentry 'TRINITY - Red Hat Enterprise Linux 7.7' --class fedora --class gnu-linux --class gnu --class os   {
         linuxefi rhel-server-7.7-x86_64/vmlinuz inst.repo=http://10.10.10.10/OS/rhel-server-7.7-x86_64/ inst.ks=http://10.10.10.10/Kickstart/TRINITY-7.7.ks inst.gpt hpsa.hpsa_allow_any=1 hpsa.hpsa_simple_mode=1 ip=10.10.10.12::10.10.10.1:255.255.255.0:trinity.matrix.lab:eno1:none
         initrdefi rhel-server-7.7-x86_64/initrd.img
+  }
+  menuentry 'TRINITY - Red Hat Enterprise Linux 7.7 (FIPS)' --class fedora --class gnu-linux --class gnu --class os   {
+        linuxefi rhel-server-7.7-x86_64/vmlinuz inst.repo=http://10.10.10.10/OS/rhel-server-7.7-x86_64/ inst.ks=http://10.10.10.10/Kickstart/TRINITY-7.7.ks inst.gpt hpsa.hpsa_allow_any=1 hpsa.hpsa_simple_mode=1 ip=10.10.10.12::10.10.10.1:255.255.255.0:trinity.matrix.lab:eno1:none fips=1
+        initrdefi rhel-server-7.7-x86_64/initrd.img
+  }
+}
+
+submenu 'RHVH 4 -->'{
+  menuentry 'TRINITY - Red Hat Virtualization 4 Hypervisor' --class fedora --class gnu-linux --class gnu --class os {
+    linuxefi RHVH-4.3/vmlinuz inst.stage2=http://10.10.10.10/OS/RHVH-4.3/ inst.ks=http://10.10.10.10/Kickstart/TRINITY-RHVH-4.3.ks inst.gpt ip=10.10.10.12::10.10.10.1:255.255.255.0:trinity.matrix.lab:eno1:none
+    initrdefi RHVH-4.3/initrd.img
   }
 }
