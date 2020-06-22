@@ -6,9 +6,16 @@ ORGANIZATION="MATRIXLABS"
 LOCATION="HomeLab"
 SATELLITE="rh7-sat6-srv01"
 DOMAIN="matrix.lab"
-SATVERSION=6.5
+SATVERSION=6.6
 EOF
 . ~/satellite_info.txt
+
+cat << EOF > ~/.bashrc
+
+if [ -f ${HOME}/satellite_info.txt ]; then
+  . ${HOME}/satellite_info.txt
+fi
+EOF
 
 # Manage Subscription and Channels/Repos
 # This *would* likely be necessary for a "normal" RHN account
@@ -80,9 +87,7 @@ satellite-installer --scenario satellite \
 --foreman-initial-admin-password "Passw0rd" \
 --foreman-proxy-puppetca true \
 --foreman-proxy-tftp true \
---enable-foreman-plugin-discovery
-
-other_options() {
+--enable-foreman-plugin-discovery \
 --foreman-proxy-dns true \
 --foreman-proxy-dns-interface eth0 \
 --foreman-proxy-dns-zone matrix.lab \
@@ -93,10 +98,10 @@ other_options() {
 --foreman-proxy-dhcp-interface eth0 \
 --foreman-proxy-dhcp-range "10.10.10.200 10.10.10.250" \
 --foreman-proxy-dhcp-gateway 10.10.10.1 \
---foreman-proxy-dhcp-namesrvs 10.10.10.121 \
---foreman-proxy-dhcp-namesrvs 10.10.10.122 \
+--foreman-proxy-dhcp-nameservers 10.10.10.121 \
+--foreman-proxy-dhcp-nameservers 10.10.10.122 \
 --foreman-proxy-tftp true \
---foreman-proxy-tftp-srvname ${SATELLITE}.${DOMAIN} \
+--foreman-proxy-tftp-servername ${SATELLITE}.${DOMAIN}
 }
 
 # Save the manifest file in ~ - then upload it
@@ -120,12 +125,11 @@ hammer organization add-user --user=reguser --name="${ORGANIZATION}"
 hammer location create --name="${LOCATION}"
 hammer location add-organization --name="${LOCATION}" --organization="${ORGANIZATION}"
 hammer domain create --name="${DOMAIN}"
-hammer subnet create --name='10.10.10.0/24' 
+hammer subnet create --name='10.10.10.0/24' \
   --description "Default Subnet for $ORGANIZATION" --organization "$ORGANIZATION" \
-  --network='10.10.10.0' --protocol "ipv4" \
+  --network='10.10.10.0' --boot-mode="DHCP" \
   --domains "$DOMAIN"  --gateway='10.10.10.1' --mask='255.255.255.0' \
-  --dns-primary='10.10.10.121' --dns-secondary='10.10.10.122' \
-  --boot-mode "dhcp" 
+  --dns-primary='10.10.10.121' --dns-secondary='10.10.10.122' 
 hammer organization add-subnet --subnet-id=1 --name="${ORGANIZATION}"
 hammer organization add-domain --domain="${DOMAIN}" --name="${ORGANIZATION}"
 
@@ -212,7 +216,7 @@ done
 PRODUCT='Red Hat OpenShift Container Platform'
 hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
 #REPOS="5251"  # 3.3
-REPOS="7414 6888"  # 3.11 3.9
+REPOS="7414" # 3.11 3.9 - 6888 
 for REPO in $REPOS
 do
   echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
@@ -238,30 +242,28 @@ do
   hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --product="${PRODUCT}" --id="${REPO}"
 done
 
-PRODUCT='Red Hat Virtualization Manager'
-hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
-REPOS="7683"
-for REPO in $REPOS
-do
-  echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
-  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --product="${PRODUCT}" --id="${REPO}"
-done
-
 PRODUCT='Red Hat Gluster Storage Server for On-premise'
 hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
 REPOS="4604 4406"
 for RELEASEVER in 7Server
 do
-  echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
-  echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever=$RELEASEVER --product=\"${PRODUCT}\" --id=\"${REPO}\" "
-  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever=$RELEASEVER --product="${PRODUCT}" --id="${REPO}"
+  for REPO in $REPOS
+  do
+    echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
+    echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever=$RELEASEVER --product=\"${PRODUCT}\" --id=\"${REPO}\" "
+    hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever=$RELEASEVER --product="${PRODUCT}" --id="${REPO}"
+  donek 
 done
+
 REPOS="2981"
 for RELEASEVER in 7.7 7.8
 do
-  echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
-  echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever=$RELEASEVER --product=\"${PRODUCT}\" --id=\"${REPO}\" "
-  hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever=$RELEASEVER --product="${PRODUCT}" --id="${REPO}"
+  for REPO in $REPOS
+  do
+    echo; echo "NOTE:  Enabling (${REPO}): `grep $REPO ~/hammer_repository-set_list-"${PRODUCT}".out | cut -f3 -d\|`"
+    echo "hammer repository-set enable --organization=\"${ORGANIZATION}\" --basearch='x86_64' --releasever=$RELEASEVER --product=\"${PRODUCT}\" --id=\"${REPO}\" "
+    hammer repository-set enable --organization="${ORGANIZATION}" --basearch='x86_64' --releasever=$RELEASEVER --product="${PRODUCT}" --id="${REPO}"
+  done
 done 
 
 #################
