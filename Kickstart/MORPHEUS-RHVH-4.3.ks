@@ -1,8 +1,8 @@
 ######### HOST SPECIFIC PARAMS - BEGIN  #########
 # Network information
-network --bootproto=static --device=bond0 --ip=10.10.10.11 --netmask=255.255.255.0 --gateway=10.10.10.1 --noipv6 --bondopts=miimon=100,mode=802.3ad,lacp_rate=1  --bondslaves=eno1,eno2 --hostname=neo.matrix.lab
-network --bootproto=static --device=bond1 --ip=169.254.0.11 --bondopts=miimon=100,mode=802.3ad,lacp_rate=1  --bondslaves=ens3f0,ens3f1
-network --bootproto=static --device=bond2 --ip=172.16.10.11 --netmask=255.255.255.0 --noipv6 --bondopts=miimon=100,mode=802.3ad,lacp_rate=1  --bondslaves=ens3f2,ens3f3
+network --bootproto=static --device=bond0 --ip=10.10.10.13 --netmask=255.255.255.0 --gateway=10.10.10.1 --noipv6 --bondopts=miimon=100,mode=802.3ad,lacp_rate=1  --bondslaves=eno1,eno2 --hostname=morpheus.matrix.lab
+network --bootproto=static --device=bond1 --ip=169.254.0.13 --bondopts=miimon=100,mode=802.3ad,lacp_rate=1  --bondslaves=ens3f0,ens3f1
+network --bootproto=static --device=bond2 --ip=172.16.10.13 --netmask=255.255.255.0 --noipv6 --bondopts=miimon=100,mode=802.3ad,lacp_rate=1  --bondslaves=ens3f2,ens3f3
 ######### HOST SPECIFIC PARAMS - END #########
 
 # Use text install
@@ -55,17 +55,17 @@ part /boot/efi --fstype="efi"   --size=256   --ondisk=sda --fsoptions="umask=007
 part /boot     --fstype="xfs"   --size=1024  --ondisk=sda 
 part pv.01     --fstype="lvmpv" --size=51200 --ondisk=sda --grow
 # 
-volgroup rhvh_neo --pesize=4096 pv.01 --reserved-percent=20
+volgroup rhvh_morpheus --pesize=4096 pv.01 --reserved-percent=20
 # 
-logvol none           --thinpool      --size=51200  --grow                     --vgname=rhvh_neo --name=HostPool 
+logvol none           --thinpool      --size=51200  --grow                     --vgname=rhvh_morpheus --name=HostPool 
 # 
-logvol swap           --fstype="swap" --recommended                            --vgname=rhvh_neo --name=swap                 
-logvol /              --fstype="xfs"  --size=10240  --thin --poolname=HostPool --vgname=rhvh_neo --name=root          --fsoptions="defaults,discard" 
-logvol /tmp           --fstype="xfs"  --size=1024   --thin --poolname=HostPool --vgname=rhvh_neo --name=tmp           --fsoptions="defaults,discard"  
-logvol /var           --fstype="xfs"  --size=10240  --thin --poolname=HostPool --vgname=rhvh_neo --name=var           --fsoptions="defaults,discard" 
-logvol /home          --fstype="xfs"  --size=1024   --thin --poolname=HostPool --vgname=rhvh_neo --name=home          --fsoptions="defaults,discard" 
-logvol /var/log       --fstype="xfs"  --size=8192   --thin --poolname=HostPool --vgname=rhvh_neo --name=var_log       --fsoptions="defaults,discard" 
-logvol /var/log/audit --fstype="xfs"  --size=2048   --thin --poolname=HostPool --vgname=rhvh_neo --name=var_log_audit --fsoptions="defaults,discard" 
+logvol swap           --fstype="swap" --recommended                            --vgname=rhvh_morpheus --name=swap                 
+logvol /              --fstype="xfs"  --size=10240  --thin --poolname=HostPool --vgname=rhvh_morpheus --name=root          --fsoptions="defaults,discard" 
+logvol /tmp           --fstype="xfs"  --size=1024   --thin --poolname=HostPool --vgname=rhvh_morpheus --name=tmp           --fsoptions="defaults,discard"  
+logvol /var           --fstype="xfs"  --size=10240  --thin --poolname=HostPool --vgname=rhvh_morpheus --name=var           --fsoptions="defaults,discard" 
+logvol /home          --fstype="xfs"  --size=1024   --thin --poolname=HostPool --vgname=rhvh_morpheus --name=home          --fsoptions="defaults,discard" 
+logvol /var/log       --fstype="xfs"  --size=8192   --thin --poolname=HostPool --vgname=rhvh_morpheus --name=var_log       --fsoptions="defaults,discard" 
+logvol /var/log/audit --fstype="xfs"  --size=2048   --thin --poolname=HostPool --vgname=rhvh_morpheus --name=var_log_audit --fsoptions="defaults,discard" 
 
 ###############################################################################
 # reboot after installation
