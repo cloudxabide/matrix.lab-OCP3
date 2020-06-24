@@ -53,7 +53,7 @@ ignoredisk --only-use=sda
 # https://access.redhat.com/documentation/en-us/red_hat_virtualization/4.3/html/installation_guide/advanced_rhvh_install
 part /boot/efi --fstype="efi"   --size=256   --ondisk=sda --fsoptions="umask=0077,shortname=winnt" 
 part /boot     --fstype="xfs"   --size=1024  --ondisk=sda 
-part pv.01     --fstype="lvmpv" --size=51200 --ondisk=sda --grow
+part pv.01     --fstype="lvmpv" --size=20480 --ondisk=sda --grow
 # 
 volgroup rhvh_morpheus --pesize=4096 pv.01 --reserved-percent=20
 # 
@@ -64,6 +64,7 @@ logvol /              --fstype="xfs"  --size=10240  --thin --poolname=HostPool -
 logvol /tmp           --fstype="xfs"  --size=1024   --thin --poolname=HostPool --vgname=rhvh_morpheus --name=tmp           --fsoptions="defaults,discard"  
 logvol /var           --fstype="xfs"  --size=10240  --thin --poolname=HostPool --vgname=rhvh_morpheus --name=var           --fsoptions="defaults,discard" 
 logvol /home          --fstype="xfs"  --size=1024   --thin --poolname=HostPool --vgname=rhvh_morpheus --name=home          --fsoptions="defaults,discard" 
+logvol /var/crash     --fstype="xfs"  --size=10240  --thin --poolname=HostPool --vgname=rhvh_morpheus --name=var_crash     --fsoptions="defaults,discard" 
 logvol /var/log       --fstype="xfs"  --size=8192   --thin --poolname=HostPool --vgname=rhvh_morpheus --name=var_log       --fsoptions="defaults,discard" 
 logvol /var/log/audit --fstype="xfs"  --size=2048   --thin --poolname=HostPool --vgname=rhvh_morpheus --name=var_log_audit --fsoptions="defaults,discard" 
 

@@ -64,6 +64,7 @@ logvol /              --fstype="xfs"  --size=10240  --thin --poolname=HostPool -
 logvol /tmp           --fstype="xfs"  --size=1024   --thin --poolname=HostPool --vgname=rhvh_neo --name=tmp           --fsoptions="defaults,discard"  
 logvol /var           --fstype="xfs"  --size=10240  --thin --poolname=HostPool --vgname=rhvh_neo --name=var           --fsoptions="defaults,discard" 
 logvol /home          --fstype="xfs"  --size=1024   --thin --poolname=HostPool --vgname=rhvh_neo --name=home          --fsoptions="defaults,discard" 
+logvol /var/crash     --fstype="xfs"  --size=10240  --thin --poolname=HostPool --vgname=rhvh_neo --name=var_crash     --fsoptions="defaults,discard"
 logvol /var/log       --fstype="xfs"  --size=8192   --thin --poolname=HostPool --vgname=rhvh_neo --name=var_log       --fsoptions="defaults,discard" 
 logvol /var/log/audit --fstype="xfs"  --size=2048   --thin --poolname=HostPool --vgname=rhvh_neo --name=var_log_audit --fsoptions="defaults,discard" 
 
