@@ -79,8 +79,9 @@ case `cut -f5 -d\: /etc/system-release-cpe` in
   7.*)
     echo "NOTE:  detected EL7"
     [ $USE_SATELLITE == 1 ] && EXTRAS="--enable rhel-7-server-satellite-tools-6.6-rpms "
+    # Temp - set the release
+    subscription-manager release --set=7.7
     subscription-manager repos --disable="*" --enable rhel-7-server-rpms $EXTRAS
-    #subscription-manager release --set=7.6
   ;;
   8.*)
     echo "NOTE:  detected EL8"
@@ -142,7 +143,7 @@ mv /etc/snmp/snmpd.conf /etc/snmp/snmpd.conf-`date +%F`
 WEBSERVER=10.10.10.10
 curl http://${WEBSERVER}/Files/etc_snmp_snmpd.conf > /etc/snmp/snmpd.conf
 restorecon -Fvv /etc/snmp/snmpd.conf
-systemctl enable snmpd --now &
+systemctl enable snmpd --now 
 firewall-cmd --permanent --add-service=snmp
 firewall-cmd --reload
 
@@ -180,6 +181,7 @@ sudo setsebool -P virt_use_fusefs on
 syspurpose set sla "Self-Support"; sleep 5
 syspurpose set role ""; sleep 5
 syspurpose set usage ""
+which insights-client || yum -y install insights-client
 insights-client --register
 
 #  Update Host and reboot

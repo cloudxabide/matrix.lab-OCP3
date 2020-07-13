@@ -109,6 +109,7 @@ hammer subscription upload --file $(find ~ -name "*$MATRIXLABS*.zip") --organiza
 
 # If you run yum update, you may also need to 
 # https://access.redhat.com/solutions/4796841
+# yum -y update
 # satellite-installer --scenario satellite --upgrade
 
 ###################
