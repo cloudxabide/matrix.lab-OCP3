@@ -1,0 +1,25 @@
+[ocp3:children]
+ocp3_infra
+ocp3_masters
+ocp3_compute
+ocp3_storage
+
+[ocp3_infra]
+rh7-ocp3-inf0[1:3].matrix.lab
+[ocp3_masters]
+rh7-ocp3-mst0[1:3].matrix.lab
+[ocp3_compute]
+rh7-ocp3-app0[1:3].matrix.lab
+[ocp3_storage]
+rh7-ocp3-ocs0[1:3].matrix.lab
+rh7-ocp3-ocs1[1:3].matrix.lab
+
+# Hardware Resources
+[ocp3_hypervisors]
+apoc.matrix.lab
+neo.matrix.lab
+trinity.matrix.lab
+morpheus.matrix.lab
+[infra_hypervisors]
+zion.matrix.lab
+sati.matrix.lab
