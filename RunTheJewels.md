@@ -17,11 +17,23 @@ ssh root@rh7-ocp3-bst01.matrix.lab
 ```
 
 ## Deploy OpenShift Container Platform 3
-### Reconcile development REPO with all nodes
+### SSH to Bastion Node
 ```
 ssh root@rh7-ocp3-bst01.matrix.lab
-cd matrix.lab/Scripts
-./lab_control.sh sshcopyid
+```
+
+### Copy the SSH Key to the Hypervisors
+```
+HYPERVISORS="apoc neo trinity morpheus"
+for HYPERVISOR in $HYPERVISORS
+do
+  ssh-copy-id $HYPERVISOR.matrix.lab
+done
+```
+
+### Reconcile development REPO with all nodes (do this from Bastion)
+```
+cd ${HOME}/matrix.lab/Scripts
 ./lab_control.sh gitpull
 ```
 
@@ -55,8 +67,8 @@ done
 ### Prepare nodes for OCP3 Software
 Once you are certain all of the VMs have started, run the following:
 ```
-INVENTORY="$HOME/homelab.yml"
-ansible all -i ${INVENTORY} -m shell -a "sudo virsh list --all" 
+INVENTORY="$HOME/matrix.lab/Files/homelab_inventory.yml"
+ansible ocp3_hypervisors -i ${INVENTORY} -m shell -a "sudo virsh list --all" 
 # If the previous command indicates they are all "running", then...
 ./OCP3_prep_hosts.sh
 # If you want to see it's progress, do the following: 
