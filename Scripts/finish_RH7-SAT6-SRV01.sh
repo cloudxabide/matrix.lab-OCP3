@@ -163,7 +163,7 @@ done
 # RHEL 6/7
 PRODUCT='Red Hat Enterprise Linux Server'
 hammer repository-set list --organization="${ORGANIZATION}" --product "${PRODUCT}" > ~/hammer_repository-set_list-"${PRODUCT}".out
-REPOS="3030"
+REPOS="2455 2456 3030 2472" # Kickstart|RPMS|Extras|Common
 for REPO in $REPOS
 do
   for RELEASEVER in 7Server
@@ -174,7 +174,7 @@ do
   done
 done
 
-REPOS="2456 2472 2455"
+REPOS="2456 2472 " # RPMS|Common
 for REPO in $REPOS
 do
   for RELEASEVER in 7.7 7.8
