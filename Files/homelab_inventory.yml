@@ -23,3 +23,5 @@ morpheus.matrix.lab
 [infra_hypervisors]
 zion.matrix.lab
 sati.matrix.lab
+
+#  ansible ocp3_hypervisors -i ~/matrix.lab/Files/homelab_inventory.yml -m shell -a "virsh list --all"
