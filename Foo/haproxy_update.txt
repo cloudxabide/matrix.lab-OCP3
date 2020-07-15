@@ -5,9 +5,12 @@ This exists if you'd like to use your single HAproxy node to frontend both the M
 ## Quick and Dirty
 ```
 ssh rh7-ocp3-proxy.matrix.lab 
+watch "ls -l /etc/haproxy/haproxy.cfg"
 
-cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.orig
-wget -O /etc/haproxy/haproxy.cfg https://raw.githubusercontent.com/cloudxabide/matrix.lab/master/Files/etc_haproxy_haproxy.cfg
+[! -f /etc/haproxy/haproxy.cfg.orig ] || cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.orig
+wget -O /etc/haproxy/haproxy.cfg.git https://raw.githubusercontent.com/cloudxabide/matrix.lab/master/Files/etc_haproxy_haproxy.cfg
+unalias cp; 
+cp /etc/haproxy/haproxy.cfg.git /etc/haproxy/haproxy.cfg
 restorecon -Fvv /etc/haproxy/haproxy.cfg
 systemctl restart haproxy.service 
 systemctl status haproxy.service 
