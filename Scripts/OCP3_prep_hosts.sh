@@ -106,7 +106,7 @@ echo "NOTE:  ALL hosts have rebooted (twice)"
 echo "Check whether user:mansible is present in ssh config"
 [ -f ~/.ssh/config.bak ] && mv ~/.ssh/config.bak ~/.ssh/config
 (grep mansible ~/.ssh/config) || cat << EOF > ~/.ssh/config
-Host *.matrix.lab
+Host rh7-ocp3**.matrix.lab
   User mansible
 EOF
 chmod 0600 ~/.ssh/config
