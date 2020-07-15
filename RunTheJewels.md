@@ -110,7 +110,8 @@ ANSIBLE_OPTIONS=" "
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}prerequisites.yml $ANSIBLE_OPTIONS | tee ${LOGDIR}/01-prerequistes-`date +%F`.logs &
 
 #####################
-# this part is tricky - since I am using the proxy node for both Master/API and app/wildcard traffic, I believe I need to udpate it as soon as the playbook does its thing.
+# this part is tricky - since I am using the proxy node for both Master/API and app/wildcard traffic, I believe I need to update 
+#   it as soon as the playbook does its thing.
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}deploy_cluster.yml $ANSIBLE_OPTIONS | tee ${LOGDIR}/02-pbs-deploy_cluster-`date +%F`.logs &
 
 # on host:  rh7-ocp3-proxy
