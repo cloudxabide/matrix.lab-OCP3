@@ -80,7 +80,7 @@ case `cut -f5 -d\: /etc/system-release-cpe` in
     echo "NOTE:  detected EL7"
     [ $USE_SATELLITE == 1 ] && EXTRAS="--enable rhel-7-server-satellite-tools-6.6-rpms "
     # Temp - set the release
-    subscription-manager release --set=7.7
+    #subscription-manager release --set=7.7
     subscription-manager repos --disable="*" --enable rhel-7-server-rpms $EXTRAS
   ;;
   8.*)
