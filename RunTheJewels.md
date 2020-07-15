@@ -110,11 +110,11 @@ ANSIBLE_OPTIONS=" "
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}prerequisites.yml $ANSIBLE_OPTIONS | tee ${LOGDIR}/01-prerequistes-`date +%F`.logs &
 
 #####################
-# this part is tricky - since I am using the proxy node for both Master/API and app/wildcard traffic, I believe I need to update 
-#   it as soon as the playbook does its thing.
+# this part is tricky - since I am using the proxy node for both Master/API and app/wildcard traffic, I need to update the proxy
+#   as soon as the playbook configures it (see next step)
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}deploy_cluster.yml $ANSIBLE_OPTIONS | tee ${LOGDIR}/02-pbs-deploy_cluster-`date +%F`.logs &
 
-# on host:  rh7-ocp3-proxy
+# go to host:  rh7-ocp3-proxy
 watch "ls -l /etc/haproxy/haproxy.cfg"
 # once the file changes, update the HAproxy Node (if you need to)
 # <THISREPO>/Foo/haproxy_update.txt
@@ -146,3 +146,7 @@ ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}/openshift-metrics/config.yml -e op
 # Remove Prometheus
 ansible-playbook -i ${INVENTORY} ${PLAYBOOKS}/openshift-monitoring/config.yml -e openshift_cluster_monitoring_operator_install=falsE
 ```
+
+## The HAproxy naunce from above
+So - by default, OCP 3 installation can/will deploy a proxy node to accommodate port 443 (basically "app traffic").  Due to my setup at home, which has only one ingress point from the Interwebs, I have opted to use that HAproxy node for ALL traffic (app, management/API, http).  This is accomplished by updating my DNS to use the HAproxy Host IP for the 3 endpoints.  So - if you *don't* update the haproxy, it will not listen, nor forward any traffic and the installer will fail when it attempts to make calls to the API/Management endpoint.  Not a perfect scenario, but - it is worth the extra manual intervention.
+
