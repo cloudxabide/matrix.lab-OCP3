@@ -85,6 +85,15 @@ for HOST in $HYPERVISORS; do ssh -t $HOST "matrix.lab/Scripts/lab_control.sh sna
 
 ### Deploy OCP3 Software on nodes (Ansible Playbooks)
 This part requires a bit more interactive participation yet.  The process depends on what YOU are trying to do - the following is a faily complex way of calling what *should* be a simple process (there is something wrong with how Gluster is deployed right now)
+
+#### Copy the Certs to the Bastion
+Review [Let's Encrypt How-to](Foo/lets_encrypt.md)
+
+/root/TLS/privkey2.pem  
+/root/TLS/cert2.pem  
+/root/TLS/chain2.pem  
+
+#### Begin the installation
 ```
 cp ${HOME}/matrix.lab/Files/ocp-3.11-1112*  ~
 sed -i -e 's/<rhnuser>/yo/g'  ${HOME}/ocp-3.11-1112*
