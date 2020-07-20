@@ -7,7 +7,7 @@ Environment is currently being used to test OCP3 and FIPS.
 fips1234!
 
 ## Overview
-My Homelab dedicated to deploying portoins of the Red Hat product portfolio and AWS integration.
+My Homelab dedicated to deploying portions of the Red Hat product portfolio and AWS integration.
 One of the goals (currently) is to build something somewhat "stateless" or shortlived.   
 It is primarily an IaaS and PaaS initiative.  This is intended to be a "lab" 
 installation - I would not use some of these tactics in a production or business
